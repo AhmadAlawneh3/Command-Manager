@@ -33,7 +33,6 @@ body {
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid #30363d;
-    position: relative;
 }
 
 .logo h1 {
@@ -48,15 +47,31 @@ body {
 }
 
 .github-link {
-    position: absolute;
-    top: 22px;
-    right: 16px;
     color: #8b949e;
     transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
 }
 .github-link:hover {
     color: #c9d1d9;
 }
+
+/* Sidebar footer — pinned to bottom */
+.sidebar-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #30363d;
+    text-align: center;
+}
+.github-link-footer {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8em;
+    color: #7d8590;
+    text-decoration: none;
+}
+.github-link-footer:hover { color: #c9d1d9; }
+
 
 .search-container {
     padding: 15px;
@@ -1812,8 +1827,11 @@ html[data-theme="light"] .sidebar-toggle:hover { background: #f6f8fa; }
 /* Light theme — Logo */
 html[data-theme="light"] .logo { border-color: #d0d7de; }
 html[data-theme="light"] .logo h1 { color: #cf222e; }
-html[data-theme="light"] .github-link { color: #1f2328; }
+html[data-theme="light"] .github-link { color: #656d76; }
 html[data-theme="light"] .github-link:hover { color: #0969da; }
+html[data-theme="light"] .sidebar-footer { border-color: #d0d7de; }
+html[data-theme="light"] .github-link-footer { color: #656d76; }
+html[data-theme="light"] .github-link-footer:hover { color: #0969da; }
 
 /* Light theme — Sidebar buttons & filters */
 html[data-theme="light"] .search-container { border-color: #d0d7de; }
