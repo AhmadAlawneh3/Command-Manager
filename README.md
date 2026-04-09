@@ -3,7 +3,7 @@
 A searchable, copy-pasteable library of pentesting commands focused on Active Directory. Runs entirely in your browser. No install, no backend, no telemetry.
 
 
-https://github.com/user-attachments/assets/a32179d3-e898-4860-81ec-8f4b297cfef5
+https://github.com/user-attachments/assets/772a5e56-88d9-4223-a87c-04a48c6e1a5b
 
 
 ## What it is
