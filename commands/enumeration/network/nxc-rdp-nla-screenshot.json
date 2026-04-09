@@ -1,0 +1,17 @@
+{
+  "id": "nxc-rdp-nla-screenshot",
+  "name": "NetExec RDP NLA Screenshot",
+  "command": "nxc rdp <target> --nla-screenshot",
+  "description": "Capture a pre-auth RDP login screen against hosts that have NLA enabled. Reveals OS branding, last logged-on user, and any logon banners — useful recon without burning credentials.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["rdp"],
+  "tags": ["netexec", "nxc", "rdp", "screenshot", "recon"],
+  "variations": [
+    { "label": "Custom Resolution", "requires": "no-creds", "command": "nxc rdp <target> --nla-screenshot --res 1920x1080" },
+    { "label": "Custom Port", "requires": "no-creds", "command": "nxc rdp <target> --port 3390 --nla-screenshot" }
+  ],
+  "examples": [
+    "nxc rdp 10.10.10.0/24 --nla-screenshot"
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "secretsdump": [
+    "hashcat-ntlm",
+    "evil-winrm",
+    "golden-ticket"
+  ],
+  "kerberoasting": [
+    "Cracking-Kerberoasting-hashes"
+  ],
+  "nxc-smb-auth": [
+    "evil-winrm",
+    "nxc-smb-shares"
+  ],
+  "targeted-kerberoast": [
+    "Cracking-Kerberoasting-hashes"
+  ],
+  "gettgt-kerberoast": [
+    "nxc-smb-auth"
+  ],
+  "gettgt-kerberoast-hash": [
+    "nxc-smb-auth"
+  ],
+  "petitpotam": [
+    "ntlmrelayx-smb",
+    "ntlmrelayx-ldap",
+    "ntlmrelayx-adcs",
+    "certipy-relay"
+  ],
+  "coercer": [
+    "ntlmrelayx-smb",
+    "ntlmrelayx-ldap",
+    "ntlmrelayx-adcs",
+    "certipy-relay"
+  ],
+  "dfscoerce": [
+    "ntlmrelayx-smb",
+    "ntlmrelayx-ldap",
+    "ntlmrelayx-adcs",
+    "certipy-relay"
+  ],
+  "printerbug": [
+    "ntlmrelayx-smb",
+    "ntlmrelayx-ldap",
+    "ntlmrelayx-adcs",
+    "certipy-relay"
+  ],
+  "certipy-relay": [
+    "certipy-req",
+    "certipy-auth"
+  ],
+  "certipy-find": [
+    "certipy-req"
+  ],
+  "certipy-req": [
+    "certipy-auth"
+  ],
+  "certipy-auth": [
+    "evil-winrm",
+    "psexec"
+  ],
+  "certipy-shadow": [
+    "certipy-auth"
+  ],
+  "responder": [
+    "ntlmrelayx-smb",
+    "ntlmrelayx-ldap",
+    "ntlmrelayx-adcs"
+  ],
+  "ntlmrelayx-ldap": [
+    "rbcd-attack",
+    "getST-s4u"
+  ],
+  "ntlmrelayx-adcs": [
+    "certipy-auth"
+  ],
+  "rbcd-attack": [
+    "getST-s4u"
+  ],
+  "getST-s4u": [
+    "psexec",
+    "wmiexec",
+    "secretsdump"
+  ],
+  "pywhisker": [
+    "certipy-auth"
+  ],
+  "golden-ticket": [
+    "psexec",
+    "secretsdump"
+  ],
+  "silver-ticket": [
+    "psexec",
+    "secretsdump"
+  ],
+  "wmiexec": [
+    "secretsdump"
+  ],
+  "dcomexec": [
+    "secretsdump"
+  ],
+  "smbexec": [
+    "secretsdump"
+  ],
+  "atexec": [
+    "secretsdump"
+  ],
+  "nxc-ldap-adcs": [
+    "certipy-find"
+  ],
+  "lookupsid": [
+    "inter-realm-golden"
+  ],
+  "inter-realm-golden": [
+    "psexec"
+  ],
+  "impacket-GetADUsers": [
+    "bloodhound",
+    "kerberoasting"
+  ],
+  "impacket-findDelegation": [
+    "getST-s4u",
+    "rbcd-attack"
+  ],
+  "impacket-goldenPac": [
+    "psexec",
+    "wmiexec"
+  ],
+  "impacket-raiseChild": [
+    "psexec",
+    "secretsdump"
+  ],
+  "impacket-badsuccessor": [
+    "dacledit",
+    "getST-s4u"
+  ],
+  "nxc-ldap-badsuccessor": [
+    "dacledit",
+    "getST-s4u"
+  ],
+  "dacledit": [
+    "certipy-shadow",
+    "getST-s4u"
+  ],
+  "owneredit": [
+    "dacledit"
+  ],
+  "nxc-smb-backup-operator": [
+    "secretsdump"
+  ],
+  "nxc-smb-nopac": [
+    "psexec",
+    "secretsdump"
+  ],
+  "nxc-smb-zerologon": [
+    "secretsdump"
+  ],
+  "nxc-ldap-enum-trusts": [
+    "lookupsid",
+    "inter-realm-golden"
+  ],
+  "nxc-smb-timeroast": [
+    "hashcat-ntlmv2"
+  ],
+  "nxc-ldap-raisechild": [
+    "psexec",
+    "secretsdump"
+  ],
+  "hashcat-ntlmv2": [
+    "nxc-smb-auth",
+    "evil-winrm"
+  ],
+  "hashcat-asrep": [
+    "nxc-smb-auth",
+    "evil-winrm"
+  ],
+  "hashcat-mscache": [
+    "nxc-smb-auth"
+  ],
+  "kerbrute-spray": [
+    "secretsdump",
+    "evil-winrm"
+  ],
+  "nxc-smb-spray": [
+    "secretsdump",
+    "evil-winrm"
+  ],
+  "nxc-smb-wdigest": [
+    "secretsdump"
+  ],
+  "nxc-ldap-laps": [
+    "evil-winrm",
+    "psexec"
+  ],
+  "nxc-smb-gpp-password": [
+    "nxc-smb-auth",
+    "evil-winrm"
+  ],
+  "nxc-smb-ntds": [
+    "secretsdump",
+    "hashcat-ntlm"
+  ]
+}

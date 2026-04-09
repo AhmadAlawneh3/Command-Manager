@@ -1,0 +1,22 @@
+{
+  "id": "impacket-smbclient",
+  "name": "Impacket SMBClient",
+  "command": "impacket-smbclient '<domain>/<user>:<password>@<ip>'",
+  "description": "Interactive SMB client written in pure Python. Drops you into a shell with shares, ls, get, put, mkdir, rm, lcd, etc. Handy when the system smbclient is acting up with NTLMv2 / signing.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["impacket", "smbclient", "smb", "shares", "interactive"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "impacket-smbclient -hashes ':<hash>' '<domain>/<user>@<ip>'" },
+    { "label": "Kerberos Ticket", "requires": "ticket", "command": "impacket-smbclient -k -no-pass '<domain>/<user>@<hostname>'" },
+    { "label": "Null Session", "requires": "no-creds", "command": "impacket-smbclient '<ip>'" }
+  ],
+  "references": [
+    { "title": "Impacket — smbclient.py", "url": "https://github.com/fortra/impacket/blob/master/examples/smbclient.py" }
+  ],
+  "examples": [
+    "impacket-smbclient 'CORP/jdoe:Password123!@10.10.10.10'",
+    "impacket-smbclient -hashes ':e19ccf75ee54e06b06a5907af13cef42' 'CORP/admin@10.10.10.10'"
+  ]
+}

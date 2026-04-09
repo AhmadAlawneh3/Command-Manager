@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-logged-on-users",
+  "name": "NetExec SMB Logged-On Users",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --loggedon-users",
+  "description": "Enumerate currently logged-on users on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "logged-on",
+    "sessions",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' --loggedon-users"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache --loggedon-users"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' --loggedon-users"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "rusthound",
+  "name": "RustHound BloodHound Collection",
+  "command": "rusthound -d '<domain>' -i <ip> -u '<user>@<domain>' -f '<dc_fqdn>' -z --fqdn-resolver",
+  "description": "Collect Active Directory data for BloodHound using RustHound (Kerberos-aware)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap",
+    "kerberos"
+  ],
+  "tags": [
+    "rusthound",
+    "bloodhound",
+    "enumeration",
+    "collection",
+    "ad"
+  ],
+  "variations": [
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "rusthound -d '<domain>' -i <ip> -u '<user>@<domain>' -f '<dc_fqdn>' -k -z --fqdn-resolver"
+    }
+  ],
+  "examples": [
+    "rusthound -d 'corp.local' -i 192.168.1.100 -u 'user@corp.local' -f 'dc01.corp.local' -z --fqdn-resolver",
+    "rusthound -d 'euvendor.local' -i 192.168.12.212 -u 'administrator@eu.local' -f 'euvendor-dc.euvendor.local' -k -z --fqdn-resolver"
+  ]
+}

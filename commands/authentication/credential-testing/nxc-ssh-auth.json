@@ -1,0 +1,22 @@
+{
+  "id": "nxc-ssh-auth",
+  "name": "NetExec SSH Auth & Spray",
+  "command": "nxc ssh <ip> -u <user> -p <password>",
+  "description": "Validate credentials against SSH. Supports password, key file, and spraying across user/password lists. NetExec also detects when the resulting session is root.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ssh"],
+  "tags": ["nxc", "netexec", "ssh", "auth", "spray"],
+  "variations": [
+    { "label": "Private Key", "requires": "no-creds", "command": "nxc ssh <ip> -u <user> --key-file <id_rsa>" },
+    { "label": "Spray With User+Password Lists", "requires": "no-creds", "command": "nxc ssh <subnet> -u <users.txt> -p <passwords.txt> --continue-on-success" },
+    { "label": "Run a Command", "requires": "password", "command": "nxc ssh <ip> -u <user> -p <password> -x '<command>'" }
+  ],
+  "references": [
+    { "title": "NetExec — SSH Protocol", "url": "https://www.netexec.wiki/ssh-protocol" }
+  ],
+  "examples": [
+    "nxc ssh 10.10.10.10 -u root -p 'toor'",
+    "nxc ssh 10.10.10.10 -u ubuntu --key-file ~/.ssh/id_rsa -x 'sudo -l'"
+  ]
+}

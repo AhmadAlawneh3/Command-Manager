@@ -1,0 +1,24 @@
+{
+  "id": "python-http-server",
+  "name": "Python HTTP Server",
+  "command": "python3 -m http.server <port>",
+  "description": "Start a simple HTTP server for file transfer",
+  "platform": "linux",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [
+    "http"
+  ],
+  "tags": [
+    "python",
+    "http",
+    "file-transfer",
+    "server",
+    "utility"
+  ],
+  "examples": [
+    "python3 -m http.server 8080",
+    "python3 -m http.server 80"
+  ]
+}

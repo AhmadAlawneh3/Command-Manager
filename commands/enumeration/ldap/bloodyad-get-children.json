@@ -1,0 +1,16 @@
+{
+  "id": "bloodyad-get-children",
+  "name": "bloodyAD get children",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get children --target '<dn>'",
+  "description": "List the immediate children of a container or OU. Handy for walking the directory tree without firing a full BloodHound collection.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "ldap", "enumeration"],
+  "variations": [
+    { "label": "Filter By Type", "requires": "password", "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get children --target '<dn>' --otype USER" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' get children --target 'OU=Servers,DC=corp,DC=local'"
+  ]
+}

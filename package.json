@@ -1,0 +1,14 @@
+{
+  "name": "command-manager",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A searchable, copy-pasteable library of pentesting commands focused on Active Directory.",
+  "scripts": {
+    "build": "node build-commands.js",
+    "validate": "node validate-commands.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

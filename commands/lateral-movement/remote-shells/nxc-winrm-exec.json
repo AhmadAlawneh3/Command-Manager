@@ -1,0 +1,22 @@
+{
+  "id": "nxc-winrm-exec",
+  "name": "NetExec WinRM Command Execution",
+  "command": "nxc winrm <ip> -u <user> -p <password> -x '<command>'",
+  "description": "Execute a command on a Windows host over WinRM (PowerShell Remoting). Use -X for PowerShell scriptblocks.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["winrm"],
+  "tags": ["nxc", "netexec", "winrm", "execution", "lateral-movement"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "nxc winrm <ip> -u <user> -H <hash> -x '<command>'" },
+    { "label": "PowerShell Block", "requires": "password", "command": "nxc winrm <ip> -u <user> -p <password> -X '<powershell>'" },
+    { "label": "Kerberos (ccache)", "requires": "ticket", "command": "KRB5CCNAME=<ccache> nxc winrm <ip> -u <user> -k --use-kcache -x '<command>'" }
+  ],
+  "references": [
+    { "title": "NetExec — WinRM Protocol", "url": "https://www.netexec.wiki/winrm-protocol" }
+  ],
+  "examples": [
+    "nxc winrm 10.10.10.10 -u administrator -p 'Password123!' -x 'whoami /all'",
+    "nxc winrm 10.10.10.10 -u admin -H :e19ccf75ee54e06b06a5907af13cef42 -X 'Get-Process | Where-Object {$_.Name -like \"*lsass*\"}'"
+  ]
+}

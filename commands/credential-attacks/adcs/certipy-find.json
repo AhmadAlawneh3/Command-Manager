@@ -1,0 +1,37 @@
+{
+  "id": "certipy-find",
+  "name": "Certipy Find Vulnerable Templates",
+  "command": "certipy find -u '<user>@<domain>' -p '<password>' -dc-ip <ip> -vulnerable -stdout",
+  "description": "Enumerate ADCS certificate templates and identify vulnerable configurations",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "certipy",
+    "adcs",
+    "certificate",
+    "enumeration",
+    "esc1",
+    "esc4",
+    "esc8"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "certipy find -u '<user>@<domain>' -hashes ':<hash>' -dc-ip <ip> -vulnerable -stdout"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "certipy find -u '<user>@<domain>' -k -no-pass -dc-ip <ip> -vulnerable -stdout"
+    }
+  ],
+  "examples": [
+    "certipy find -u 'user@corp.local' -p 'password' -dc-ip 192.168.1.100 -vulnerable -stdout"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-ntlmv1",
+  "name": "NetExec SMB NTLMv1 Check",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M ntlmv1",
+  "description": "Check if NTLMv1 authentication is accepted on remote hosts (enables downgrade attacks)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "ntlmv1",
+    "downgrade",
+    "ntlm-relay",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M ntlmv1"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' -M ntlmv1"
+  ]
+}

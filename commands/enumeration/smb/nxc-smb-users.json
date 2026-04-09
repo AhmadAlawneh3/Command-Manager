@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-users",
+  "name": "NetExec SMB Enumerate Users",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --users",
+  "description": "Enumerate domain users via SMB",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "users",
+    "enumeration",
+    "ad"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' --users"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache --users"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' --users"
+  ]
+}

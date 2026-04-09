@@ -1,0 +1,17 @@
+{
+  "id": "nxc-ftp-list",
+  "name": "NetExec FTP List Files",
+  "command": "nxc ftp <target> -u '<user>' -p '<password>' --ls",
+  "description": "List the contents of an FTP server's working directory (or a specified path). Quick triage step before pulling files with --get.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ftp"],
+  "tags": ["netexec", "nxc", "ftp", "enumeration"],
+  "variations": [
+    { "label": "Specific Path", "requires": "password", "command": "nxc ftp <target> -u '<user>' -p '<password>' --ls <path>" },
+    { "label": "Anonymous", "requires": "no-creds", "command": "nxc ftp <target> -u 'anonymous' -p '' --ls" }
+  ],
+  "examples": [
+    "nxc ftp 10.10.10.10 -u anonymous -p '' --ls"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-get-network",
+  "name": "NetExec SMB Get Network",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M get-network",
+  "description": "Retrieve network interface and configuration information from remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "network",
+    "interfaces",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M get-network"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M get-network"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' -M get-network"
+  ]
+}

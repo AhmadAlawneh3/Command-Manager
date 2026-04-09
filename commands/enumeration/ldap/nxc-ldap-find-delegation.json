@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-find-delegation",
+  "name": "NetExec LDAP Find Delegation",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' --find-delegation",
+  "description": "Find all accounts with delegation rights via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "delegation",
+    "unconstrained",
+    "constrained",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' --find-delegation"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache --find-delegation"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' --find-delegation"
+  ]
+}

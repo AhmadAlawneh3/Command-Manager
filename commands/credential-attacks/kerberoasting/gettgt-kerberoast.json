@@ -1,0 +1,30 @@
+{
+  "id": "gettgt-kerberoast",
+  "name": "Impacket Get TGT",
+  "command": "impacket-getTGT '<domain>/<user>:<password>' -dc-ip <ip>; export KRB5CCNAME='<user>.ccache'",
+  "description": "Get TGT to be used in Kerberos authentication",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "tgt",
+    "kerberos",
+    "ticket"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-getTGT -hashes ':<hash>' '<domain>/<user>' -dc-ip <ip>; export KRB5CCNAME='<user>.ccache'"
+    }
+  ],
+  "examples": [
+    "impacket-getTGT 'CORP.LOCAL/user:password' -dc-ip 192.168.1.100; export KRB5CCNAME='user.ccache'",
+    "impacket-getTGT -hashes ':e656e07c56d831611b577b160b259ad2' voleur.htb/administrator -dc-ip 10.10.11.76"
+  ]
+}

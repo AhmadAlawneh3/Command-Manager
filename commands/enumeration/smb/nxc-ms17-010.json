@@ -1,0 +1,16 @@
+{
+  "id": "nxc-ms17-010",
+  "name": "NetExec MS17-010 Check (EternalBlue)",
+  "command": "nxc smb <target> -u '' -p '' -M ms17-010",
+  "description": "Detect MS17-010 (EternalBlue) vulnerable hosts via the SMBv1 transaction probe. Safe scan only — exploitation is left to dedicated tooling.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "ms17-010", "eternalblue", "vulnerability-check"],
+  "references": [
+    { "title": "MS17-010", "url": "https://learn.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.0/24 -u '' -p '' -M ms17-010"
+  ]
+}

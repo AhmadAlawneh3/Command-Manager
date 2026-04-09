@@ -1,0 +1,16 @@
+{
+  "id": "nxc-daclread",
+  "name": "NetExec daclread Module",
+  "command": "nxc ldap <target> -u '<user>' -p '<password>' -M daclread -o TARGET='<object>' ACTION=read",
+  "description": "Read the DACL of an arbitrary AD object via LDAP and resolve every ACE to a human-readable principal/right pair. Faster than spinning up BloodHound when you only need to confirm one path.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["netexec", "nxc", "daclread", "acl", "enumeration"],
+  "references": [
+    { "title": "NetExec daclread", "url": "https://www.netexec.wiki/ldap-protocol/daclread" }
+  ],
+  "examples": [
+    "nxc ldap dc.corp.local -u jdoe -p 'Password123!' -M daclread -o TARGET=Administrator ACTION=read"
+  ]
+}

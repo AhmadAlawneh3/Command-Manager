@@ -1,0 +1,31 @@
+{
+  "id": "enum4linux-ng",
+  "name": "Enum4linux-ng SMB Enumeration",
+  "command": "enum4linux-ng -A '<ip>' -u '<user>' -p '<password>' -oJ enum4linux_<ip>",
+  "description": "Next generation enum4linux for SMB enumeration",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb",
+    "rpc"
+  ],
+  "tags": [
+    "enum4linux",
+    "smb",
+    "enumeration",
+    "shares",
+    "users"
+  ],
+  "variations": [
+    {
+      "label": "Null Session",
+      "requires": "no-creds",
+      "command": "enum4linux-ng -A '<ip>' -oJ enum4linux_<ip>"
+    }
+  ],
+  "examples": [
+    "enum4linux-ng -A '192.168.1.100' -u 'guest' -p '' -oJ enum4linux_192.168.1.100"
+  ]
+}

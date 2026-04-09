@@ -1,0 +1,35 @@
+{
+  "id": "nxc-ldap-laps",
+  "name": "NetExec LDAP LAPS",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M laps",
+  "description": "Retrieve LAPS managed local administrator passwords from Active Directory via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "laps",
+    "local-admin",
+    "credential-dumping"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M laps"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M laps"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M laps"
+  ]
+}

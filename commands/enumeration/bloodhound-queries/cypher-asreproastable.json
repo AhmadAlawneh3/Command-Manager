@@ -1,0 +1,15 @@
+{
+  "id": "cypher-asreproastable",
+  "name": "Cypher: AS-REP Roastable Users",
+  "command": "MATCH (u:User {dontreqpreauth:true}) RETURN u.name",
+  "description": "List every user with DONT_REQ_PREAUTH set — these accounts can be AS-REP roasted without prior authentication. Feed the names directly to GetNPUsers or nxc --asreproast.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "asreproast", "preauth", "graph"],
+  "references": [
+    { "title": "BloodHound — Cheat Sheet", "url": "https://bloodhound.specterops.io/" }
+  ],
+  "examples": [
+    "MATCH (u:User {dontreqpreauth:true}) RETURN u.name"
+  ]
+}

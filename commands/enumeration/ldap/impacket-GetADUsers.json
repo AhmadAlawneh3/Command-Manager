@@ -1,0 +1,35 @@
+{
+  "id": "impacket-GetADUsers",
+  "name": "Impacket GetADUsers",
+  "command": "impacket-GetADUsers -all -dc-ip '<ip>' '<domain>/<user>:<password>'",
+  "description": "Enumerate all Active Directory user accounts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "ldap",
+    "users",
+    "enumeration",
+    "ad"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-GetADUsers -all -dc-ip '<ip>' -hashes ':<hash>' '<domain>/<user>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-GetADUsers -all -dc-ip '<ip>' -k -no-pass '<domain>/<user>'"
+    }
+  ],
+  "examples": [
+    "impacket-GetADUsers -all -dc-ip '192.168.1.100' 'CORP.LOCAL/user:password'"
+  ]
+}

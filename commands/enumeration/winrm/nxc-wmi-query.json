@@ -1,0 +1,17 @@
+{
+  "id": "nxc-wmi-query",
+  "name": "NetExec WMI Query",
+  "command": "nxc wmi <target> -u '<user>' -p '<password>' --query '<wql-query>'",
+  "description": "Run an arbitrary WQL query over WMI without dropping into wmic / Get-WmiObject. Useful for live process listing, service enumeration, and registry reads against hosts where WinRM is disabled but WMI/DCOM is exposed.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["wmi"],
+  "tags": ["netexec", "nxc", "wmi", "wql", "query"],
+  "variations": [
+    { "label": "List Processes", "requires": "password", "command": "nxc wmi <target> -u '<user>' -p '<password>' --query 'SELECT Name,ProcessId FROM Win32_Process'" },
+    { "label": "Hash Auth", "requires": "hash", "command": "nxc wmi <target> -u '<user>' -H <nt-hash> --query '<wql-query>'" }
+  ],
+  "examples": [
+    "nxc wmi 10.10.10.10 -u jdoe -p 'Password123!' --query 'SELECT * FROM Win32_Process'"
+  ]
+}

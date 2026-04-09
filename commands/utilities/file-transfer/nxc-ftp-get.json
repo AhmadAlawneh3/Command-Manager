@@ -1,0 +1,13 @@
+{
+  "id": "nxc-ftp-get",
+  "name": "NetExec FTP Download",
+  "command": "nxc ftp <target> -u '<user>' -p '<password>' --get <remote-file>",
+  "description": "Download a file from an FTP server. Saves to the current working directory with the original filename.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ftp"],
+  "tags": ["netexec", "nxc", "ftp", "download"],
+  "examples": [
+    "nxc ftp 10.10.10.10 -u jdoe -p 'Password123!' --get backup.zip"
+  ]
+}

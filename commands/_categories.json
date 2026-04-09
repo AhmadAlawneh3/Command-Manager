@@ -1,0 +1,75 @@
+{
+  "enumeration": {
+    "name": "🔍 Enumeration",
+    "subcategories": {
+      "network": "Network Discovery",
+      "smb": "SMB",
+      "ldap": "LDAP",
+      "kerberos": "Kerberos",
+      "dns": "DNS",
+      "winrm": "WinRM",
+      "mssql": "MSSQL",
+      "ssh": "SSH",
+      "ftp": "FTP",
+      "nfs": "NFS",
+      "bloodhound-queries": "BloodHound Cypher Queries"
+    }
+  },
+  "authentication": {
+    "name": "🔑 Authentication",
+    "subcategories": {
+      "credential-testing": "Credential Testing",
+      "brute-force": "Brute Force & Spraying"
+    }
+  },
+  "credential-attacks": {
+    "name": "🔓 Credential Attacks",
+    "subcategories": {
+      "hash-dumping": "Hash Dumping",
+      "hash-cracking": "Hash Cracking",
+      "kerberoasting": "Kerberoasting",
+      "asreproasting": "AS-REP Roasting",
+      "ntlm-relay": "NTLM Relay & Coercion",
+      "adcs": "ADCS (Certificate Abuse)",
+      "ticket-attacks": "Ticket Forgery & Conversion",
+      "password-manipulation": "Password Manipulation",
+      "gmsa-laps": "gMSA & LAPS"
+    }
+  },
+  "privilege-escalation": {
+    "name": "⬆️ Privilege Escalation",
+    "subcategories": {
+      "acl-abuse": "ACL / DACL Abuse",
+      "delegation": "Delegation Abuse",
+      "gpo-abuse": "GPO Abuse",
+      "local-privesc": "Local PrivEsc",
+      "trust-attacks": "Trust Attacks"
+    }
+  },
+  "lateral-movement": {
+    "name": "↔️ Lateral Movement",
+    "subcategories": {
+      "remote-shells": "Remote Shells",
+      "pass-the-hash": "Pass-the-Hash / Ticket",
+      "mssql": "MSSQL",
+      "rdp-ssh": "RDP / SSH"
+    }
+  },
+  "post-exploitation": {
+    "name": "📦 Post-Exploitation",
+    "subcategories": {
+      "ad-object-manipulation": "AD Object Manipulation",
+      "file-search": "File Search",
+      "data-collection": "Data Collection",
+      "persistence": "Persistence"
+    }
+  },
+  "utilities": {
+    "name": "🛠️ Utilities",
+    "subcategories": {
+      "file-transfer": "File Transfer",
+      "network-setup": "Network & Time Setup",
+      "shell-helpers": "Shell Helpers"
+    }
+  }
+}

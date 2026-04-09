@@ -1,0 +1,18 @@
+{
+  "id": "nxc-mssql-query",
+  "name": "NetExec MSSQL Query",
+  "command": "nxc mssql <target> -u '<user>' -p '<password>' -q '<sql-query>'",
+  "description": "Run an arbitrary SQL query against MSSQL via NetExec. Faster than firing up impacket-mssqlclient when you only need one statement (e.g. SELECT @@version, SELECT name FROM sys.databases).",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["mssql"],
+  "tags": ["netexec", "nxc", "mssql", "query"],
+  "variations": [
+    { "label": "Local SQL Auth", "requires": "password", "command": "nxc mssql <target> -u 'sa' -p '<password>' --local-auth -q '<sql-query>'" },
+    { "label": "Windows Auth", "requires": "password", "command": "nxc mssql <target> -u '<user>' -p '<password>' --windows-auth -q '<sql-query>'" },
+    { "label": "Hash Auth", "requires": "hash", "command": "nxc mssql <target> -u '<user>' -H <nt-hash> -q '<sql-query>'" }
+  ],
+  "examples": [
+    "nxc mssql 10.10.10.10 -u sa -p 'Password123!' --local-auth -q 'SELECT @@version'"
+  ]
+}

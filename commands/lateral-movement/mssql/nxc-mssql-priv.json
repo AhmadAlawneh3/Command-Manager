@@ -1,0 +1,30 @@
+{
+  "id": "nxc-mssql-priv",
+  "name": "NetExec MSSQL Privilege Check",
+  "command": "nxc mssql '<ip>' -u '<user>' -p '<password>' -M mssql_priv",
+  "description": "Enumerate and escalate MSSQL server privileges (sysadmin, impersonation, linked servers)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "nxc",
+    "mssql",
+    "privilege-escalation",
+    "sysadmin",
+    "impersonation"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc mssql '<ip>' -u '<user>' -H '<hash>' -M mssql_priv"
+    }
+  ],
+  "examples": [
+    "nxc mssql '192.168.1.100' -u 'user' -p 'password' -M mssql_priv"
+  ]
+}

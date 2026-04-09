@@ -1,0 +1,22 @@
+{
+  "id": "ldap-anonymous-bind",
+  "name": "LDAP Anonymous Bind",
+  "command": "ldapsearch -x -H ldap://<ip> -D '<domain>' -b '<DC DN>' '(objectclass=*)' description sAMAccountName",
+  "description": "LDAP Anonymous Bind",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "ldapsearch",
+    "ldap",
+    "anonymous",
+    "enumeration"
+  ],
+  "examples": [
+    "ldapsearch -x -H ldap://192.168.139.122 -D 'hutch.offsec' -b 'dc=hutch,dc=offsec' '(objectclass=*)' description sAMAccountName"
+  ]
+}

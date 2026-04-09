@@ -1,0 +1,29 @@
+{
+  "id": "hashcat-ntlmv2",
+  "name": "Hashcat NTLMv2 Cracking",
+  "command": "hashcat -m 5600 '<hash_file>' /usr/share/wordlists/rockyou.txt",
+  "description": "Crack NTLMv2 (NetNTLMv2) challenge-response hashes captured from Responder or relay attacks",
+  "platform": "linux",
+  "tags": [
+    "hashcat",
+    "ntlmv2",
+    "hash-cracking",
+    "responder",
+    "offline"
+  ],
+  "variations": [
+    {
+      "label": "With Rules",
+      "requires": null,
+      "command": "hashcat -m 5600 '<hash_file>' /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule"
+    },
+    {
+      "label": "With Mask (8+ chars)",
+      "requires": null,
+      "command": "hashcat -m 5600 '<hash_file>' -a 3 '?a?a?a?a?a?a?a?a'"
+    }
+  ],
+  "examples": [
+    "hashcat -m 5600 ntlmv2.hashes /usr/share/wordlists/rockyou.txt"
+  ]
+}

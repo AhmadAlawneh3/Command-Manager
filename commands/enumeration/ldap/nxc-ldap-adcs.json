@@ -1,0 +1,35 @@
+{
+  "id": "nxc-ldap-adcs",
+  "name": "NetExec LDAP ADCS Enumeration",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M adcs",
+  "description": "Enumerate ADCS certificate authorities and templates via NetExec",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "adcs",
+    "certificate",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M adcs"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' --use-kcache -M adcs"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M adcs"
+  ]
+}

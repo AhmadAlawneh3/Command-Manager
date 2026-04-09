@@ -1,0 +1,35 @@
+{
+  "id": "bloodhound",
+  "name": "BloodHound AD Collection",
+  "command": "bloodhound-python -d '<domain>' -u '<user>' -p '<password>' -gc '<domain>' -c all -ns '<ip>' --zip --dns-tcp",
+  "description": "Collect Active Directory data for BloodHound analysis",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "bloodhound",
+    "ad",
+    "enumeration",
+    "collection",
+    "graph"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "bloodhound-python -d '<domain>' -u '<user>' --hashes ':<hash>' -gc '<domain>' -c all -ns '<ip>' --zip --dns-tcp"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "bloodhound-python -d '<domain>' -u '<user>' -k --auth-method kerberos -gc '<domain>' -c all -ns '<ip>' --zip --dns-tcp"
+    }
+  ],
+  "examples": [
+    "bloodhound-python -d 'CORP.LOCAL' -u 'user' -p 'password' -gc 'CORP.LOCAL' -c all -ns '192.168.1.100' --zip --dns-tcp"
+  ]
+}

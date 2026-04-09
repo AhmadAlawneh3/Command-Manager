@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-pre2k",
+  "name": "NetExec LDAP Pre-Windows 2000 Accounts",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M pre2k",
+  "description": "Enumerate pre-Windows 2000 compatible computer accounts that use the hostname as password",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "pre2k",
+    "computer-account",
+    "weak-password",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M pre2k"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M pre2k"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M pre2k"
+  ]
+}

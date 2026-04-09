@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/command-manager/command.schema.json",
+  "title": "Command",
+  "description": "Schema for a single pentesting command JSON file under commands/<category>/<subcategory>/<id>.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "command", "description", "platform"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9-]*$",
+      "description": "Unique kebab-case identifier. Must match the filename (without .json)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name."
+    },
+    "command": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Command template. Use <PLACEHOLDER> for substitutable values."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short explanation of what this command does."
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["linux", "windows", "cross-platform"]
+    },
+    "requires": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["no-creds", "password", "hash", "ticket", "aes-key", "shell", "local-admin"]
+      },
+      "uniqueItems": true
+    },
+    "protocols": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["smb", "ldap", "kerberos", "winrm", "rdp", "rpc", "mssql", "ftp", "ssh", "http", "dns", "wmi", "nfs", "vnc", "ntlm"]
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "variations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "command"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "requires": {
+            "type": ["string", "null"],
+            "enum": ["no-creds", "password", "hash", "ticket", "aes-key", "shell", "local-admin", null]
+          },
+          "command": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "category": { "type": "string" },
+    "subcategory": { "type": "string" }
+  }
+}

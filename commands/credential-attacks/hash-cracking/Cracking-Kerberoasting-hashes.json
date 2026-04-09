@@ -1,0 +1,20 @@
+{
+  "id": "Cracking-Kerberoasting-hashes",
+  "name": "Hashcat Kerberoast Crack",
+  "command": "sudo hashcat -m 13100 kerberoasting.hashes /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force",
+  "description": "Crack Kerberoasting hashes",
+  "platform": "cross-platform",
+  "requires": [
+    "hash"
+  ],
+  "protocols": [],
+  "tags": [
+    "hashcat",
+    "kerberoasting",
+    "cracking",
+    "kerberos"
+  ],
+  "examples": [
+    "sudo hashcat -m 13100 kerberoasting.hashes /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force"
+  ]
+}

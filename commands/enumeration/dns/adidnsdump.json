@@ -1,0 +1,24 @@
+{
+  "id": "adidnsdump",
+  "name": "ADIDNSDump",
+  "command": "adidnsdump -u '<domain>\\<user>' -p '<password>' <ip>",
+  "description": "Dump all DNS records from Active Directory integrated DNS zones",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "dns",
+    "ldap"
+  ],
+  "tags": [
+    "adidnsdump",
+    "dns",
+    "enumeration",
+    "ad-integrated",
+    "zone-dump"
+  ],
+  "examples": [
+    "adidnsdump -u 'corp.local\\user' -p 'password' 192.168.1.100"
+  ]
+}

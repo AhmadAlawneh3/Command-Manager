@@ -1,0 +1,29 @@
+{
+  "id": "command-id",
+  "name": "Tool Protocol Action",
+  "command": "the-command <param1> <param2>",
+  "description": "What this command does",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "tool-name",
+    "protocol",
+    "technique"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "the-command -H <hash> <param2>"
+    }
+  ],
+  "references": [],
+  "examples": [
+    "example usage"
+  ]
+}

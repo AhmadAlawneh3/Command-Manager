@@ -1,0 +1,35 @@
+{
+  "id": "lookupsid",
+  "name": "Impacket LookupSID",
+  "command": "impacket-lookupsid '<domain>/<user>:<password>'@<ip>",
+  "description": "Enumerate domain SIDs and discover trust relationships via SID brute-forcing",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "lookupsid",
+    "sid",
+    "trust",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-lookupsid -hashes ':<hash>' '<domain>/<user>'@<ip>"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-lookupsid -k -no-pass '<domain>/<user>'@<ip>"
+    }
+  ],
+  "examples": [
+    "impacket-lookupsid 'corp.local/user:password'@192.168.1.100"
+  ]
+}

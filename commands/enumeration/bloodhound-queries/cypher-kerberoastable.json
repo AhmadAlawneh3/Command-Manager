@@ -1,0 +1,19 @@
+{
+  "id": "cypher-kerberoastable",
+  "name": "Cypher: Kerberoastable Users",
+  "command": "MATCH (u:User {hasspn:true}) WHERE NOT u.name STARTS WITH 'KRBTGT' RETURN u.name, u.serviceprincipalnames ORDER BY u.name",
+  "description": "List every kerberoastable user in the domain (has a SPN, not krbtgt). Pair with hasLAPS / admincount / enabled filters for triage.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "kerberoast", "spn", "graph"],
+  "variations": [
+    { "label": "Only Privileged Kerberoastable", "command": "MATCH (u:User {hasspn:true}) WHERE u.admincount=true AND NOT u.name STARTS WITH 'KRBTGT' RETURN u.name, u.serviceprincipalnames" },
+    { "label": "Kerberoastable + Path to DA", "command": "MATCH p=shortestPath((u:User {hasspn:true})-[*1..]->(g:Group)) WHERE g.name CONTAINS 'DOMAIN ADMINS' RETURN p" }
+  ],
+  "references": [
+    { "title": "BloodHound — Cheat Sheet", "url": "https://bloodhound.specterops.io/" }
+  ],
+  "examples": [
+    "MATCH (u:User {hasspn:true}) WHERE NOT u.name STARTS WITH 'KRBTGT' RETURN u.name, u.serviceprincipalnames"
+  ]
+}

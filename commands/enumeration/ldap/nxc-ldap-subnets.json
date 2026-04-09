@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-subnets",
+  "name": "NetExec LDAP Enumerate Subnets",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M subnets",
+  "description": "Enumerate AD Sites and Services subnets from Active Directory",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "subnets",
+    "sites",
+    "enumeration",
+    "network"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M subnets"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M subnets"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M subnets"
+  ]
+}

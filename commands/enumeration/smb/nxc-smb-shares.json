@@ -1,0 +1,39 @@
+{
+  "id": "nxc-smb-shares",
+  "name": "NetExec SMB Shares",
+  "command": "nxc smb ips.txt -u '<user>' -p '<password>' --shares",
+  "description": "Enumerate SMB shares",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "shares",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb ips.txt -u '<user>' -H '<hash>' --shares"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb ips.txt --use-kcache --shares"
+    },
+    {
+      "label": "Null Session",
+      "requires": "no-creds",
+      "command": "nxc smb ips.txt -u '' -p '' --shares"
+    }
+  ],
+  "examples": [
+    "nxc smb 10.10.11.2 -u 'reddington' -p 'LizKeen' --shares"
+  ]
+}

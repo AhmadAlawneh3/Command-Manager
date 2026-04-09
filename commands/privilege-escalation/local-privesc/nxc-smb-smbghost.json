@@ -1,0 +1,25 @@
+{
+  "id": "nxc-smb-smbghost",
+  "name": "NetExec SMB SMBGhost",
+  "command": "nxc smb '<ip>' -u '' -p '' -M smbghost",
+  "description": "Check for SMBGhost (CVE-2020-0796) SMBv3 compression vulnerability without credentials",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "smbghost",
+    "cve-2020-0796",
+    "smbv3",
+    "unauthenticated",
+    "privilege-escalation"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u '' -p '' -M smbghost"
+  ]
+}

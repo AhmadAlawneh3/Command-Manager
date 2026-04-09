@@ -1,0 +1,18 @@
+{
+  "id": "fix-time-skew",
+  "name": "Fix Kerberos Time Skew",
+  "command": "sudo timedatectl set-ntp off && sudo rdate -n <ip>",
+  "description": "Fix time skew issues for Kerberos authentication",
+  "platform": "linux",
+  "requires": [],
+  "protocols": [],
+  "tags": [
+    "time",
+    "kerberos",
+    "ntp",
+    "sync"
+  ],
+  "examples": [
+    "sudo timedatectl set-ntp off && sudo rdate -n 10.10.11.76"
+  ]
+}

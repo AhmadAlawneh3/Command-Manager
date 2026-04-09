@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-enum-trusts",
+  "name": "NetExec LDAP Enumerate Trusts",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M enum_trusts",
+  "description": "Enumerate domain trust relationships via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "trusts",
+    "forest",
+    "enumeration",
+    "domain"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M enum_trusts"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M enum_trusts"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M enum_trusts"
+  ]
+}

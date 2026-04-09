@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-admin-count",
+  "name": "NetExec LDAP AdminCount Users",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' --admin-count",
+  "description": "Enumerate accounts with adminCount=1 (protected admin accounts) via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "admincount",
+    "privileged",
+    "enumeration",
+    "ad"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' --admin-count"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache --admin-count"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' --admin-count"
+  ]
+}

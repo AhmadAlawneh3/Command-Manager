@@ -1,0 +1,22 @@
+{
+  "id": "rlwrap",
+  "name": "rlwrap Shell Wrapper",
+  "command": "rlwrap <command>",
+  "description": "Wrap a command with readline support for history and line editing",
+  "platform": "linux",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [],
+  "tags": [
+    "rlwrap",
+    "readline",
+    "shell",
+    "utility",
+    "wrapper"
+  ],
+  "examples": [
+    "rlwrap nc -lvnp 443",
+    "rlwrap impacket-mssqlclient 'corp.local/sa:password'@192.168.1.100"
+  ]
+}

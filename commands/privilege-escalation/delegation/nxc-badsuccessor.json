@@ -1,0 +1,16 @@
+{
+  "id": "nxc-badsuccessor",
+  "name": "NetExec badsuccessor Module (dMSA Abuse)",
+  "command": "nxc ldap <dc-ip> -u '<user>' -p '<password>' -M badsuccessor",
+  "description": "Detect BadSuccessor dMSA-link abuse: a Server 2025 delegated Managed Service Account whose msDS-ManagedAccountPrecededByLink points at a privileged user grants the dMSA's identity inheritance to anyone with write rights over it. Module flags vulnerable accounts and suggests the chain. Added in NetExec v1.5.0 (Dec 2025).",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["netexec", "nxc", "badsuccessor", "dmsa", "delegation", "server-2025"],
+  "references": [
+    { "title": "BadSuccessor research", "url": "https://www.akamai.com/blog/security-research/abusing-dmsa-for-privilege-escalation-in-active-directory" }
+  ],
+  "examples": [
+    "nxc ldap dc.corp.local -u jdoe -p 'Password123!' -M badsuccessor"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "bloodhound-ce-python",
+  "name": "BloodHound.py CE Collector",
+  "command": "bloodhound-ce-python -u '<user>' -p '<password>' -d '<domain>' -ns <dc-ip> -c All --zip",
+  "description": "Collect AD data into the BloodHound Community Edition JSON format from Linux. Use --zip for a single upload-ready archive. -c All runs every collection method; restrict with -c Group,LocalAdmin,Session for quieter runs.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "smb"],
+  "tags": ["bloodhound", "bloodhound-ce", "collection", "python"],
+  "variations": [
+    { "label": "Hash Auth", "requires": "hash", "command": "bloodhound-ce-python -u '<user>' --hashes :<nt-hash> -d '<domain>' -ns <dc-ip> -c All --zip" },
+    { "label": "Kerberos", "requires": "ticket", "command": "bloodhound-ce-python -u '<user>' -k --no-pass -d '<domain>' -ns <dc-ip> -dc <dc-fqdn> -c All --zip" },
+    { "label": "Stealth", "requires": "password", "command": "bloodhound-ce-python -u '<user>' -p '<password>' -d '<domain>' -ns <dc-ip> -c Group,Trusts,ACL,Container --zip" }
+  ],
+  "references": [
+    { "title": "bloodhound-ce-python", "url": "https://github.com/dirkjanm/BloodHound.py" }
+  ],
+  "examples": [
+    "bloodhound-ce-python -u jdoe -p 'Password123!' -d corp.local -ns 10.10.10.10 -c All --zip"
+  ]
+}

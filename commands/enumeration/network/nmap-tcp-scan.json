@@ -1,0 +1,32 @@
+{
+  "id": "nmap-tcp-scan",
+  "name": "Nmap TCP Scan",
+  "command": "nmap -sC -sV -p <ports> <ip>",
+  "description": "Comprehensive TCP port scan with service version detection and default scripts",
+  "platform": "cross-platform",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [],
+  "tags": [
+    "nmap",
+    "tcp",
+    "scan",
+    "ports",
+    "discovery"
+  ],
+  "references": [
+    {
+      "title": "Nmap Official Documentation",
+      "url": "https://nmap.org/book/"
+    },
+    {
+      "title": "HackTricks - Port Scanning",
+      "url": "https://book.hacktricks.xyz/generic-methodologies-and-resources/pentesting-network#tcp-scan"
+    }
+  ],
+  "examples": [
+    "nmap -sC -sV -p 1-1000 192.168.1.1",
+    "nmap -sC -sV -p- target.com"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-spider",
+  "name": "NetExec SMB Spider",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M spider_plus -o DOWNLOAD_FLAG=True",
+  "description": "Spider SMB shares for files and optionally download them",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "spider",
+    "file-search",
+    "shares"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M spider_plus -o DOWNLOAD_FLAG=True"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' --use-kcache -M spider_plus -o DOWNLOAD_FLAG=True"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M spider_plus -o DOWNLOAD_FLAG=True"
+  ]
+}

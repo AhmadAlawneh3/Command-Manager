@@ -1,0 +1,35 @@
+{
+  "id": "nxc-smb-uac",
+  "name": "NetExec SMB UAC Status",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M uac",
+  "description": "Check UAC (User Account Control) configuration on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "uac",
+    "enumeration",
+    "local-admin"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M uac"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M uac"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' -M uac"
+  ]
+}

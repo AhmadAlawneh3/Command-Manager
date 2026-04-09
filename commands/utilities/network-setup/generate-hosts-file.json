@@ -1,0 +1,22 @@
+{
+  "id": "generate-hosts-file",
+  "name": "NetExec Generate Hosts File",
+  "command": "nxc smb ips.txt --generate-hosts-file hosts.txt && cat hosts.txt | sudo tee -a /etc/hosts",
+  "description": "Generate hosts file and add them to /etc/hosts file",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "hosts",
+    "dns",
+    "setup"
+  ],
+  "examples": [
+    "nxc smb 10.10.11.76 --generate-hosts-file hosts.txt && cat hosts.txt | sudo tee -a /etc/hosts"
+  ]
+}

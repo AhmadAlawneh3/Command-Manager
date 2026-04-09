@@ -1,0 +1,13 @@
+{
+  "id": "nxc-enum-ca",
+  "name": "NetExec enum_ca Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M enum_ca",
+  "description": "Discover Active Directory Certificate Services CA hosts on the network and grab basic CA information (name, accessible templates, web enrollment endpoint). Quick triage before pivoting to certipy for the heavy lifting.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "enum_ca", "adcs", "discovery"],
+  "examples": [
+    "nxc smb 10.10.10.0/24 -u jdoe -p 'Password123!' -M enum_ca"
+  ]
+}

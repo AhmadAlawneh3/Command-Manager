@@ -1,0 +1,25 @@
+{
+  "id": "nxc-smb-ms17010",
+  "name": "NetExec SMB MS17-010 (EternalBlue)",
+  "command": "nxc smb '<ip>' -u '' -p '' -M ms17-010",
+  "description": "Check for MS17-010 (EternalBlue) vulnerability without credentials",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "ms17-010",
+    "eternalblue",
+    "cve-2017-0144",
+    "unauthenticated",
+    "privilege-escalation"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u '' -p '' -M ms17-010"
+  ]
+}

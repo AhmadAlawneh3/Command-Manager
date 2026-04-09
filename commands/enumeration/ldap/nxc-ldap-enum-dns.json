@@ -1,0 +1,35 @@
+{
+  "id": "nxc-ldap-enum-dns",
+  "name": "NetExec LDAP Enumerate DNS",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M enum_dns",
+  "description": "Enumerate DNS zones and records stored in Active Directory via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "dns",
+    "zones",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M enum_dns"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M enum_dns"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M enum_dns"
+  ]
+}

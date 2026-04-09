@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-ldap-checker",
+  "name": "NetExec LDAP Signing Checker",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M ldap-checker",
+  "description": "Check if LDAP signing and channel binding are enforced on the domain controller",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "signing",
+    "channel-binding",
+    "relay",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M ldap-checker"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M ldap-checker"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M ldap-checker"
+  ]
+}

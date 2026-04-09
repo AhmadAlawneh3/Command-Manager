@@ -1,0 +1,22 @@
+{
+  "id": "ldapsearch-users",
+  "name": "LDAP User Enumeration",
+  "command": "ldapsearch -x -H ldap://<ip> -D '<user>@<domain>' -w '<password>' -b '<dc_dn>' '(objectClass=user)' sAMAccountName | grep 'sAMAccountName:' | cut -d: -f2 | tr -d ' ' | sort -u > users.txt",
+  "description": "Extract all domain users and save to users.txt",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "ldapsearch",
+    "ldap",
+    "users",
+    "enumeration"
+  ],
+  "examples": [
+    "ldapsearch -x -H ldap://192.168.1.100 -D 'user@CORP.LOCAL' -w 'password' -b 'DC=CORP,DC=LOCAL' '(objectClass=user)' sAMAccountName"
+  ]
+}

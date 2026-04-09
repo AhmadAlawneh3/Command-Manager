@@ -1,0 +1,19 @@
+{
+  "id": "impacket-getPac",
+  "name": "Impacket getPac",
+  "command": "impacket-getPac -targetUser <target_user> '<domain>/<user>:<password>'",
+  "description": "Retrieve the PAC (Privilege Attribute Certificate) for a target user via the S4U2self extension. Useful for inspecting group memberships from a low-privileged context, validating that S4U is allowed, and as a building block for delegation attacks.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["kerberos"],
+  "tags": ["impacket", "pac", "s4u2self", "kerberos", "delegation"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "impacket-getPac -targetUser <target_user> -hashes ':<hash>' '<domain>/<user>'" }
+  ],
+  "references": [
+    { "title": "Impacket — getPac.py", "url": "https://github.com/fortra/impacket/blob/master/examples/getPac.py" }
+  ],
+  "examples": [
+    "impacket-getPac -targetUser administrator 'CORP/jdoe:Password123!'"
+  ]
+}

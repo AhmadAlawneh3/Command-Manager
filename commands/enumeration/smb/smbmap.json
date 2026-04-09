@@ -1,0 +1,29 @@
+{
+  "id": "smbmap",
+  "name": "SMBMap Share Enumeration",
+  "command": "smbmap -u '<user>' -p '<password>' -H <ip> -r",
+  "description": "SMB share enumeration and access testing",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "smbmap",
+    "smb",
+    "shares",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "Null Session",
+      "requires": "no-creds",
+      "command": "smbmap -u '' -p '' -H <ip> -r"
+    }
+  ],
+  "examples": [
+    "smbmap -u guest -p '' -H 192.168.1.100 -r"
+  ]
+}

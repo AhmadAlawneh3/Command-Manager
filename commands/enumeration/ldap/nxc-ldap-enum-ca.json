@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-enum-ca",
+  "name": "NetExec LDAP Enumerate CA",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M enum_ca",
+  "description": "Enumerate Certificate Authority (CA) servers in Active Directory",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "pki",
+    "ca",
+    "adcs",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M enum_ca"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M enum_ca"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M enum_ca"
+  ]
+}

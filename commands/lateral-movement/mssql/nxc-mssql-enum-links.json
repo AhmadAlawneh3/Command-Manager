@@ -1,0 +1,30 @@
+{
+  "id": "nxc-mssql-enum-links",
+  "name": "NetExec MSSQL Linked Servers",
+  "command": "nxc mssql '<ip>' -u '<user>' -p '<password>' -M enum_links",
+  "description": "Enumerate MSSQL linked servers for lateral movement opportunities",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "nxc",
+    "mssql",
+    "linked-server",
+    "enumeration",
+    "lateral-movement"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc mssql '<ip>' -u '<user>' -H '<hash>' -M enum_links"
+    }
+  ],
+  "examples": [
+    "nxc mssql '192.168.1.56' -u 'user' -p 'password' -M enum_links"
+  ]
+}

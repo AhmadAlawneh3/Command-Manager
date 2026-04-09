@@ -1,0 +1,24 @@
+{
+  "id": "ticket-converter",
+  "name": "Impacket Ticket Converter",
+  "command": "impacket-ticketConverter '<input_file>' '<output_file>'",
+  "description": "Convert Kerberos tickets between kirbi (Windows) and ccache (Linux) formats",
+  "platform": "linux",
+  "requires": [
+    "ticket"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "ticket",
+    "converter",
+    "kirbi",
+    "ccache"
+  ],
+  "examples": [
+    "impacket-ticketConverter 'ticket.kirbi' 'ticket.ccache'",
+    "impacket-ticketConverter 'ticket.ccache' 'ticket.kirbi'"
+  ]
+}

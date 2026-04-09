@@ -1,0 +1,16 @@
+{
+  "id": "nxc-ssh-key",
+  "name": "NetExec SSH Key Auth",
+  "command": "nxc ssh <target> -u '<user>' --key-file <private-key>",
+  "description": "Validate a recovered SSH private key against one or many hosts. Automatically detects passphrase-protected keys and reports per-host success.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["ssh"],
+  "tags": ["netexec", "nxc", "ssh", "key-auth"],
+  "variations": [
+    { "label": "Encrypted Key", "requires": "password", "command": "nxc ssh <target> -u '<user>' --key-file <private-key> -p '<passphrase>'" }
+  ],
+  "examples": [
+    "nxc ssh 10.10.10.0/24 -u root --key-file ~/.ssh/id_rsa"
+  ]
+}

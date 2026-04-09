@@ -1,0 +1,17 @@
+{
+  "id": "nxc-ssh-exec",
+  "name": "NetExec SSH Command Exec",
+  "command": "nxc ssh <target> -u '<user>' -p '<password>' -x '<command>'",
+  "description": "Spray a command across many SSH targets. Faster than scripting ssh in a loop and inherits all of nxc's threading + output formatting.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ssh"],
+  "tags": ["netexec", "nxc", "ssh", "exec"],
+  "variations": [
+    { "label": "Key-Based Auth", "requires": "no-creds", "command": "nxc ssh <target> -u '<user>' --key-file <private-key> -x '<command>'" },
+    { "label": "Custom Port", "requires": "password", "command": "nxc ssh <target> -u '<user>' -p '<password>' --port 2222 -x '<command>'" }
+  ],
+  "examples": [
+    "nxc ssh 10.10.10.0/24 -u root -p 'Password123!' -x id"
+  ]
+}

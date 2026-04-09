@@ -1,0 +1,37 @@
+{
+  "id": "nxc-ldap-maq",
+  "name": "NetExec LDAP Machine Account Quota",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M maq",
+  "description": "Check the Machine Account Quota (ms-DS-MachineAccountQuota) for the domain",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "maq",
+    "machine-account",
+    "quota",
+    "enumeration",
+    "rbcd"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M maq"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M maq"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M maq"
+  ]
+}

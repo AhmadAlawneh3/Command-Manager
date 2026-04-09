@@ -1,0 +1,13 @@
+{
+  "id": "bloodyad-get-search",
+  "name": "bloodyAD get search",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get search --filter '<ldap-filter>' --attr '<attrs>'",
+  "description": "Run an arbitrary LDAP filter against the directory and pull selected attributes. The escape hatch when none of the verb-noun helpers fit your query.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "ldap", "search"],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' get search --filter '(servicePrincipalName=*)' --attr sAMAccountName,servicePrincipalName"
+  ]
+}

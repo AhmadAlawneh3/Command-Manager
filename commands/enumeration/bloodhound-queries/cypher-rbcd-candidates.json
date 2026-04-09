@@ -1,0 +1,15 @@
+{
+  "id": "cypher-rbcd-candidates",
+  "name": "Cypher: RBCD Write Targets",
+  "command": "MATCH p=(u)-[:GenericAll|GenericWrite|WriteOwner|WriteDacl]->(c:Computer) RETURN p",
+  "description": "Surface every account that can write to a computer object — the precondition for Resource-Based Constrained Delegation abuse. Combine with `--add-computer` (ntlmrelayx) or an existing fake computer to chain to RBCD.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "rbcd", "delegation"],
+  "examples": [
+    "MATCH p=(u)-[:GenericAll|GenericWrite|WriteOwner|WriteDacl]->(c:Computer) RETURN p"
+  ],
+  "references": [
+    { "title": "RBCD attack", "url": "https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html" }
+  ]
+}

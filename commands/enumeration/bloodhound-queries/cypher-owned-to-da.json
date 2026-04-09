@@ -1,0 +1,15 @@
+{
+  "id": "cypher-owned-to-da",
+  "name": "Cypher: All Paths from Owned to High-Value",
+  "command": "MATCH p=shortestPath((u {owned:true})-[*1..]->(t {highvalue:true})) RETURN p",
+  "description": "All shortest paths from any owned principal to any high-value target (Domain Admins, Enterprise Admins, DCs, etc.). The 'what can I reach' overview after a fresh foothold.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "owned", "high-value", "graph"],
+  "references": [
+    { "title": "BloodHound — Cheat Sheet", "url": "https://bloodhound.specterops.io/" }
+  ],
+  "examples": [
+    "MATCH p=shortestPath((u {owned:true})-[*1..]->(t {highvalue:true})) RETURN p"
+  ]
+}

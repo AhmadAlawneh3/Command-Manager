@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-runasppl",
+  "name": "NetExec SMB RunAsPPL Check",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M runasppl",
+  "description": "Check if LSA Protection (RunAsPPL) is enabled on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "lsa-protection",
+    "ppl",
+    "enumeration",
+    "credential-guard"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M runasppl"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M runasppl"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.0/24' -u 'user' -p 'password' -M runasppl"
+  ]
+}

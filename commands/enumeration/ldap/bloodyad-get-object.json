@@ -1,0 +1,20 @@
+{
+  "id": "bloodyad-get-object",
+  "name": "bloodyAD Get Object Attributes",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get object '<target>'",
+  "description": "Read all (or specific) LDAP attributes of an AD object. Useful for confirming msDS-AllowedToActOnBehalfOfOtherIdentity, msDS-KeyCredentialLink, userAccountControl flags, or any attribute after a write.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "ldap", "enumeration"],
+  "variations": [
+    { "label": "Specific Attribute", "requires": "password", "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get object '<target>' --attr msDS-AllowedToActOnBehalfOfOtherIdentity" },
+    { "label": "Writable Attributes Only", "requires": "password", "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get writable" }
+  ],
+  "references": [
+    { "title": "bloodyAD", "url": "https://github.com/CravateRouge/bloodyAD" }
+  ],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' get object jdoe"
+  ]
+}

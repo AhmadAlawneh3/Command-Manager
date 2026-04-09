@@ -1,0 +1,24 @@
+{
+  "id": "impacket-smbserver",
+  "name": "Impacket SMB Server",
+  "command": "impacket-smbserver '<share_name>' '<share_path>' -smb2support",
+  "description": "Start an SMB server for file transfer to/from Windows targets",
+  "platform": "linux",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "smb",
+    "file-transfer",
+    "server",
+    "utility"
+  ],
+  "examples": [
+    "impacket-smbserver 'share' '.' -smb2support",
+    "impacket-smbserver 'share' '/tmp/loot' -smb2support -username 'user' -password 'pass'"
+  ]
+}

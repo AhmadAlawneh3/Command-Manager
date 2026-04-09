@@ -1,0 +1,36 @@
+{
+  "id": "impacket-netview",
+  "name": "Impacket NetView",
+  "command": "impacket-netview '<domain>/<user>:<password>' -target '<ip>'",
+  "description": "Enumerate logged-on users and sessions on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb",
+    "rpc"
+  ],
+  "tags": [
+    "impacket",
+    "netview",
+    "sessions",
+    "logged-on",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-netview -hashes ':<hash>' '<domain>/<user>' -target '<ip>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-netview -k -no-pass '<domain>/<user>' -target '<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-netview 'CORP.LOCAL/user:password' -target 192.168.1.100"
+  ]
+}

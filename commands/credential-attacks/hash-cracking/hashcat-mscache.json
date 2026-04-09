@@ -1,0 +1,25 @@
+{
+  "id": "hashcat-mscache",
+  "name": "Hashcat MSCacheV2 (DCC2) Cracking",
+  "command": "hashcat -m 2100 '<hash_file>' /usr/share/wordlists/rockyou.txt",
+  "description": "Crack MSCacheV2 (Domain Cached Credentials v2 / DCC2) hashes extracted from registry",
+  "platform": "linux",
+  "tags": [
+    "hashcat",
+    "mscache",
+    "dcc2",
+    "cached-credentials",
+    "hash-cracking",
+    "offline"
+  ],
+  "variations": [
+    {
+      "label": "With Rules",
+      "requires": null,
+      "command": "hashcat -m 2100 '<hash_file>' /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule"
+    }
+  ],
+  "examples": [
+    "hashcat -m 2100 mscache.hashes /usr/share/wordlists/rockyou.txt"
+  ]
+}

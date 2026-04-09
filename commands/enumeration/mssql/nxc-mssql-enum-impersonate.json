@@ -1,0 +1,13 @@
+{
+  "id": "nxc-mssql-enum-impersonate",
+  "name": "NetExec MSSQL enum_impersonate",
+  "command": "nxc mssql <target> -u '<user>' -p '<password>' -M enum_impersonate",
+  "description": "List every login the current user can EXECUTE AS (IMPERSONATE permission). The classic privesc primitive on MSSQL — find a sysadmin you can impersonate, then run mssql_priv to land on xp_cmdshell.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["mssql"],
+  "tags": ["netexec", "nxc", "mssql", "impersonate", "privesc"],
+  "examples": [
+    "nxc mssql 10.10.10.10 -u lowpriv -p 'Password123!' --local-auth -M enum_impersonate"
+  ]
+}

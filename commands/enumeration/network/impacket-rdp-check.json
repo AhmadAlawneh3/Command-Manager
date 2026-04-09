@@ -1,0 +1,29 @@
+{
+  "id": "impacket-rdp-check",
+  "name": "Impacket RDP Check",
+  "command": "impacket-rdp_check '<domain>/<user>:<password>'@'<ip>'",
+  "description": "Check if credentials are valid for RDP access",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "rdp"
+  ],
+  "tags": [
+    "impacket",
+    "rdp",
+    "credential-check",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-rdp_check -hashes ':<hash>' '<domain>/<user>'@'<ip>'"
+    }
+  ],
+  "examples": [
+    "impacket-rdp_check 'CORP.LOCAL/user:password'@192.168.1.100"
+  ]
+}

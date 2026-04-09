@@ -1,0 +1,22 @@
+{
+  "id": "nxc-smb-bruteforce",
+  "name": "NetExec SMB Brute Force",
+  "command": "nxc smb <ip> -u <user> -p <wordlist> --ignore-pw-decoding",
+  "description": "SMB password brute force attack",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "brute-force",
+    "password"
+  ],
+  "examples": [
+    "nxc smb 192.168.1.100 -u administrator -p /usr/share/wordlists/rockyou.txt --ignore-pw-decoding"
+  ]
+}

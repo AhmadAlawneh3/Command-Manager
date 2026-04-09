@@ -1,0 +1,15 @@
+{
+  "id": "cypher-shortest-path-da",
+  "name": "Cypher: Shortest Path to Domain Admins",
+  "command": "MATCH p=shortestPath((u:User {owned:true})-[*1..]->(g:Group {name:'DOMAIN ADMINS@<DOMAIN>'})) RETURN p",
+  "description": "Find the shortest attack path from any owned user to the Domain Admins group. The bread-and-butter BloodHound query — run it after every collection to see what changed. Mark accounts as owned in the BloodHound UI before running.",
+  "platform": "cross-platform",
+  "requires": ["no-creds"],
+  "tags": ["bloodhound", "cypher", "shortest-path", "domain-admins", "graph"],
+  "references": [
+    { "title": "BloodHound — Cheat Sheet", "url": "https://bloodhound.specterops.io/" }
+  ],
+  "examples": [
+    "MATCH p=shortestPath((u:User {owned:true})-[*1..]->(g:Group {name:'DOMAIN ADMINS@CORP.LOCAL'})) RETURN p"
+  ]
+}

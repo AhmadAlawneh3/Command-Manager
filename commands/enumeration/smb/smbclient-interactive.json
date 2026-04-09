@@ -1,0 +1,41 @@
+{
+  "id": "smbclient-interactive",
+  "name": "SMBClient Interactive",
+  "command": "smbclient '//<ip>/<share>' -U '<domain>/<user>%<password>'",
+  "description": "Interactive SMB client for browsing and downloading files from shares",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "smbclient",
+    "smb",
+    "shares",
+    "file-access",
+    "interactive"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "smbclient '//<ip>/<share>' -U '<domain>/<user>' --pw-nt-hash '<hash>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "smbclient '//<ip>/<share>' -k --no-pass"
+    },
+    {
+      "label": "Anonymous",
+      "requires": "no-creds",
+      "command": "smbclient '//<ip>/<share>' -N"
+    }
+  ],
+  "examples": [
+    "smbclient '//192.168.1.100/C$' -U 'corp.local/user%password'",
+    "smbclient '//192.168.1.100/SYSVOL' -N"
+  ]
+}

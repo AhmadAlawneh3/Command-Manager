@@ -1,0 +1,60 @@
+name: Validate & Build Commands
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'commands/**'
+      - 'schema/**'
+      - 'build-commands.js'
+      - 'validate-commands.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build-commands.yml'
+  pull_request:
+    paths:
+      - 'commands/**'
+      - 'schema/**'
+      - 'build-commands.js'
+      - 'validate-commands.js'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Validate command JSON files
+        run: node validate-commands.js
+
+  build:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build js/commands.js
+        run: node build-commands.js
+      - name: Commit rebuilt bundle
+        run: |
+          if git diff --quiet js/commands.js; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/commands.js
+          git commit -m "chore: rebuild js/commands.js [skip ci]"
+          git push

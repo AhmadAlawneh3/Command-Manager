@@ -1,0 +1,24 @@
+{
+  "id": "dnstool",
+  "name": "Krbrelayx DNSTool",
+  "command": "python3 dnstool.py -u '<domain>\\<user>' -p '<password>' -r '<record_name>' -a add -t A -d <attacker_ip> <ip>",
+  "description": "Add, modify, or query DNS records in Active Directory integrated DNS",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "dns",
+    "ldap"
+  ],
+  "tags": [
+    "dnstool",
+    "dns",
+    "krbrelayx",
+    "record-manipulation",
+    "ad-integrated"
+  ],
+  "examples": [
+    "python3 dnstool.py -u 'corp.local\\user' -p 'password' -r 'attacker.corp.local' -a add -t A -d 192.168.1.50 192.168.1.100"
+  ]
+}

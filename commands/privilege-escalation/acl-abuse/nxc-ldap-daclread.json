@@ -1,0 +1,36 @@
+{
+  "id": "nxc-ldap-daclread",
+  "name": "NetExec LDAP DACL Read",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' -M daclread -o TARGET='<target>' ACTION=read",
+  "description": "Read DACL entries on an AD object to identify abusable ACL permissions",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "dacl",
+    "acl",
+    "enumeration",
+    "privilege-escalation"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' -M daclread -o TARGET='<target>' ACTION=read"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache -M daclread -o TARGET='<target>' ACTION=read"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' -M daclread -o TARGET='Domain Admins' ACTION=read"
+  ]
+}

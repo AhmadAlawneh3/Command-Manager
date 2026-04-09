@@ -1,0 +1,35 @@
+{
+  "id": "nxc-get-desc-users",
+  "name": "NetExec LDAP User Descriptions",
+  "command": "nxc ldap '<ip>' -d '<domain>' -u '<user>' -p '<password>' -M get-desc-users",
+  "description": "Extract user account descriptions via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "users",
+    "description",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -d '<domain>' -u '<user>' -H '<hash>' -M get-desc-users"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -d '<domain>' --use-kcache -M get-desc-users"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -d 'CORP.LOCAL' -u 'user' -p 'password' -M get-desc-users"
+  ]
+}

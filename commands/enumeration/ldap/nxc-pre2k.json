@@ -1,0 +1,20 @@
+{
+  "id": "nxc-pre2k",
+  "name": "NetExec pre2k Module",
+  "command": "nxc ldap <dc-ip> -u '<user>' -p '<password>' -M pre2k",
+  "description": "Enumerate computer accounts that still use the pre-Windows-2000 compatible access default password (the lowercase computer name without the trailing $). Authenticate to LDAP first to list candidates, then spray. Module lives on the ldap protocol since v1.4. v1.5.1 added support for changing the password on locked pre2k accounts.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["netexec", "nxc", "pre2k", "machine-account", "default-credentials"],
+  "variations": [
+    { "label": "Show All Candidates", "requires": "password", "command": "nxc ldap <dc-ip> -u '<user>' -p '<password>' -M pre2k -o ALL=true" }
+  ],
+  "references": [
+    { "title": "NetExec pre2k", "url": "https://www.netexec.wiki/ldap-protocol/pre2k-authentication" },
+    { "title": "Pre2k attack", "url": "https://www.thehacker.recipes/a-d/persistence/dacl/pre-2k-compatible-access" }
+  ],
+  "examples": [
+    "nxc ldap dc.corp.local -u jdoe -p 'Password123!' -M pre2k"
+  ]
+}

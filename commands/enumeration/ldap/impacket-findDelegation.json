@@ -1,0 +1,37 @@
+{
+  "id": "impacket-findDelegation",
+  "name": "Impacket findDelegation",
+  "command": "impacket-findDelegation '<domain>/<user>:<password>' -dc-ip '<ip>'",
+  "description": "Find all accounts with delegation rights (unconstrained, constrained, RBCD)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "ldap",
+    "delegation",
+    "enumeration",
+    "unconstrained",
+    "constrained",
+    "rbcd"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-findDelegation -hashes ':<hash>' -dc-ip '<ip>' '<domain>/<user>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-findDelegation -k -no-pass -dc-ip '<ip>' '<domain>/<user>'"
+    }
+  ],
+  "examples": [
+    "impacket-findDelegation 'CORP.LOCAL/user:password' -dc-ip '192.168.1.100'"
+  ]
+}

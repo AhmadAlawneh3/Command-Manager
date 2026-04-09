@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-gpp-autologin",
+  "name": "NetExec SMB GPP AutoLogin",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M gpp_autologin",
+  "description": "Search Group Policy Preferences for AutoLogon credentials stored in SYSVOL",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "gpp",
+    "autologin",
+    "sysvol",
+    "credential-dumping"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M gpp_autologin"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' -u '<user>' --use-kcache -M gpp_autologin"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M gpp_autologin"
+  ]
+}

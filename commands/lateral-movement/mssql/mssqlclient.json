@@ -1,0 +1,41 @@
+{
+  "id": "mssqlclient",
+  "name": "Impacket MSSQLClient",
+  "command": "impacket-mssqlclient '<domain>/<user>:<password>'@<ip>",
+  "description": "Interactive MSSQL shell for command execution and database access",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "impacket",
+    "mssql",
+    "database",
+    "shell",
+    "sql"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-mssqlclient -hashes ':<hash>' '<domain>/<user>'@<ip>"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "impacket-mssqlclient -k -no-pass '<domain>/<user>'@<ip>"
+    },
+    {
+      "label": "Windows Auth",
+      "requires": "password",
+      "command": "impacket-mssqlclient '<domain>/<user>:<password>'@<ip> -windows-auth"
+    }
+  ],
+  "examples": [
+    "impacket-mssqlclient 'corp.local/sa:password'@192.168.1.100",
+    "impacket-mssqlclient 'corp.local/user:password'@192.168.1.100 -windows-auth"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "nxc-mssql-enable-cmdshell",
+  "name": "NetExec MSSQL Enable CmdShell",
+  "command": "nxc mssql '<ip>' -u '<user>' -p '<password>' -M enable_cmdshell",
+  "description": "Enable xp_cmdshell on a MSSQL server for OS command execution",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "mssql"
+  ],
+  "tags": [
+    "nxc",
+    "mssql",
+    "cmdshell",
+    "xp-cmdshell",
+    "rce",
+    "lateral-movement"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc mssql '<ip>' -u '<user>' -H '<hash>' -M enable_cmdshell"
+    }
+  ],
+  "examples": [
+    "nxc mssql '192.168.1.100' -u 'sa' -p 'password' -M enable_cmdshell"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "nxc-ldap-dc-list",
+  "name": "NetExec LDAP DC List",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' --dc-list",
+  "description": "Enumerate all Domain Controllers in the domain via LDAP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "domain-controllers",
+    "enumeration",
+    "ad"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' --dc-list"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' -u '<user>' --use-kcache --dc-list"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' --dc-list"
+  ]
+}

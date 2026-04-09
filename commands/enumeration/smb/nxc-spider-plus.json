@@ -1,0 +1,20 @@
+{
+  "id": "nxc-spider-plus",
+  "name": "NetExec spider_plus Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M spider_plus",
+  "description": "Recursively spider every readable share, indexing filenames, sizes, modification dates, and (optionally) content snippets matching keywords. Output as JSON for grep-friendly post-processing — the modern replacement for `--spider`.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "spider_plus", "smb", "file-search"],
+  "variations": [
+    { "label": "With Pattern", "requires": "password", "command": "nxc smb <target> -u '<user>' -p '<password>' -M spider_plus -o PATTERN='password,secret,confidential'" },
+    { "label": "Read File Contents", "requires": "password", "command": "nxc smb <target> -u '<user>' -p '<password>' -M spider_plus -o READ_ONLY=false DOWNLOAD_FLAG=true" }
+  ],
+  "references": [
+    { "title": "NetExec spider_plus", "url": "https://www.netexec.wiki/smb-protocol/enumeration/spider_plus" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.0/24 -u jdoe -p 'Password123!' -M spider_plus"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "hashcat-asrep",
+  "name": "Hashcat AS-REP Roasting Cracking",
+  "command": "hashcat -m 18200 '<hash_file>' /usr/share/wordlists/rockyou.txt",
+  "description": "Crack AS-REP roasting hashes obtained from accounts without Kerberos pre-auth",
+  "platform": "linux",
+  "tags": [
+    "hashcat",
+    "asrep",
+    "as-rep-roasting",
+    "kerberos",
+    "hash-cracking",
+    "offline"
+  ],
+  "variations": [
+    {
+      "label": "With Rules",
+      "requires": null,
+      "command": "hashcat -m 18200 '<hash_file>' /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule"
+    }
+  ],
+  "examples": [
+    "hashcat -m 18200 asrep.hashes /usr/share/wordlists/rockyou.txt"
+  ]
+}

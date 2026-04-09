@@ -1,0 +1,18 @@
+{
+  "id": "impacket-lookupsid",
+  "name": "Impacket lookupsid",
+  "command": "impacket-lookupsid '<domain>/<user>:<password>@<target>'",
+  "description": "Brute-force the RID space against SAMR / LSARPC to enumerate domain users, groups, and SIDs from a low-priv account. Works against domain controllers and member servers; output is a clean SID → name mapping.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb", "rpc"],
+  "tags": ["impacket", "lookupsid", "enumeration", "rid"],
+  "variations": [
+    { "label": "Hash Auth", "requires": "hash", "command": "impacket-lookupsid '<domain>/<user>@<target>' -hashes :<nt-hash>" },
+    { "label": "Higher RID Range", "requires": "password", "command": "impacket-lookupsid '<domain>/<user>:<password>@<target>' 10000" },
+    { "label": "Null Session", "requires": "no-creds", "command": "impacket-lookupsid '@<target>'" }
+  ],
+  "examples": [
+    "impacket-lookupsid 'corp.local/jdoe:Password123!@10.10.10.10' 4000"
+  ]
+}

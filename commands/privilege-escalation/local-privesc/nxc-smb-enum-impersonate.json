@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-enum-impersonate",
+  "name": "NetExec SMB Enum Impersonate",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M enum_impersonate",
+  "description": "Enumerate tokens and privileges available for impersonation on remote hosts",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "impersonate",
+    "tokens",
+    "privilege-escalation",
+    "enumeration"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M enum_impersonate"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M enum_impersonate"
+  ]
+}

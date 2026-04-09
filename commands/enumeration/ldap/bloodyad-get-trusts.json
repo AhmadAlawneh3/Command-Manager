@@ -1,0 +1,13 @@
+{
+  "id": "bloodyad-get-trusts",
+  "name": "bloodyAD get trusts",
+  "command": "bloodyAD --host <dc-ip> -d '<domain>' -u '<user>' -p '<password>' get trusts",
+  "description": "Enumerate domain and forest trust relationships, including direction, type, and trust attributes. Quick alternative to nltest / Get-ADTrust when you only have Linux.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["bloodyad", "trusts", "enumeration"],
+  "examples": [
+    "bloodyAD --host 10.10.10.10 -d corp.local -u jdoe -p 'Password123!' get trusts"
+  ]
+}

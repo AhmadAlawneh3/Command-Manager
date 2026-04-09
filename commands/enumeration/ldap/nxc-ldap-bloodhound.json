@@ -1,0 +1,35 @@
+{
+  "id": "nxc-ldap-bloodhound",
+  "name": "NetExec LDAP BloodHound",
+  "command": "nxc ldap '<ip>' -u '<user>' -p '<password>' --bloodhound -c All --dns-server <ip>",
+  "description": "Collect BloodHound data via NetExec LDAP module",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "nxc",
+    "ldap",
+    "bloodhound",
+    "enumeration",
+    "collection"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc ldap '<ip>' -u '<user>' -H '<hash>' --bloodhound -c All --dns-server <ip>"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc ldap '<ip>' --use-kcache --bloodhound -c All --dns-server <ip>"
+    }
+  ],
+  "examples": [
+    "nxc ldap '192.168.1.100' -u 'user' -p 'password' --bloodhound -c All --dns-server 192.168.1.100"
+  ]
+}

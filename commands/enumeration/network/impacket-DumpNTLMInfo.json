@@ -1,0 +1,23 @@
+{
+  "id": "impacket-DumpNTLMInfo",
+  "name": "Impacket DumpNTLMInfo",
+  "command": "impacket-DumpNTLMInfo '<ip>'",
+  "description": "Dump NTLM server information (OS version, domain, hostname) without credentials",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "impacket",
+    "ntlm",
+    "fingerprint",
+    "enumeration",
+    "unauthenticated"
+  ],
+  "examples": [
+    "impacket-DumpNTLMInfo 192.168.1.100"
+  ]
+}

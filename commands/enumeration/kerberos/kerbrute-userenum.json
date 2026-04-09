@@ -1,0 +1,22 @@
+{
+  "id": "kerbrute-userenum",
+  "name": "Kerbrute User Enumeration",
+  "command": "kerbrute userenum --dc '<ip>' -d '<domain>' <wordlist>",
+  "description": "Kerberos user enumeration without authentication",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "kerberos"
+  ],
+  "tags": [
+    "kerbrute",
+    "kerberos",
+    "users",
+    "enumeration"
+  ],
+  "examples": [
+    "kerbrute userenum --dc '192.168.1.100' -d 'CORP.LOCAL' /usr/share/wordlists/seclists/Usernames/Names/names.txt"
+  ]
+}

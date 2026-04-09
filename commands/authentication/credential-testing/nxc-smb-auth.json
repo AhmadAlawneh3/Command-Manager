@@ -1,0 +1,41 @@
+{
+  "id": "nxc-smb-auth",
+  "name": "NetExec SMB Auth Test",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -d '<domain>'",
+  "description": "Test SMB authentication with various credential types",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "authentication",
+    "credential-testing"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -d '<domain>'"
+    },
+    {
+      "label": "Kerberos Ticket",
+      "requires": "ticket",
+      "command": "nxc smb '<ip>' --use-kcache -d '<domain>'"
+    },
+    {
+      "label": "Local Auth",
+      "requires": "password",
+      "command": "nxc smb '<ip>' -u '<user>' -p '<password>' --local-auth"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'administrator' -p 'password123' -d 'domain.local'",
+    "nxc smb '10.10.11.76' -u 'admin' -H 'aad3b435b51404ee:e19ccf75ee54e06b' -d 'domain.local'",
+    "nxc smb '10.10.11.76' --use-kcache -d 'voleur.htb' --shares"
+  ]
+}

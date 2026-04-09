@@ -1,0 +1,30 @@
+{
+  "id": "hashcat-ntlm",
+  "name": "Hashcat NTLM Crack",
+  "command": "hashcat -m 1000 <hash> <wordlist>",
+  "description": "Crack NTLM hashes using wordlist attack",
+  "platform": "cross-platform",
+  "requires": [
+    "hash"
+  ],
+  "protocols": [],
+  "tags": [
+    "hashcat",
+    "ntlm",
+    "cracking",
+    "password"
+  ],
+  "references": [
+    {
+      "title": "Hashcat Official Documentation",
+      "url": "https://hashcat.net/hashcat/"
+    },
+    {
+      "title": "HackTricks - Hash Cracking",
+      "url": "https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#hash"
+    }
+  ],
+  "examples": [
+    "hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt"
+  ]
+}

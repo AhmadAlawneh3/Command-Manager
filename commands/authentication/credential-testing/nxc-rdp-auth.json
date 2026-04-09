@@ -1,0 +1,21 @@
+{
+  "id": "nxc-rdp-auth",
+  "name": "NetExec RDP Auth Check",
+  "command": "nxc rdp <ip> -u <user> -p <password>",
+  "description": "Validate credentials against the RDP service (TCP/3389) without opening a graphical session. Useful for spraying and quick triage.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["rdp"],
+  "tags": ["nxc", "netexec", "rdp", "auth", "credential-validation", "spray"],
+  "variations": [
+    { "label": "NTLM Hash (Restricted Admin)", "requires": "hash", "command": "nxc rdp <ip> -u <user> -H <hash>" },
+    { "label": "Spray Across Subnet", "requires": "password", "command": "nxc rdp <subnet> -u <user> -p <password> --continue-on-success" }
+  ],
+  "references": [
+    { "title": "NetExec — RDP Protocol", "url": "https://www.netexec.wiki/rdp-protocol" }
+  ],
+  "examples": [
+    "nxc rdp 10.10.10.10 -u administrator -p 'Password123!'",
+    "nxc rdp 10.10.10.0/24 -u admin -H :e19ccf75ee54e06b06a5907af13cef42 --continue-on-success"
+  ]
+}

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Manager - Command Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #2ea043;
+        }
+
+        .btn-secondary {
+            background: #1f6feb;
+        }
+
+        .btn-secondary:hover {
+            background: #388bfd;
+        }
+
+        .btn-danger {
+            background: #da3633;
+        }
+
+        .btn-danger:hover {
+            background: #f85149;
+        }
+
+        .form-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            color: #58a6ff;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 14px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .command-textarea {
+            min-height: 80px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .examples-container {
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            background: #0d1117;
+        }
+
+        .example-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .example-item input {
+            flex: 1;
+        }
+
+        .example-item button {
+            background: #da3633;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .references-container {
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            background: #0d1117;
+        }
+
+        .reference-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #1f6feb;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .existing-commands {
+            margin-top: 30px;
+            border-top: 1px solid #30363d;
+            padding-top: 30px;
+        }
+
+        .command-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            background: #0d1117;
+        }
+
+        .command-item {
+            padding: 15px;
+            border-bottom: 1px solid #30363d;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .command-item:hover {
+            background: #161b22;
+        }
+
+        .command-item:last-child {
+            border-bottom: none;
+        }
+
+        .command-name {
+            color: #58a6ff;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .command-desc {
+            color: #8b949e;
+            font-size: 13px;
+        }
+
+        .output-section {
+            margin-top: 30px;
+            border-top: 1px solid #30363d;
+            padding-top: 30px;
+        }
+
+        .output-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            color: #56d364;
+        }
+
+        .error {
+            color: #f85149;
+        }
+        .reference-item button{background: #da3633;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;}
+
+        @media (max-width: 768px) {
+            .form-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .reference-item {
+                grid-template-columns: 1fr;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ Command Manager - Command Editor</h1>
+        
+        <div class="toolbar">
+            <button class="btn" onclick="clearForm()">🆕 New Command</button>
+            <button class="btn btn-danger" onclick="loadFromFile()">📁 Load commands.js</button>
+            <button class="btn btn-danger" onclick="clearAllFields()">🗑️ Clear All Fields</button>
+        </div>
+
+        <form id="commandForm">
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="id">Command ID *</label>
+                    <input type="text" id="id" required placeholder="unique-command-id">
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Command Name *</label>
+                    <input type="text" id="name" required placeholder="Display Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subcategory">Subcategory</label>
+                    <select id="subcategory">
+                        <option value="">(select category first)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="platform">Platform *</label>
+                    <select id="platform" required>
+                        <option value="linux">Linux</option>
+                        <option value="windows">Windows</option>
+                        <option value="cross-platform">Cross-Platform</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" placeholder="tag1, tag2, tag3">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="command">Command Template *</label>
+                    <textarea id="command" class="command-textarea" required placeholder="command -option &lt;parameter&gt; --flag &lt;value&gt;"></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="description">Description *</label>
+                    <textarea id="description" required placeholder="Brief description of what this command does"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Examples</label>
+                <div class="examples-container" id="examplesContainer">
+                    <div class="example-item">
+                        <input type="text" placeholder="Example command..." value="">
+                        <button type="button" onclick="removeExample(this)">×</button>
+                    </div>
+                </div>
+                <button type="button" class="btn" onclick="addExample()" style="margin-top: 10px;">+ Add Example</button>
+            </div>
+
+            <div class="form-group">
+                <label>References</label>
+                <div class="references-container" id="referencesContainer">
+                    <div class="reference-item">
+                        <input type="text" placeholder="Reference Title" class="ref-title">
+                        <input type="url" placeholder="https://example.com" class="ref-url">
+                        <button type="button" onclick="removeReference(this)">×</button>
+                    </div>
+                </div>
+                <button type="button" class="btn" onclick="addReference()" style="margin-top: 10px;">+ Add Reference</button>
+            </div>
+        </form>
+
+        <div class="existing-commands">
+            <h3 style="color: #58a6ff; margin-bottom: 15px;">📚 Existing Commands (Click to Edit)</h3>
+            <div class="command-list" id="commandList">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="output-section">
+            <h3 style="color: #58a6ff; margin-bottom: 15px;">📋 Generated JavaScript Code</h3>
+            <div style="margin-bottom: 15px;">
+                <button class="btn btn-secondary" onclick="generateOutput()">📋 Generate JavaScript</button>
+                <button class="btn btn-secondary" onclick="copyToClipboard()" style="margin-left: 10px;">📄 Copy to Clipboard</button>
+                <button class="btn btn-secondary" onclick="downloadJSON()" style="margin-left: 10px;">💾 Download JSON</button>
+            </div>
+            <div class="output-box" id="output">Click "Generate JavaScript" to see the command object code...</div>
+        </div>
+    </div>
+
+    <script src="js/commands.js"></script>
+    <script>
+        let currentEditingId = null;
+        let CATEGORIES_DATA = {};
+
+        // Load categories from the bundled COMMAND_DATA so editor works on file:// too.
+        function loadCategories() {
+            CATEGORIES_DATA = (typeof COMMAND_DATA !== 'undefined' && COMMAND_DATA.categories) || {};
+            const catSelect = document.getElementById('category');
+            Object.entries(CATEGORIES_DATA).forEach(([key, val]) => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = val.name || key;
+                catSelect.appendChild(opt);
+            });
+            catSelect.addEventListener('change', refreshSubcategories);
+        }
+        function refreshSubcategories() {
+            const cat = document.getElementById('category').value;
+            const subSelect = document.getElementById('subcategory');
+            subSelect.innerHTML = '';
+            const subs = (CATEGORIES_DATA[cat] && CATEGORIES_DATA[cat].subcategories) || {};
+            const empty = document.createElement('option');
+            empty.value = '';
+            empty.textContent = '(none)';
+            subSelect.appendChild(empty);
+            Object.entries(subs).forEach(([k, label]) => {
+                const opt = document.createElement('option');
+                opt.value = k;
+                opt.textContent = label;
+                subSelect.appendChild(opt);
+            });
+        }
+        function downloadJSON() {
+            const out = document.getElementById('output').textContent.trim();
+            if (!out || out.startsWith('Click')) {
+                alert('Click "Generate JavaScript" first.');
+                return;
+            }
+            const id = document.getElementById('id').value.trim() || 'command';
+            const blob = new Blob([out], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${id}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        document.addEventListener('DOMContentLoaded', loadCategories);
+
+        // Load existing commands into the list
+        function loadExistingCommands() {
+            const commandList = document.getElementById('commandList');
+            commandList.innerHTML = '';
+            
+            COMMAND_DATA.commands.forEach(cmd => {
+                const div = document.createElement('div');
+                div.className = 'command-item';
+                div.onclick = () => editCommand(cmd);
+                div.innerHTML = `
+                    <div class="command-name">${cmd.name}</div>
+                    <div class="command-desc">${cmd.description}</div>
+                `;
+                commandList.appendChild(div);
+            });
+        }
+
+        // Edit existing command
+        function editCommand(cmd) {
+            currentEditingId = cmd.id;
+            
+            document.getElementById('id').value = cmd.id;
+            document.getElementById('name').value = cmd.name;
+            document.getElementById('category').value = cmd.category;
+            refreshSubcategories();
+            document.getElementById('subcategory').value = cmd.subcategory || '';
+            document.getElementById('platform').value = cmd.platform;
+            document.getElementById('command').value = cmd.command;
+            document.getElementById('description').value = cmd.description;
+            document.getElementById('tags').value = (cmd.tags || []).join(', ');
+
+            // Load examples
+            const examplesContainer = document.getElementById('examplesContainer');
+            examplesContainer.innerHTML = '';
+            (cmd.examples || []).forEach(example => {
+                addExample(example);
+            });
+            if (examplesContainer.children.length === 0) {
+                addExample();
+            }
+
+            // Load references
+            const referencesContainer = document.getElementById('referencesContainer');
+            referencesContainer.innerHTML = '';
+            (cmd.references || []).forEach(ref => {
+                addReference(ref.title, ref.url);
+            });
+            if (referencesContainer.children.length === 0) {
+                addReference();
+            }
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Clear all form fields
+        function clearAllFields() {
+            if (confirm('Are you sure you want to clear all fields? This action cannot be undone.')) {
+                clearForm();
+                document.getElementById('output').textContent = 'Click "Generate JavaScript" to see the command object code...';
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            currentEditingId = null;
+            document.getElementById('commandForm').reset();
+            
+            // Reset examples
+            const examplesContainer = document.getElementById('examplesContainer');
+            examplesContainer.innerHTML = '';
+            addExample();
+
+            // Reset references
+            const referencesContainer = document.getElementById('referencesContainer');
+            referencesContainer.innerHTML = '';
+            addReference();
+        }
+
+        // Add example field
+        function addExample(value = '') {
+            const container = document.getElementById('examplesContainer');
+            const div = document.createElement('div');
+            div.className = 'example-item';
+            div.innerHTML = `
+                <input type="text" placeholder="Example command..." value="${value}">
+                <button type="button" onclick="removeExample(this)">×</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Remove example field
+        function removeExample(btn) {
+            btn.parentElement.remove();
+        }
+
+        // Add reference field
+        function addReference(title = '', url = '') {
+            const container = document.getElementById('referencesContainer');
+            const div = document.createElement('div');
+            div.className = 'reference-item';
+            div.innerHTML = `
+                <input type="text" placeholder="Reference Title" class="ref-title" value="${title}">
+                <input type="url" placeholder="https://example.com" class="ref-url" value="${url}">
+                <button type="button" onclick="removeReference(this)">×</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Remove reference field
+        function removeReference(btn) {
+            btn.parentElement.remove();
+        }
+
+        // Generate JavaScript output
+        function generateOutput() {
+            const formData = {
+                id: document.getElementById('id').value.trim(),
+                name: document.getElementById('name').value.trim(),
+                command: document.getElementById('command').value.trim(),
+                category: document.getElementById('category').value,
+                subcategory: document.getElementById('subcategory').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                platform: document.getElementById('platform').value,
+                tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t)
+            };
+
+            // Collect examples
+            const examples = [];
+            document.querySelectorAll('#examplesContainer input').forEach(input => {
+                if (input.value.trim()) {
+                    examples.push(input.value.trim());
+                }
+            });
+
+            // Collect references
+            const references = [];
+            document.querySelectorAll('#referencesContainer .reference-item').forEach(item => {
+                const title = item.querySelector('.ref-title').value.trim();
+                const url = item.querySelector('.ref-url').value.trim();
+                if (title && url) {
+                    references.push({ title, url });
+                }
+            });
+
+            // Validation
+            if (!formData.id || !formData.name || !formData.command || !formData.description) {
+                document.getElementById('output').textContent = '❌ Please fill in all required fields (marked with *)';
+                return;
+            }
+
+            // Helper function to escape strings while preserving placeholders
+            function escapeString(str) {
+                return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+            }
+
+            // Generate JavaScript object
+            let jsCode = `{\n  id: "${escapeString(formData.id)}",\n  name: "${escapeString(formData.name)}",\n  command: "${escapeString(formData.command)}",\n  category: "${formData.category}",\n  subcategory: "${escapeString(formData.subcategory)}",\n  description: "${escapeString(formData.description)}",\n  platform: "${formData.platform}",\n  tags: [${formData.tags.map(tag => `"${escapeString(tag)}"`).join(', ')}]`;
+
+            if (references.length > 0) {
+                jsCode += `,\n  references: [\n${references.map(ref => `    {\n      title: "${escapeString(ref.title)}",\n      url: "${escapeString(ref.url)}"\n    }`).join(',\n')}\n  ]`;
+            }
+
+            if (examples.length > 0) {
+                jsCode += `,\n  examples: [\n${examples.map(ex => `    "${escapeString(ex)}"`).join(',\n')}\n  ]`;
+            }
+
+            jsCode += '\n},';
+
+            let actionText = currentEditingId ? 
+                `✅ Updated command "${formData.name}" (replace the existing one in commands.js)\n\n` :
+                `✅ Generated new command "${formData.name}" (add this to the commands array in commands.js)\n\n`;
+
+            document.getElementById('output').textContent = actionText + jsCode;
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const output = document.getElementById('output').textContent;
+            if (output.includes('Generated') || output.includes('Updated')) {
+                // Extract just the JavaScript code part
+                const lines = output.split('\n');
+                const jsCode = lines.slice(2).join('\n'); // Skip the success message
+                
+                navigator.clipboard.writeText(jsCode).then(() => {
+                    alert('✅ JavaScript code copied to clipboard!');
+                }).catch(() => {
+                    alert('❌ Failed to copy to clipboard');
+                });
+            } else {
+                alert('❌ Please generate JavaScript code first');
+            }
+        }
+
+        // Load from file (simplified - just instructions)
+        function loadFromFile() {
+            alert('📋 To load commands:\n\n1. Make sure commands.js is in the js/ folder\n2. Refresh this page\n3. The existing commands will appear in the list below');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadExistingCommands();
+            clearForm();
+        });
+    </script>
+</body>
+</html>

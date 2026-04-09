@@ -1,0 +1,29 @@
+{
+  "id": "xfreerdp",
+  "name": "xFreeRDP Connection",
+  "command": "xfreerdp3 /v:<ip> /u:<user> /p:'<password>' /dynamic-resolution /cert:ignore",
+  "description": "RDP connection using xFreeRDP",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "rdp"
+  ],
+  "tags": [
+    "xfreerdp",
+    "rdp",
+    "remote-desktop",
+    "gui"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "xfreerdp3 /v:<ip> /u:<user> /pth:'<hash>' /dynamic-resolution /cert:ignore"
+    }
+  ],
+  "examples": [
+    "xfreerdp3 /v:192.168.1.100 /u:administrator /p:'password123' /dynamic-resolution /cert:ignore"
+  ]
+}

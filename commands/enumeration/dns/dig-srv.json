@@ -1,0 +1,24 @@
+{
+  "id": "dig-srv",
+  "name": "DNS SRV Record Lookup",
+  "command": "dig SRV _ldap._tcp.dc._msdcs.<domain> @<ip>",
+  "description": "Query DNS SRV records to discover domain controllers and services",
+  "platform": "linux",
+  "requires": [
+    "no-creds"
+  ],
+  "protocols": [
+    "dns"
+  ],
+  "tags": [
+    "dig",
+    "dns",
+    "srv",
+    "enumeration",
+    "domain-controller"
+  ],
+  "examples": [
+    "dig SRV _ldap._tcp.dc._msdcs.corp.local @192.168.1.100",
+    "dig SRV _kerberos._tcp.corp.local @192.168.1.100"
+  ]
+}

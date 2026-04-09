@@ -1,0 +1,20 @@
+{
+  "id": "impacket-dpapi",
+  "name": "Impacket DPAPI Masterkey",
+  "command": "impacket-dpapi masterkey -file '<masterkey_file>' -password '<password>'",
+  "description": "Decrypt DPAPI masterkey using user password to derive DPAPI encryption key",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "tags": [
+    "impacket",
+    "dpapi",
+    "masterkey",
+    "credential-dumping",
+    "decryption"
+  ],
+  "examples": [
+    "impacket-dpapi masterkey -file '0e4b4e4c-...' -password 'userpassword'"
+  ]
+}

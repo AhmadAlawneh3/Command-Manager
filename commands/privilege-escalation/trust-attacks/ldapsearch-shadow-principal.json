@@ -1,0 +1,25 @@
+{
+  "id": "ldapsearch-shadow-principal",
+  "name": "LDAPSearch Shadow Principals (PAM Trust)",
+  "command": "ldapsearch -H ldap://<ip> -Y GSSAPI -b 'CN=Shadow Principal Configuration,CN=Services,CN=Configuration,<dc_dn>' '(objectClass=msDS-ShadowPrincipal)' msDS-ShadowPrincipalSid member name",
+  "description": "Enumerate msDS-ShadowPrincipal objects to identify PAM trust shadow principals",
+  "platform": "linux",
+  "requires": [
+    "ticket"
+  ],
+  "protocols": [
+    "ldap",
+    "kerberos"
+  ],
+  "tags": [
+    "ldapsearch",
+    "ldap",
+    "shadow-principal",
+    "pam-trust",
+    "trust",
+    "enumeration"
+  ],
+  "examples": [
+    "ldapsearch -H ldap://192.168.101.1 -Y GSSAPI -b 'CN=Shadow Principal Configuration,CN=Services,CN=Configuration,DC=bastion,DC=local' '(objectClass=msDS-ShadowPrincipal)' msDS-ShadowPrincipalSid member name"
+  ]
+}

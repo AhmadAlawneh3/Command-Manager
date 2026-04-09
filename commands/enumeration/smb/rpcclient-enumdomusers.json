@@ -1,0 +1,31 @@
+{
+  "id": "rpcclient-enumdomusers",
+  "name": "RPCClient Enum Domain Users",
+  "command": "rpcclient -U '<domain>/<user>%<password>' <ip> -c 'enumdomusers'",
+  "description": "Enumerate domain users via RPC using rpcclient",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "smb"
+  ],
+  "tags": [
+    "rpcclient",
+    "rpc",
+    "enumeration",
+    "users",
+    "domain"
+  ],
+  "variations": [
+    {
+      "label": "Null Session",
+      "requires": "no-creds",
+      "command": "rpcclient -U '' -N <ip> -c 'enumdomusers'"
+    }
+  ],
+  "examples": [
+    "rpcclient -U 'corp.local/user%password' 192.168.1.100 -c 'enumdomusers'",
+    "rpcclient -U '' -N 192.168.1.100 -c 'enumdomusers'"
+  ]
+}

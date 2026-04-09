@@ -1,0 +1,45 @@
+{
+  "id": "evil-winrm",
+  "name": "Evil-WinRM Shell",
+  "command": "evil-winrm -i '<ip>' -u '<user>' -p '<password>'",
+  "description": "Windows Remote Management shell connection",
+  "platform": "linux",
+  "requires": [
+    "password"
+  ],
+  "protocols": [
+    "winrm"
+  ],
+  "tags": [
+    "evil-winrm",
+    "winrm",
+    "shell",
+    "remote"
+  ],
+  "variations": [
+    {
+      "label": "NTLM Hash",
+      "requires": "hash",
+      "command": "evil-winrm -i '<ip>' -u '<user>' -H '<hash>'"
+    },
+    {
+      "label": "Kerberos (Realm)",
+      "requires": "ticket",
+      "command": "evil-winrm -i '<ip>' -r '<domain>'"
+    }
+  ],
+  "references": [
+    {
+      "title": "Evil-WinRM GitHub",
+      "url": "https://github.com/Hackplayers/evil-winrm"
+    },
+    {
+      "title": "HackTricks - WinRM",
+      "url": "https://book.hacktricks.xyz/network-services-pentesting/5985-5986-pentesting-winrm"
+    }
+  ],
+  "examples": [
+    "evil-winrm -i '192.168.1.100' -u 'administrator' -p 'password123'",
+    "evil-winrm -i '192.168.1.100' -u 'administrator' -H 'aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42'"
+  ]
+}

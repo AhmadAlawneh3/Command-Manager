@@ -1,0 +1,19 @@
+{
+  "id": "gpupdate-force",
+  "name": "Force GPO Update",
+  "command": "gpupdate /force",
+  "description": "Force Group Policy update",
+  "platform": "windows",
+  "requires": [
+    "shell"
+  ],
+  "protocols": [],
+  "tags": [
+    "gpupdate",
+    "gpo",
+    "force"
+  ],
+  "examples": [
+    "gpupdate /force"
+  ]
+}
