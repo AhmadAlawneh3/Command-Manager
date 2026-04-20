@@ -39,6 +39,19 @@ body {
     color: #ff6b6b;
     font-size: 1.5em;
     margin-bottom: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.logo h1:hover {
+    color: #ff8a8a;
+}
+
+.logo h1:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .logo p {
@@ -76,30 +89,33 @@ body {
 .search-container {
     padding: 15px;
     border-bottom: 1px solid #30363d;
+    position: relative;
 }
 
-.show-all-container {
-    padding: 10px 15px;
-    border-bottom: 1px solid #30363d;
-}
-
-.show-all-btn {
-    width: 100%;
-    padding: 8px 12px;
-    background-color: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 4px;
-    color: #58a6ff;
-    font-size: 12px;
-    font-weight: 500;
+.search-clear {
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #7d8590;
+    font-size: 18px;
+    line-height: 1;
     cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
+    transition: background-color 0.15s, color 0.15s;
 }
 
-.show-all-btn:hover {
-    background-color: #21262d;
-    border-color: #58a6ff;
+.search-clear:hover {
+    background-color: #30363d;
+    color: #c9d1d9;
 }
 
 /* Favorites Button */
@@ -172,6 +188,26 @@ body {
     outline: none;
 }
 
+.reset-filters-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #f85149;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.reset-filters-btn:hover {
+    background-color: #21262d;
+    border-color: #f85149;
+}
+
 .filter-select:focus {
     border-color: #58a6ff;
     box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
@@ -205,7 +241,7 @@ body {
 
 .search-box {
     width: 100%;
-    padding: 10px;
+    padding: 10px 34px 10px 10px;
     background-color: #0d1117;
     border: 1px solid #30363d;
     border-radius: 6px;
@@ -1277,12 +1313,32 @@ body {
         transform: translateX(-105%);
         transition: transform 0.22s ease-out;
         box-shadow: 4px 0 16px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
     }
     .sidebar.open { transform: translateX(0); }
 
     .main-content { padding-top: 64px; }
 
-    .top-bar { flex-wrap: wrap; gap: 8px; }
+    .top-bar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    /* Stack breadcrumb on its own row, controls below */
+    .breadcrumb { width: 100%; font-size: 13px; }
+
+    /* Profile switcher takes available space */
+    .profile-switcher {
+        margin-left: 0;
+        margin-right: auto;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .list-controls { gap: 6px; }
+    .list-controls .btn { font-size: 12px; padding: 6px 8px; }
 
     .content-area { flex-direction: column; }
 
@@ -1291,6 +1347,35 @@ body {
         max-height: 45vh;
     }
     .command-builder-panel { width: 100%; }
+
+    /* Context bar fields stack on smaller screens */
+    .context-bar-fields {
+        padding: 0 12px 10px;
+        gap: 8px;
+    }
+    .context-field {
+        min-width: 120px;
+        max-width: none;
+    }
+
+    /* Variation tabs scroll horizontally */
+    .variation-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+    }
+    .variation-tab {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* Command output wraps better */
+    .command-output {
+        word-break: break-all;
+    }
+
+    /* Sidebar footer */
+    .sidebar-footer { padding: 10px 16px; }
 }
 
 @media (max-width: 600px) {
@@ -1305,17 +1390,80 @@ body {
     .filter-select,
     .list-tab,
     .variation-tab {
-        min-height: 40px;
+        min-height: 44px;
     }
 
+    /* Top bar stacks fully */
+    .top-bar {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+    .profile-switcher { width: 100%; margin-right: 0; }
+    .list-controls {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .list-controls .btn {
+        flex: 1;
+        min-width: 0;
+        font-size: 11px;
+        padding: 8px 6px;
+        text-align: center;
+    }
+
+    /* Context fields single column */
+    .context-bar-fields {
+        flex-direction: column;
+        padding: 0 10px 10px;
+    }
+    .context-field {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    /* Builder sections breathe */
+    .command-info,
+    .references-section,
+    .output-section { padding: 12px; }
+
+    /* Modals full-screen on phones */
     #custom-command-modal,
     #list-management-modal {
-        padding: 12px !important;
+        padding: 0 !important;
     }
     #custom-command-modal > div,
     #list-management-modal > div {
-        max-height: 95vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
     }
+    .modal-content {
+        border-radius: 0;
+        max-height: 100vh;
+    }
+
+    /* List management tabs scroll */
+    .list-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+    }
+    .list-tab {
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-size: 12px;
+    }
+
+    /* Logo smaller on phones */
+    .logo { padding: 14px; }
+    .logo h1 { font-size: 1.2em; }
+    .logo h1 svg { width: 28px; height: 28px; }
+
+    /* Search box taller for easier tapping */
+    .search-box { min-height: 44px; font-size: 16px; }
+
+    /* Prevent iOS zoom on input focus */
+    input, select, textarea { font-size: 16px; }
 }
 
 /* General Scrollbar Styles */
@@ -1835,9 +1983,8 @@ html[data-theme="light"] .github-link-footer:hover { color: #0969da; }
 
 /* Light theme — Sidebar buttons & filters */
 html[data-theme="light"] .search-container { border-color: #d0d7de; }
-html[data-theme="light"] .show-all-container { border-color: #d0d7de; }
-html[data-theme="light"] .show-all-btn { background: #ffffff; border-color: #d0d7de; color: #0969da; }
-html[data-theme="light"] .show-all-btn:hover { background: #f6f8fa; border-color: #0969da; }
+html[data-theme="light"] .search-clear { color: #656d76; }
+html[data-theme="light"] .search-clear:hover { background-color: #f6f8fa; color: #1f2328; }
 html[data-theme="light"] .favorites-container { border-color: #d0d7de; }
 html[data-theme="light"] .favorites-btn { background: #ffffff; border-color: #d0d7de; color: #953800; }
 html[data-theme="light"] .favorites-btn:hover { background: #f6f8fa; border-color: #953800; }
@@ -1845,6 +1992,9 @@ html[data-theme="light"] .favorites-btn.active { background: #fff8c5; border-col
 html[data-theme="light"] .filter-group { border-color: #d0d7de; }
 html[data-theme="light"] .filter-container label { color: #656d76; }
 html[data-theme="light"] .filter-select option { background: #ffffff; color: #1f2328; }
+html[data-theme="light"] .reset-filters-btn { background: #ffffff; border-color: #d0d7de; color: #cf222e; }
+html[data-theme="light"] .reset-filters-btn:hover { background: #f6f8fa; border-color: #cf222e; }
+html[data-theme="light"] .logo h1:hover { color: #a40e26; }
 
 /* Light theme — Buttons */
 html[data-theme="light"] .btn-primary { background: #1a7f37; border-color: #1a7f37; color: #ffffff; }

@@ -687,11 +687,12 @@ class CommandManager {
       this.searchTerm = "";
       const searchBox = document.getElementById("global-search");
       if (searchBox) searchBox.value = "";
+      const searchClear = document.getElementById("search-clear");
+      if (searchClear) searchClear.style.display = "none";
     }
 
     this.filterCommands();
     this.updateBreadcrumb();
-    this.updateShowAllButton();
     this.updateFavoritesButton();
   }
 
@@ -811,21 +812,34 @@ class CommandManager {
     }
   }
 
-  // Toggle category expansion
+  // Toggle category expansion + selection. Clicking the same already-selected
+  // category collapses it and shows all commands again.
   toggleCategory(categoryId) {
     const categoryEl = document
       .querySelector(`[data-category="${categoryId}"]`)
       .closest(".category");
-    if (categoryEl) {
-      categoryEl.classList.toggle("expanded");
+
+    const isReselect =
+      this.currentCategory === categoryId && !this.currentSubcategory;
+
+    if (isReselect) {
+      if (categoryEl) categoryEl.classList.remove("expanded");
+      document
+        .querySelectorAll(".category-header, .subcategory")
+        .forEach((el) => el.classList.remove("active"));
+      this.currentCategory = null;
+      this.currentSubcategory = null;
+      this.filterCommands();
+      this.updateBreadcrumb();
+      return;
     }
 
-    // Clear active states
+    if (categoryEl) categoryEl.classList.add("expanded");
+
     document
       .querySelectorAll(".category-header, .subcategory")
       .forEach((el) => el.classList.remove("active"));
 
-    // Highlight this category header
     const categoryHeader = document.querySelector(
       `.category-header[data-category="${categoryId}"]`
     );
@@ -837,7 +851,6 @@ class CommandManager {
     this.updateFavoritesButton();
     this.filterCommands();
     this.updateBreadcrumb();
-    this.updateShowAllButton();
   }
 
   // Select subcategory
@@ -873,7 +886,6 @@ class CommandManager {
     this.updateFavoritesButton();
     this.filterCommands();
     this.updateBreadcrumb();
-    this.updateShowAllButton();
   }
 
   // Clear category selection
@@ -882,9 +894,21 @@ class CommandManager {
     this.currentSubcategory = null;
     this.searchTerm = "";
     this.showFavoritesOnly = false;
+    this.currentPlatformFilter = "all";
+    this.currentRequiresFilter = "all";
+    this.currentProtocolFilter = "all";
 
     const searchBox = document.getElementById("global-search");
     if (searchBox) searchBox.value = "";
+    const searchClear = document.getElementById("search-clear");
+    if (searchClear) searchClear.style.display = "none";
+
+    const platformSel = document.getElementById("platform-filter");
+    const requiresSel = document.getElementById("requires-filter");
+    const protocolSel = document.getElementById("protocol-filter");
+    if (platformSel) platformSel.value = "all";
+    if (requiresSel) requiresSel.value = "all";
+    if (protocolSel) protocolSel.value = "all";
 
     document
       .querySelectorAll(".category-header, .subcategory")
@@ -893,19 +917,18 @@ class CommandManager {
     this.updateFavoritesButton();
     this.filterCommands();
     this.updateBreadcrumb();
-    this.updateShowAllButton();
+    this.updateResetFiltersButton();
   }
 
-  // Update show all button visibility
-  updateShowAllButton() {
-    const showAllContainer = document.getElementById("show-all-container");
-    if (showAllContainer) {
-      if (this.currentCategory || this.searchTerm.trim() || this.showFavoritesOnly) {
-        showAllContainer.style.display = "block";
-      } else {
-        showAllContainer.style.display = "none";
-      }
-    }
+  // Show Reset Filters when any of the three dropdown filters is non-default
+  updateResetFiltersButton() {
+    const btn = document.getElementById("reset-filters-btn");
+    if (!btn) return;
+    const filterActive =
+      this.currentPlatformFilter !== "all" ||
+      this.currentRequiresFilter !== "all" ||
+      this.currentProtocolFilter !== "all";
+    btn.style.display = filterActive ? "block" : "none";
   }
 
   // Filter commands based on current selection and search
@@ -1614,26 +1637,28 @@ class CommandManager {
     this.searchTerm = searchTerm;
 
     if (searchTerm.trim()) {
-      // Respect category + filters; search is just another constraint applied on top.
-      const pool = this.data.commands.filter((command) => {
-        const matchesCategory =
-          !this.currentCategory || command.category === this.currentCategory;
-        const matchesSubcategory =
-          !this.currentSubcategory || command.subcategory === this.currentSubcategory;
-        const matchesFavorites = !this.showFavoritesOnly || this.favorites.has(command.id);
-        const matchesPlatform =
-          this.currentPlatformFilter === "all" || command.platform === this.currentPlatformFilter;
-        const matchesRequires =
-          this.currentRequiresFilter === "all" ||
-          (command.requires && command.requires.includes(this.currentRequiresFilter)) ||
-          (command.variations && command.variations.some((v) => v.requires === this.currentRequiresFilter));
-        const matchesProtocol =
-          this.currentProtocolFilter === "all" ||
-          (command.protocols && command.protocols.includes(this.currentProtocolFilter));
-        return matchesCategory && matchesSubcategory && matchesFavorites && matchesPlatform && matchesRequires && matchesProtocol;
-      });
+      // Search runs globally — reset every constraint so no match is hidden.
+      this.currentCategory = null;
+      this.currentSubcategory = null;
+      this.showFavoritesOnly = false;
+      this.currentPlatformFilter = "all";
+      this.currentRequiresFilter = "all";
+      this.currentProtocolFilter = "all";
 
-      this.filteredCommands = pool
+      const platformSel = document.getElementById("platform-filter");
+      const requiresSel = document.getElementById("requires-filter");
+      const protocolSel = document.getElementById("protocol-filter");
+      if (platformSel) platformSel.value = "all";
+      if (requiresSel) requiresSel.value = "all";
+      if (protocolSel) protocolSel.value = "all";
+
+      document
+        .querySelectorAll(".category-header, .subcategory")
+        .forEach((el) => el.classList.remove("active"));
+
+      this.updateFavoritesButton();
+
+      this.filteredCommands = this.data.commands
         .map((command) => ({ command, score: this.calculateSearchScore(command, searchTerm) }))
         .filter((r) => r.score > 0)
         .sort((a, b) => b.score - a.score)
@@ -1644,7 +1669,7 @@ class CommandManager {
 
     this.renderCommands();
     this.updateBreadcrumb();
-    this.updateShowAllButton();
+    this.updateResetFiltersButton();
   }
 
   // Simple and efficient search scoring (like HackTricks/TheHacker.recipes)
@@ -1719,19 +1744,21 @@ class CommandManager {
   setupEventListeners() {
     // Global search
     const searchBox = document.getElementById("global-search");
+    const searchClear = document.getElementById("search-clear");
     if (searchBox) {
       searchBox.addEventListener("input", (e) => {
         const v = e.target.value;
+        if (searchClear) searchClear.style.display = v.length ? "flex" : "none";
         clearTimeout(this._searchDebounce);
         this._searchDebounce = setTimeout(() => this.handleSearch(v), 80);
       });
     }
-
-    // Show All Commands button
-    const showAllBtn = document.getElementById("show-all-btn");
-    if (showAllBtn) {
-      showAllBtn.addEventListener("click", () => {
-        this.clearCategorySelection();
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        if (searchBox) searchBox.value = "";
+        searchClear.style.display = "none";
+        this.handleSearch("");
+        if (searchBox) searchBox.focus();
       });
     }
 
@@ -1749,6 +1776,7 @@ class CommandManager {
       platformFilter.addEventListener("change", (e) => {
         this.currentPlatformFilter = e.target.value;
         this.applyFilters();
+        this.updateResetFiltersButton();
       });
     }
 
@@ -1757,6 +1785,7 @@ class CommandManager {
       requiresFilter.addEventListener("change", (e) => {
         this.currentRequiresFilter = e.target.value;
         this.applyFilters();
+        this.updateResetFiltersButton();
       });
     }
 
@@ -1765,6 +1794,37 @@ class CommandManager {
       protocolFilter.addEventListener("change", (e) => {
         this.currentProtocolFilter = e.target.value;
         this.applyFilters();
+        this.updateResetFiltersButton();
+      });
+    }
+
+    // Reset Filters — clears only the three sidebar dropdowns
+    const resetFiltersBtn = document.getElementById("reset-filters-btn");
+    if (resetFiltersBtn) {
+      resetFiltersBtn.addEventListener("click", () => {
+        this.currentPlatformFilter = "all";
+        this.currentRequiresFilter = "all";
+        this.currentProtocolFilter = "all";
+        const ps = document.getElementById("platform-filter");
+        const rs = document.getElementById("requires-filter");
+        const pr = document.getElementById("protocol-filter");
+        if (ps) ps.value = "all";
+        if (rs) rs.value = "all";
+        if (pr) pr.value = "all";
+        this.applyFilters();
+        this.updateResetFiltersButton();
+      });
+    }
+
+    // Logo as home — full reset
+    const homeLink = document.getElementById("home-link");
+    if (homeLink) {
+      homeLink.addEventListener("click", () => this.clearCategorySelection());
+      homeLink.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.clearCategorySelection();
+        }
       });
     }
 

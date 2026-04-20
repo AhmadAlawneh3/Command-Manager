@@ -44,18 +44,14 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="logo">
-                <h1><svg xmlns="http://www.w3.org/2000/svg" fill="#ff6666" viewBox="0 0 24 24" width="35" height="35" stroke-width="1.5" stroke="#ffffff" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                <h1 id="home-link" role="button" tabindex="0" aria-label="Home — reset all filters and selections"><svg xmlns="http://www.w3.org/2000/svg" fill="#ff6666" viewBox="0 0 24 24" width="35" height="35" stroke-width="1.5" stroke="#ffffff" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
                     </svg> Command Manager</h1>
             </div>
 
             <div class="search-container">
                 <input type="text" class="search-box" placeholder="Search commands... (Ctrl+K)" id="global-search" autocomplete="off">
-            </div>
-            
-            <!-- Show All Commands Button -->
-            <div class="show-all-container" id="show-all-container" style="display: none;">
-                <button class="show-all-btn" id="show-all-btn">← Show All Commands</button>
+                <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" style="display: none;">&times;</button>
             </div>
             
             <!-- Favorites Button -->
@@ -101,6 +97,7 @@
                         <option value="http">HTTP</option>
                     </select>
                 </div>
+                <button class="reset-filters-btn" id="reset-filters-btn" style="display: none;">Reset Filters</button>
             </div>
             
             <nav class="categories" id="categories">
