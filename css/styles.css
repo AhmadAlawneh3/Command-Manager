@@ -900,6 +900,7 @@ body {
     word-break: break-all;
     line-height: 1.4;
     min-height: 60px;
+    white-space: pre-wrap;
 }
 
 .placeholder-highlight {
