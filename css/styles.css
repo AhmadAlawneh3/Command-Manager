@@ -1,5 +1,12 @@
 /* Command Manager - Main Stylesheet */
 
+:root {
+    /* The sidebar logo block and the main top bar are the same row, so they
+       share a height and their bottom borders line up across the page. */
+    --header-row-height: 62px;
+    --sidebar-default-width: 270px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -22,7 +29,10 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 300px;
+    width: var(--sidebar-width, var(--sidebar-default-width));
+    flex-shrink: 0;
+    container-type: inline-size;
+    container-name: sidebar;
     background-color: #161b22;
     border-right: 1px solid #30363d;
     display: flex;
@@ -30,18 +40,88 @@ body {
 }
 
 .logo {
-    padding: 20px;
-    text-align: center;
+    height: var(--header-row-height);
+    padding: 0 14px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     border-bottom: 1px solid #30363d;
+    box-sizing: border-box;
 }
 
 .logo h1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
     color: #ff6b6b;
-    font-size: 1.5em;
-    margin-bottom: 5px;
+    font-size: 1.05em;
+    line-height: 1;
     cursor: pointer;
     user-select: none;
     transition: color 0.2s;
+}
+
+.logo-mark {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+}
+
+.logo-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Below this the wordmark no longer fits beside the mark and the collapse
+   control, so it is dropped rather than shown ellipsised. */
+@container sidebar (max-width: 260px) {
+    .logo-text { display: none; }
+    .logo { justify-content: space-between; padding-left: 14px; }
+}
+
+.sidebar-collapse {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #7d8590;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+.sidebar-collapse:hover {
+    color: #c9d1d9;
+    background-color: #21262d;
+    border-color: #30363d;
+}
+
+.sidebar-collapse:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 1px;
+}
+
+/* Hidden sidebar: the restore control in the top bar takes over. */
+.sidebar-show { display: none; }
+
+.container.sidebar-hidden > .sidebar,
+.container.sidebar-hidden > .sidebar-resizer {
+    display: none;
+}
+
+.container.sidebar-hidden .sidebar-show {
+    display: block;
+    margin-right: 12px;
 }
 
 .logo h1:hover {
@@ -87,15 +167,17 @@ body {
 
 
 .search-container {
-    padding: 15px;
-    border-bottom: 1px solid #30363d;
     position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 420px;
+    margin: 0 16px;
 }
 
 .search-clear {
     position: absolute;
     top: 50%;
-    right: 22px;
+    right: 7px;
     transform: translateY(-50%);
     width: 22px;
     height: 22px;
@@ -241,7 +323,7 @@ body {
 
 .search-box {
     width: 100%;
-    padding: 10px 34px 10px 10px;
+    padding: 7px 30px 7px 10px;
     background-color: #0d1117;
     border: 1px solid #30363d;
     border-radius: 6px;
@@ -334,6 +416,7 @@ body {
 /* Main Content Styles */
 .main-content {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -341,7 +424,9 @@ body {
 }
 
 .top-bar {
-    padding: 15px 20px;
+    height: var(--header-row-height);
+    box-sizing: border-box;
+    padding: 0 20px;
     background-color: #161b22;
     border-bottom: 1px solid #30363d;
     display: flex;
@@ -353,6 +438,13 @@ body {
 .breadcrumb {
     color: #7d8590;
     font-size: 14px;
+    /* Yields to the search field rather than pushing the row wide. */
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .breadcrumb .current {
@@ -372,9 +464,222 @@ body {
     overflow: hidden;
 }
 
+/* Takes no layout width — the panels stay flush against each other and the
+   panel's own border remains the only line. The grab area and the highlight
+   are drawn as pseudo-elements straddling that border. */
+.sidebar-resizer,
+.panel-resizer {
+    flex: 0 0 0px;
+    width: 0;
+    align-self: stretch;
+    position: relative;
+    z-index: 5;
+    cursor: col-resize;
+}
+
+/* Grab area: wider than the line, so the divider is easy to hit. */
+.sidebar-resizer::before,
+.panel-resizer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -4px;
+    right: -4px;
+}
+
+/* Highlight drawn over the existing border, not beside it. */
+.sidebar-resizer::after,
+.panel-resizer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -2px;
+    width: 2px;
+    background-color: transparent;
+    transition: background-color 0.15s;
+}
+
+.sidebar-resizer:hover::after,
+.sidebar-resizer.dragging::after,
+.sidebar-resizer:focus-visible::after,
+.panel-resizer:hover::after,
+.panel-resizer.dragging::after,
+.panel-resizer:focus-visible::after {
+    background-color: #58a6ff;
+}
+
+.sidebar-resizer:focus-visible,
+.panel-resizer:focus-visible {
+    outline: none;
+}
+
+/* ==================== Command History ==================== */
+/* Themed via classes rather than inline styles, so it follows the toggle. */
+.app-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 3000;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+.app-modal-inner {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    max-width: 860px;
+    margin: 0 auto;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.app-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #30363d;
+    flex-shrink: 0;
+}
+
+.app-modal-header h2 {
+    color: #58a6ff;
+    font-size: 16px;
+    margin: 0;
+}
+
+.app-modal-close {
+    background: none;
+    border: none;
+    color: #7d8590;
+    font-size: 22px;
+    line-height: 1;
+    padding: 2px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.app-modal-close:hover { color: #c9d1d9; background-color: #21262d; }
+
+.history-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #30363d;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.history-filter {
+    flex: 1 1 200px;
+    min-width: 0;
+    padding: 7px 10px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.history-filter:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+}
+
+.history-count {
+    color: #7d8590;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.history-list {
+    overflow-y: auto;
+    padding: 12px 20px 20px;
+}
+
+.history-entry {
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background-color: #0d1117;
+}
+
+.history-entry-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.history-entry-name {
+    color: #58a6ff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.history-entry-variation {
+    color: #7d8590;
+    font-size: 10px;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 0 6px;
+}
+
+.history-entry-time {
+    color: #7d8590;
+    font-size: 11px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.history-entry-repeat {
+    color: #ffa657;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.history-entry-command {
+    font-family: monospace;
+    font-size: 12px;
+    color: #7ee787;
+    word-break: break-all;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.history-entry-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.history-entry-actions .btn { font-size: 10px; padding: 4px 9px; }
+
+.history-empty {
+    color: #7d8590;
+    font-size: 13px;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* Keep the pointer and selection sane while a drag is in progress. */
+body.resizing-panels {
+    cursor: col-resize;
+    user-select: none;
+}
+
 /* Command List Panel Styles */
 .command-list-panel {
-    width: 40%;
+    width: var(--list-panel-width, 40%);
     background-color: #161b22;
     border-right: 1px solid #30363d;
     display: flex;
@@ -534,6 +839,8 @@ body {
 /* Command Builder Panel Styles */
 .command-builder-panel {
     flex: 1;
+    container-type: inline-size;
+    container-name: builder;
     display: flex;
     flex-direction: column;
     background-color: #0d1117;
@@ -860,36 +1167,85 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     margin-bottom: 15px;
+}
+
+.output-header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
 }
 
 .output-title {
     color: #c9d1d9;
     font-size: 14px;
     font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.output-hint {
+    color: #7d8590;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* Below this the hint is dropped rather than allowed to collide with the
+   copy button — the pointer cursor and hover state still teach the shortcut. */
+@container builder (max-width: 430px) {
+    .output-hint { display: none; }
 }
 
 .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     background-color: #238636;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    flex-shrink: 0;
+    box-shadow: 0 1px 0 rgba(27, 31, 36, 0.2);
+    transition: background-color 0.2s, transform 0.08s;
 }
 
 .copy-btn:hover {
     background-color: #2ea043;
 }
 
+.copy-btn:active {
+    transform: translateY(1px);
+}
+
+.copy-btn:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
+}
+
 .copy-btn.copied {
     background-color: #1a7f37;
 }
 
+.copy-btn .copy-icon {
+    flex-shrink: 0;
+}
+
+.copy-btn .copy-icon-check { display: none; }
+.copy-btn.copied .copy-icon-clipboard { display: none; }
+.copy-btn.copied .copy-icon-check { display: block; }
+
 .command-output {
+    position: relative;
     background-color: #0d1117;
     border: 1px solid #30363d;
     border-radius: 4px;
@@ -900,6 +1256,46 @@ body {
     word-break: break-all;
     line-height: 1.4;
     min-height: 60px;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.command-output:hover {
+    border-color: #2ea043;
+    background-color: #10171f;
+}
+
+.command-output:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
+}
+
+/* Readiness, shown on the box itself. Declared after :hover so the state
+   colour is not repainted by hovering. */
+.command-output.incomplete {
+    border-color: #bb8009;
+    background-color: rgba(187, 128, 9, 0.10);
+}
+
+.command-output.incomplete:hover {
+    border-color: #d29922;
+    background-color: rgba(187, 128, 9, 0.16);
+}
+
+.command-output.ready {
+    border-color: #2ea043;
+    background-color: rgba(46, 160, 67, 0.08);
+}
+
+.command-output.ready:hover {
+    background-color: rgba(46, 160, 67, 0.14);
+}
+
+/* The copy flash outranks both. */
+.command-output.copied,
+.command-output.copied:hover {
+    border-color: #2ea043;
+    background-color: rgba(46, 160, 67, 0.22);
 }
 
 .placeholder-highlight {
@@ -1247,7 +1643,7 @@ body {
 /* Toast Notification Styles */
 .toast {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     background-color: #238636;
     color: white;
@@ -1267,6 +1663,10 @@ body {
 
 .toast.error {
     background-color: #da3633;
+}
+
+.toast.warning {
+    background-color: #9e6a03;
 }
 
 /* Mobile sidebar toggle */
@@ -1321,13 +1721,27 @@ body {
     .main-content { padding-top: 64px; }
 
     .top-bar {
+        height: auto;
         flex-wrap: wrap;
         gap: 8px;
         padding: 10px 12px;
     }
 
+    /* The sidebar is a drawer here — the hamburger owns showing and hiding it,
+       so a desktop collapse must not leave the drawer unreachable. */
+    .sidebar-collapse,
+    .container.sidebar-hidden .sidebar-show { display: none; }
+
+    .container.sidebar-hidden > .sidebar { display: flex; }
+
     /* Stack breadcrumb on its own row, controls below */
-    .breadcrumb { width: 100%; font-size: 13px; }
+    .breadcrumb { width: 100%; max-width: none; font-size: 13px; }
+
+    .search-container {
+        flex: 1 1 100%;
+        max-width: none;
+        margin: 0;
+    }
 
     /* Profile switcher takes available space */
     .profile-switcher {
@@ -1347,6 +1761,9 @@ body {
         max-height: 45vh;
     }
     .command-builder-panel { width: 100%; }
+
+    .panel-resizer { display: none; }
+    .sidebar-resizer { display: none; }
 
     /* Context bar fields stack on smaller screens */
     .context-bar-fields {
@@ -1738,6 +2155,28 @@ body {
     white-space: nowrap;
 }
 
+.context-bar-clear {
+    background: none;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    color: #7d8590;
+    cursor: pointer;
+    font-size: 11px;
+    padding: 3px 9px;
+    margin-right: 8px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.context-bar-clear:hover {
+    color: #f85149;
+    border-color: #f85149;
+}
+
+.context-bar-clear:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 1px;
+}
+
 .context-bar-toggle {
     background: none;
     border: none;
@@ -1781,7 +2220,7 @@ body {
 
 .context-input {
     width: 100%;
-    padding: 6px 8px;
+    padding: 6px 24px 6px 8px;
     background-color: #0d1117;
     border: 1px solid #30363d;
     border-radius: 4px;
@@ -1794,6 +2233,50 @@ body {
     outline: none;
     border-color: #58a6ff;
     box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+}
+
+/* Per-field clear. Hidden while the field is empty (:placeholder-shown), and
+   on pointer devices only revealed on hover or focus so the bar stays quiet. */
+.context-clear {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    color: #7d8590;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.12s, color 0.12s, background-color 0.12s;
+}
+
+.context-clear:hover {
+    color: #f85149;
+    background-color: rgba(248, 81, 73, 0.12);
+}
+
+.context-field:hover .context-input:not(:placeholder-shown) ~ .context-clear,
+.context-field:focus-within .context-input:not(:placeholder-shown) ~ .context-clear {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* No hover on touch — show it whenever the field has a value. */
+@media (hover: none) {
+    .context-input:not(:placeholder-shown) ~ .context-clear {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 .context-dropdown {
@@ -1946,6 +2429,9 @@ html[data-theme="light"] .command-output {
 html[data-theme="light"] .command-output .syn-flag   { color: #8250df; }
 html[data-theme="light"] .command-output .syn-string { color: #0a3069; }
 html[data-theme="light"] .command-output .placeholder-highlight { color: #bc4c00; }
+html[data-theme="light"] .command-output:hover { background-color: #eef6f0; border-color: #2da44e; }
+html[data-theme="light"] .command-output.copied { background-color: #dafbe1; border-color: #2da44e; }
+html[data-theme="light"] .output-hint { color: #656d76; }
 html[data-theme="light"] .search-box,
 html[data-theme="light"] .filter-select,
 html[data-theme="light"] .parameter-input,
@@ -1982,7 +2468,6 @@ html[data-theme="light"] .github-link-footer { color: #656d76; }
 html[data-theme="light"] .github-link-footer:hover { color: #0969da; }
 
 /* Light theme — Sidebar buttons & filters */
-html[data-theme="light"] .search-container { border-color: #d0d7de; }
 html[data-theme="light"] .search-clear { color: #656d76; }
 html[data-theme="light"] .search-clear:hover { background-color: #f6f8fa; color: #1f2328; }
 html[data-theme="light"] .favorites-container { border-color: #d0d7de; }
@@ -2050,6 +2535,8 @@ html[data-theme="light"] .dropdown-item.active { box-shadow: inset 3px 0 0 #0969
 /* Light theme — Output section */
 html[data-theme="light"] .output-section { background: #f6f8fa; border-color: #d0d7de; }
 html[data-theme="light"] .output-title { color: #1f2328; }
+html[data-theme="light"] .command-output.incomplete { border-color: #bf8700; background-color: #fff8c5; }
+html[data-theme="light"] .command-output.ready { border-color: #1a7f37; background-color: #dafbe1; }
 html[data-theme="light"] .copy-btn { background: #1a7f37; }
 html[data-theme="light"] .copy-btn:hover { background: #2da44e; }
 html[data-theme="light"] .copy-btn.copied { background: #1a7f37; }
@@ -2120,10 +2607,28 @@ html[data-theme="light"] .context-bar-summary { color: #656d76; }
 html[data-theme="light"] .context-bar-toggle { color: #656d76; }
 html[data-theme="light"] .context-field-label { color: #656d76; }
 html[data-theme="light"] .context-input { background: #f6f8fa; border-color: #d0d7de; color: #1f2328; }
+html[data-theme="light"] .app-modal { background: rgba(31, 35, 40, 0.5); }
+html[data-theme="light"] .app-modal-inner { background-color: #ffffff; border-color: #d0d7de; }
+html[data-theme="light"] .app-modal-header { border-color: #d0d7de; }
+html[data-theme="light"] .app-modal-close { color: #656d76; }
+html[data-theme="light"] .app-modal-close:hover { color: #1f2328; background-color: #f6f8fa; }
+html[data-theme="light"] .history-toolbar { border-color: #d0d7de; }
+html[data-theme="light"] .history-filter { background: #f6f8fa; border-color: #d0d7de; color: #1f2328; }
+html[data-theme="light"] .history-count,
+html[data-theme="light"] .history-entry-time,
+html[data-theme="light"] .history-empty { color: #656d76; }
+html[data-theme="light"] .history-entry { background-color: #f6f8fa; border-color: #d0d7de; }
+html[data-theme="light"] .history-entry-command { color: #1f2328; }
+html[data-theme="light"] .history-entry-variation { color: #656d76; border-color: #d0d7de; }
+html[data-theme="light"] .context-bar-clear { color: #656d76; border-color: #d0d7de; }
+html[data-theme="light"] .context-bar-clear:hover { color: #cf222e; border-color: #cf222e; }
+html[data-theme="light"] .context-clear { color: #656d76; }
+html[data-theme="light"] .context-clear:hover { color: #cf222e; background-color: rgba(207, 34, 46, 0.1); }
 
 /* Light theme — Toast */
 html[data-theme="light"] .toast { background: #1a7f37; }
 html[data-theme="light"] .toast.error { background: #cf222e; }
+html[data-theme="light"] .toast.warning { background: #9a6700; }
 
 /* Light theme — Shortcuts modal */
 html[data-theme="light"] .shortcuts-modal { background: rgba(0,0,0,0.4); }

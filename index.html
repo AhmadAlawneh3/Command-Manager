@@ -44,16 +44,12 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="logo">
-                <h1 id="home-link" role="button" tabindex="0" aria-label="Home — reset all filters and selections"><svg xmlns="http://www.w3.org/2000/svg" fill="#ff6666" viewBox="0 0 24 24" width="35" height="35" stroke-width="1.5" stroke="#ffffff" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                <h1 id="home-link" role="button" tabindex="0" aria-label="Home — reset all filters and selections"><svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" fill="#ff6666" viewBox="0 0 24 24" width="35" height="35" stroke-width="1.5" stroke="#ffffff">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m6.75 7.5 3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0 0 21 18V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v12a2.25 2.25 0 0 0 2.25 2.25Z" />
-                    </svg> Command Manager</h1>
+                    </svg><span class="logo-text">Command Manager</span></h1>
+                <button class="sidebar-collapse" id="sidebar-collapse" type="button" title="Hide sidebar (Ctrl+B)" aria-label="Hide sidebar">&#171;</button>
             </div>
 
-            <div class="search-container">
-                <input type="text" class="search-box" placeholder="Search commands... (Ctrl+K)" id="global-search" autocomplete="off">
-                <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" style="display: none;">&times;</button>
-            </div>
-            
             <!-- Favorites Button -->
             <div class="favorites-container">
                 <button class="favorites-btn" id="favorites-btn" aria-label="Show favorite commands">⭐ Show Favorites</button>
@@ -113,16 +109,25 @@
             </div>
         </aside>
 
+        <div class="sidebar-resizer" id="sidebar-resizer" role="separator" aria-orientation="vertical"
+             tabindex="0" aria-label="Resize sidebar — arrow keys to adjust, double-click to reset"></div>
+
         <!-- Main Content -->
         <main class="main-content">
             <div class="top-bar">
+                <button class="btn icon-btn sidebar-show" id="sidebar-show" type="button" title="Show sidebar (Ctrl+B)" aria-label="Show sidebar">&#9776;</button>
                 <div class="breadcrumb">
                     <span id="breadcrumb-text">All Commands</span>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search commands... (Ctrl+K)" id="global-search" autocomplete="off">
+                    <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" style="display: none;">&times;</button>
                 </div>
                 <div class="profile-switcher" id="profile-switcher">
                     <!-- Populated by JS -->
                 </div>
                 <div class="list-controls">
+                    <button class="btn" data-action="history" title="Commands you have copied">History</button>
                     <button class="btn" data-action="manage-lists" title="Manage your lists">Manage Lists</button>
                     <button class="btn" data-action="custom-command" title="Create custom command">Custom Command</button>
                     <button class="btn icon-btn" id="shortcuts-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts" onclick="app.toggleShortcutsModal()">?</button>
@@ -134,6 +139,7 @@
                 <div class="context-bar-header" id="context-bar-header">
                     <span class="context-bar-title">Target Context</span>
                     <span class="context-bar-summary" id="context-bar-summary"></span>
+                    <button class="context-bar-clear" id="context-bar-clear" type="button" title="Clear all target context fields" style="display: none;">Clear all</button>
                     <button class="context-bar-toggle" id="context-bar-toggle" title="Toggle context bar">&#9660;</button>
                 </div>
                 <div class="context-bar-fields" id="context-bar-fields">
@@ -152,6 +158,9 @@
                         <!-- Commands will be populated by JavaScript -->
                     </div>
                 </section>
+
+                <div class="panel-resizer" id="panel-resizer" role="separator" aria-orientation="vertical"
+                     tabindex="0" aria-label="Resize panels — arrow keys to adjust, double-click to reset"></div>
 
                 <!-- Command Builder Panel -->
                 <section class="command-builder-panel">
@@ -241,10 +250,28 @@
                 <tr><td><kbd>Ctrl</kbd> + <kbd>K</kbd></td><td>Focus search</td></tr>
                 <tr><td><kbd>/</kbd></td><td>Focus search</td></tr>
                 <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate command list</td></tr>
+                <tr><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td><td>Hide / show sidebar</td></tr>
                 <tr><td><kbd>?</kbd></td><td>Show this help</td></tr>
                 <tr><td><kbd>Esc</kbd></td><td>Close modal / dropdown</td></tr>
             </table>
             <p class="shortcuts-tip">Tip: every command has a permalink — open one and copy the URL to share it.</p>
+        </div>
+    </div>
+
+    <!-- Command History -->
+    <div id="history-modal" class="app-modal" style="display: none;" role="dialog" aria-label="Command history">
+        <div class="app-modal-inner">
+            <div class="app-modal-header">
+                <h2>Command History</h2>
+                <button class="app-modal-close" type="button" title="Close" data-action="history">&times;</button>
+            </div>
+            <div class="history-toolbar">
+                <input type="text" class="history-filter" id="history-filter" placeholder="Filter history..." autocomplete="off">
+                <span class="history-count" id="history-count"></span>
+                <button class="btn" data-action="export-history">Export</button>
+                <button class="btn btn-danger" data-action="clear-history">Clear</button>
+            </div>
+            <div class="history-list" id="history-list"></div>
         </div>
     </div>
 

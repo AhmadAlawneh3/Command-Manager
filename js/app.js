@@ -17,6 +17,11 @@ class CommandManager {
     // Variation tracking
     this.activeVariation = 0;
 
+    // Parameter values for the selected command, keyed by placeholder name.
+    // Held here rather than read off the inputs so that re-rendering the
+    // builder (switching variations) does not discard what was typed.
+    this.paramValues = {};
+
     // List management
     this.lists = {
       ips: [],
@@ -45,6 +50,19 @@ class CommandManager {
     this.targetContext = {};
     this.contextBarCollapsed = false;
 
+    // Draggable divider sizes, per resizer name. null = stylesheet default.
+    this.resizerValues = { sidebar: null, panel: null };
+
+    // Sidebar hidden entirely (desktop only — on mobile it is a drawer).
+    this.sidebarHidden = false;
+
+    // Placeholders still unfilled in the generated command.
+    this.pendingPlaceholders = [];
+
+    // Log of commands actually copied, newest first.
+    this.history = [];
+    this.historyFilter = "";
+
     this.init();
   }
 
@@ -56,6 +74,10 @@ class CommandManager {
     this.loadCommandLinks();
     this.loadFavorites();
     this.loadTargetContext();
+    this.loadResizerValue("sidebar");
+    this.loadResizerValue("panel");
+    this.loadSidebarHidden();
+    this.loadHistory();
     this.renderProfileSwitcher();
     this.renderCategories();
     this.renderCommands();
@@ -63,6 +85,10 @@ class CommandManager {
     this.renderContextBar();
     this.updateFavoritesButton();
     this.setupSidebarToggle();
+    this.setupSidebarVisibility();
+    this.setupHistoryEvents();
+    this.setupResizer("sidebar");
+    this.setupResizer("panel");
     this.setupTheme();
     this.handleInitialHash();
 
@@ -141,6 +167,522 @@ class CommandManager {
   }
 
   // Mobile sidebar drawer
+  // ==================== RESIZABLE PANELS ====================
+
+  // The two draggable dividers. Each stores its size as a CSS custom property
+  // on a container, so the responsive rules can still override it when the
+  // layout stacks — an inline width on the panel itself would not lose to them.
+  _resizerConfig(name) {
+    const configs = {
+      sidebar: {
+        resizerId: "sidebar-resizer",
+        container: ".container",
+        cssVar: "--sidebar-width",
+        storage: "sidebar-width",
+        unit: "px",
+        min: 200,
+        max: 520,
+        step: 10,
+        bigStep: 40,
+        fromClientX: (clientX, rect) => clientX - rect.left,
+        measure: () => {
+          const el = document.getElementById("sidebar");
+          return el ? el.getBoundingClientRect().width : null;
+        },
+      },
+      panel: {
+        resizerId: "panel-resizer",
+        container: ".content-area",
+        cssVar: "--list-panel-width",
+        storage: "panel-split",
+        unit: "%",
+        min: 20,
+        max: 75,
+        step: 1,
+        bigStep: 5,
+        fromClientX: (clientX, rect) =>
+          rect.width ? ((clientX - rect.left) / rect.width) * 100 : null,
+        measure: (rect) => {
+          const el = document.querySelector(".command-list-panel");
+          if (!el || !rect.width) return null;
+          return (el.getBoundingClientRect().width / rect.width) * 100;
+        },
+      },
+    };
+    return configs[name];
+  }
+
+  _clampResizer(name, value) {
+    const cfg = this._resizerConfig(name);
+    return Math.min(cfg.max, Math.max(cfg.min, value));
+  }
+
+  loadResizerValue(name) {
+    const cfg = this._resizerConfig(name);
+    let value = null;
+    try {
+      const saved = localStorage.getItem(this._storageKey(cfg.storage));
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed)) value = this._clampResizer(name, parsed);
+      }
+    } catch (e) {
+      console.error(`Error loading ${name} size:`, e);
+    }
+    this.resizerValues[name] = value;
+    this.applyResizerValue(name);
+  }
+
+  saveResizerValue(name) {
+    const cfg = this._resizerConfig(name);
+    try {
+      const key = this._storageKey(cfg.storage);
+      if (this.resizerValues[name] === null) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, String(this.resizerValues[name]));
+      }
+    } catch (e) {
+      console.error(`Error saving ${name} size:`, e);
+    }
+  }
+
+  // null means "unset" — the stylesheet default then applies.
+  applyResizerValue(name) {
+    const cfg = this._resizerConfig(name);
+    const container = document.querySelector(cfg.container);
+    if (!container) return;
+    const value = this.resizerValues[name];
+    if (value === null) {
+      container.style.removeProperty(cfg.cssVar);
+    } else {
+      container.style.setProperty(cfg.cssVar, `${value}${cfg.unit}`);
+    }
+  }
+
+  setResizerValue(name, value, persist = true) {
+    this.resizerValues[name] = this._clampResizer(name, value);
+    this.applyResizerValue(name);
+    if (persist) this.saveResizerValue(name);
+  }
+
+  resetResizerValue(name, quiet = false) {
+    this.resizerValues[name] = null;
+    this.applyResizerValue(name);
+    this.saveResizerValue(name);
+    if (!quiet) this.showToast("Size reset");
+  }
+
+  setupResizer(name) {
+    const cfg = this._resizerConfig(name);
+    const resizer = document.getElementById(cfg.resizerId);
+    const container = document.querySelector(cfg.container);
+    if (!resizer || !container) return;
+
+    let dragging = false;
+
+    resizer.addEventListener("pointerdown", (e) => {
+      // Hidden in the stacked layout — nothing to drag there.
+      if (getComputedStyle(resizer).display === "none") return;
+      dragging = true;
+      resizer.setPointerCapture(e.pointerId);
+      resizer.classList.add("dragging");
+      document.body.classList.add("resizing-panels");
+      e.preventDefault();
+    });
+
+    resizer.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const value = cfg.fromClientX(e.clientX, container.getBoundingClientRect());
+      // Not written to storage on every frame — persisted on release.
+      if (value !== null) this.setResizerValue(name, value, false);
+    });
+
+    const endDrag = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      if (e && e.pointerId !== undefined && resizer.hasPointerCapture(e.pointerId)) {
+        resizer.releasePointerCapture(e.pointerId);
+      }
+      resizer.classList.remove("dragging");
+      document.body.classList.remove("resizing-panels");
+      this.saveResizerValue(name);
+    };
+
+    resizer.addEventListener("pointerup", endDrag);
+    resizer.addEventListener("pointercancel", endDrag);
+    resizer.addEventListener("dblclick", () => this.resetResizerValue(name));
+
+    resizer.addEventListener("keydown", (e) => {
+      const step = e.shiftKey ? cfg.bigStep : cfg.step;
+      let current = this.resizerValues[name];
+      if (current === null) {
+        current = cfg.measure(container.getBoundingClientRect());
+        if (current === null) return;
+      }
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        this.setResizerValue(name, current - step);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        this.setResizerValue(name, current + step);
+      } else if (e.key === "Home" || e.key === "Enter") {
+        e.preventDefault();
+        this.resetResizerValue(name);
+      }
+    });
+  }
+
+  // Every per-profile localStorage suffix. Deleting or duplicating a profile
+  // walks this list, so a new per-profile key MUST be added here too.
+  static get PROFILE_KEY_SUFFIXES() {
+    return [
+      "lists",
+      "favorites",
+      "custom-asset-types",
+      "command-links",
+      "target-context",
+      "history",
+      "sidebar-width",
+      "panel-split",
+      "sidebar-hidden",
+    ];
+  }
+
+  // ==================== COMMAND HISTORY ====================
+
+  // Newest first. Capped so a long engagement cannot fill localStorage.
+  static get HISTORY_LIMIT() { return 300; }
+
+  loadHistory() {
+    let entries = [];
+    try {
+      const saved = localStorage.getItem(this._storageKey("history"));
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) entries = parsed;
+      }
+    } catch (e) {
+      console.error("Error loading history:", e);
+    }
+    this.history = entries;
+  }
+
+  saveHistory() {
+    try {
+      localStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
+    } catch (e) {
+      // Most likely the quota — drop the oldest half and try once more.
+      console.error("Error saving history:", e);
+      this.history = this.history.slice(0, Math.floor(this.history.length / 2));
+      try {
+        localStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
+      } catch (e2) {
+        console.error("History still too large, giving up:", e2);
+      }
+    }
+  }
+
+  // Called only after a copy actually succeeds.
+  recordHistory(command) {
+    if (!command || !command.trim()) return;
+    const cmd = this.selectedCommand;
+
+    let variation = null;
+    if (cmd && cmd.variations && cmd.variations.length && this.activeVariation > 0) {
+      variation = cmd.variations[this.activeVariation - 1].label;
+    }
+
+    // Copying the same thing twice in a row bumps the entry instead of
+    // filling the log with duplicates.
+    const top = this.history[0];
+    if (top && top.command === command) {
+      top.ts = Date.now();
+      top.count = (top.count || 1) + 1;
+      this.saveHistory();
+      return;
+    }
+
+    this.history.unshift({
+      commandId: cmd ? cmd.id : null,
+      name: cmd ? cmd.name : "Command",
+      template: this.getActiveCommand(),
+      variation,
+      command,
+      values: { ...this.paramValues },
+      ts: Date.now(),
+      count: 1,
+    });
+
+    if (this.history.length > CommandManager.HISTORY_LIMIT) {
+      this.history.length = CommandManager.HISTORY_LIMIT;
+    }
+    this.saveHistory();
+  }
+
+  toggleHistory() {
+    const modal = document.getElementById("history-modal");
+    if (!modal) return;
+    const opening = modal.style.display === "none" || !modal.style.display;
+    modal.style.display = opening ? "block" : "none";
+    if (opening) {
+      this.historyFilter = "";
+      const filter = document.getElementById("history-filter");
+      if (filter) filter.value = "";
+      this.renderHistory();
+      this.trapFocus(modal);
+      if (filter) filter.focus();
+    } else {
+      this.releaseFocusTrap();
+    }
+  }
+
+  _formatHistoryTime(ts) {
+    const d = new Date(ts);
+    const today = new Date();
+    const sameDay = d.toDateString() === today.toDateString();
+    const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    return sameDay ? time : `${d.toLocaleDateString()} ${time}`;
+  }
+
+  getFilteredHistory() {
+    const term = this.historyFilter.trim().toLowerCase();
+    if (!term) return this.history;
+    return this.history.filter(e =>
+      e.command.toLowerCase().includes(term) ||
+      (e.name || "").toLowerCase().includes(term)
+    );
+  }
+
+  renderHistory() {
+    const list = document.getElementById("history-list");
+    const count = document.getElementById("history-count");
+    if (!list) return;
+
+    const entries = this.getFilteredHistory();
+
+    if (count) {
+      count.textContent = this.historyFilter.trim()
+        ? `${entries.length} of ${this.history.length}`
+        : `${this.history.length} command${this.history.length === 1 ? "" : "s"}`;
+    }
+
+    if (entries.length === 0) {
+      list.innerHTML = `<div class="history-empty">${
+        this.history.length === 0
+          ? "Nothing copied yet. Commands you copy are logged here."
+          : "No history entries match that filter."
+      }</div>`;
+      return;
+    }
+
+    list.innerHTML = entries.map((e) => {
+      const idx = this.history.indexOf(e);
+      return `
+        <div class="history-entry" data-history-index="${idx}">
+          <div class="history-entry-head">
+            <span class="history-entry-name">${this.escapeHtml(e.name || "Command")}</span>
+            ${e.variation ? `<span class="history-entry-variation">${this.escapeHtml(e.variation)}</span>` : ""}
+            ${e.count > 1 ? `<span class="history-entry-repeat">&times;${e.count}</span>` : ""}
+            <span class="history-entry-time" title="${this.escapeHtml(new Date(e.ts).toString())}">${this.escapeHtml(this._formatHistoryTime(e.ts))}</span>
+          </div>
+          <div class="history-entry-command">${this.escapeHtml(e.command)}</div>
+          <div class="history-entry-actions">
+            <button class="btn" data-history-action="copy" data-history-index="${idx}">Copy</button>
+            <button class="btn" data-history-action="restore" data-history-index="${idx}">Open in builder</button>
+          </div>
+        </div>`;
+    }).join("");
+  }
+
+  async copyHistoryEntry(index) {
+    const entry = this.history[index];
+    if (!entry) return;
+    try {
+      await navigator.clipboard.writeText(entry.command);
+      this.showToast("Copied from history");
+    } catch (err) {
+      console.error("Failed to copy from history:", err);
+      this.showToast("Failed to copy", "error");
+    }
+  }
+
+  // Reopen a logged command with the values it was run with.
+  restoreHistoryEntry(index) {
+    const entry = this.history[index];
+    if (!entry) return;
+
+    const known = entry.commandId
+      ? this.data.commands.find(c => c.id === entry.commandId)
+      : null;
+
+    if (known) {
+      this.selectCommand(known.id);
+      if (entry.variation && known.variations) {
+        const vi = known.variations.findIndex(v => v.label === entry.variation);
+        if (vi >= 0) this.activeVariation = vi + 1;
+      }
+    } else {
+      // Custom or since-removed command — rebuild it from the stored template.
+      this.selectedCommand = {
+        id: entry.commandId || "history-entry",
+        name: entry.name || "Command",
+        command: entry.template || entry.command,
+        description: "Restored from history",
+        tags: [],
+      };
+      this.activeVariation = 0;
+    }
+
+    this.paramValues = { ...(entry.values || {}) };
+    this.renderCommandBuilder();
+    this.toggleHistory();
+    this.showToast("Restored from history");
+  }
+
+  exportHistory() {
+    if (this.history.length === 0) {
+      this.showToast("History is empty", "error");
+      return;
+    }
+
+    const profile = this.profileMeta && this.profileMeta.profiles
+      ? (this.profileMeta.profiles.find(p => p.id === this.activeProfileId) || {}).name
+      : null;
+
+    const lines = [
+      `# Command Manager history${profile ? ` — profile: ${profile}` : ""}`,
+      `# Exported ${new Date().toString()}`,
+      `# ${this.history.length} entries, newest first`,
+      "",
+    ];
+
+    // Chronological reads better in a report appendix.
+    [...this.history].reverse().forEach(e => {
+      lines.push(`# ${new Date(e.ts).toISOString()}  ${e.name || "Command"}${e.variation ? ` (${e.variation})` : ""}${e.count > 1 ? `  x${e.count}` : ""}`);
+      lines.push(e.command);
+      lines.push("");
+    });
+
+    const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `command-history-${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    this.showToast(`Exported ${this.history.length} entries`);
+  }
+
+  clearHistory() {
+    if (this.history.length === 0) {
+      this.showToast("History is already empty", "error");
+      return;
+    }
+    if (!confirm(`Clear all ${this.history.length} history entries? This cannot be undone.`)) return;
+
+    const n = this.history.length;
+    this.history = [];
+    this.saveHistory();
+    this.renderHistory();
+    this.showToast(`Cleared ${n} history entries`);
+  }
+
+  setupHistoryEvents() {
+    const filter = document.getElementById("history-filter");
+    if (filter) {
+      filter.addEventListener("input", (e) => {
+        this.historyFilter = e.target.value;
+        this.renderHistory();
+      });
+    }
+
+    const list = document.getElementById("history-list");
+    if (list) {
+      list.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-history-action]");
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.historyIndex, 10);
+        if (btn.dataset.historyAction === "copy") this.copyHistoryEntry(idx);
+        else this.restoreHistoryEntry(idx);
+      });
+    }
+
+    const modal = document.getElementById("history-modal");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) this.toggleHistory();
+      });
+    }
+  }
+
+  // ==================== SIDEBAR VISIBILITY ====================
+
+  loadSidebarHidden() {
+    let hidden = false;
+    try {
+      hidden = localStorage.getItem(this._storageKey("sidebar-hidden")) === "true";
+    } catch (e) {
+      console.error("Error loading sidebar visibility:", e);
+    }
+    this.sidebarHidden = hidden;
+    this.applySidebarHidden();
+  }
+
+  saveSidebarHidden() {
+    try {
+      const key = this._storageKey("sidebar-hidden");
+      if (this.sidebarHidden) {
+        localStorage.setItem(key, "true");
+      } else {
+        localStorage.removeItem(key);
+      }
+    } catch (e) {
+      console.error("Error saving sidebar visibility:", e);
+    }
+  }
+
+  applySidebarHidden() {
+    const container = document.querySelector(".container");
+    if (container) {
+      container.classList.toggle("sidebar-hidden", this.sidebarHidden);
+    }
+  }
+
+  setSidebarHidden(hidden) {
+    this.sidebarHidden = hidden;
+    this.applySidebarHidden();
+    this.saveSidebarHidden();
+
+    // Move focus to whichever control is now on screen, so a keyboard user
+    // is not left on a button that just disappeared.
+    const next = document.getElementById(hidden ? "sidebar-show" : "sidebar-collapse");
+    if (next) next.focus();
+  }
+
+  toggleSidebarHidden() {
+    this.setSidebarHidden(!this.sidebarHidden);
+  }
+
+  setupSidebarVisibility() {
+    const collapse = document.getElementById("sidebar-collapse");
+    if (collapse) {
+      collapse.addEventListener("click", (e) => {
+        e.stopPropagation(); // the logo row resets filters on click
+        this.setSidebarHidden(true);
+      });
+    }
+
+    const show = document.getElementById("sidebar-show");
+    if (show) {
+      show.addEventListener("click", () => this.setSidebarHidden(false));
+    }
+  }
+
   setupSidebarToggle() {
     const toggle = document.getElementById("sidebar-toggle");
     const sidebar = document.getElementById("sidebar");
@@ -194,8 +736,13 @@ class CommandManager {
     this.loadCommandLinks();
     this.loadFavorites();
     this.loadTargetContext();
+    this.loadResizerValue("sidebar");
+    this.loadResizerValue("panel");
+    this.loadSidebarHidden();
+    this.loadHistory();
     this.renderContextBar();
     this.selectedCommand = null;
+    this.paramValues = {};
     this.renderCommands();
     this.renderCommandBuilder();
     this.updateFavoritesButton();
@@ -299,7 +846,7 @@ class CommandManager {
     if (!confirm(`Delete profile "${current.name}"? All data in this profile will be lost.`)) return;
 
     // Remove profile data from localStorage
-    ["lists", "favorites", "custom-asset-types", "command-links", "target-context"].forEach(suffix => {
+    CommandManager.PROFILE_KEY_SUFFIXES.forEach(suffix => {
       localStorage.removeItem(this._storageKey(suffix));
     });
 
@@ -317,8 +864,9 @@ class CommandManager {
 
     const id = name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now();
 
-    // Copy all data keys
-    ["lists", "favorites", "custom-asset-types", "command-links", "target-context"].forEach(suffix => {
+    // Copy everything except the command history — that log holds the previous
+    // engagement's credentials and must not follow a copy into a new one.
+    CommandManager.PROFILE_KEY_SUFFIXES.filter(sfx => sfx !== "history").forEach(suffix => {
       const data = localStorage.getItem(this._storageKey(suffix));
       if (data) {
         localStorage.setItem(`command-manager-${id}-${suffix}`, data);
@@ -433,6 +981,8 @@ class CommandManager {
             data-context-type="${type.id}"
             value="${this.escapeHtml(this.targetContext[type.id] || '')}"
             placeholder="${type.name}...">
+          <button type="button" class="context-clear" data-context-type="${type.id}"
+            tabindex="-1" title="Clear ${type.name}" aria-label="Clear ${type.name}">&times;</button>
           <div class="dropdown-list context-dropdown" id="context-dropdown-${type.id}"></div>
         </div>
       </div>
@@ -470,6 +1020,21 @@ class CommandManager {
           const dropdown = document.getElementById(`context-dropdown-${type}`);
           if (dropdown) dropdown.classList.remove("show");
         }, 150);
+      });
+    });
+
+    document.querySelectorAll(".context-clear").forEach(btn => {
+      // mousedown fires before the input's blur, so the click is not lost
+      btn.addEventListener("mousedown", (e) => e.preventDefault());
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const type = e.currentTarget.dataset.contextType;
+        const input = document.querySelector(`.context-input[data-context-type="${type}"]`);
+        if (input) {
+          input.value = "";
+          input.focus();
+        }
+        this.updateTargetContext(type, "");
       });
     });
 
@@ -528,12 +1093,32 @@ class CommandManager {
       const listType = this.getListTypeForPlaceholder(placeholder);
       if (listType && this.targetContext[listType] && !input.value.trim()) {
         input.value = this.targetContext[listType];
+        this.setParamValue(placeholder, input.value);
         changed = true;
       }
     });
     if (changed) {
       this.generateCommand();
     }
+  }
+
+  // Clear every target context field at once.
+  clearTargetContext() {
+    if (Object.keys(this.targetContext).length === 0) {
+      this.showToast("Target context is already empty", "error");
+      return;
+    }
+
+    const cleared = Object.keys(this.targetContext).length;
+    this.targetContext = {};
+    this.saveTargetContext();
+
+    document.querySelectorAll(".context-input").forEach(input => {
+      input.value = "";
+    });
+
+    this.updateContextBarSummary();
+    this.showToast(`Target context cleared (${cleared} field${cleared === 1 ? "" : "s"})`);
   }
 
   toggleContextBar() {
@@ -551,6 +1136,11 @@ class CommandManager {
       .filter(([, v]) => v.trim())
       .map(([, v]) => v.trim());
     summary.textContent = values.length > 0 ? values.join(" | ") : "";
+
+    const clearBtn = document.getElementById("context-bar-clear");
+    if (clearBtn) {
+      clearBtn.style.display = values.length > 0 ? "" : "none";
+    }
   }
 
   // ==================== HELPERS ====================
@@ -796,6 +1386,15 @@ class CommandManager {
         break;
       case "manage-lists":
         this.toggleListManagement();
+        break;
+      case "history":
+        this.toggleHistory();
+        break;
+      case "export-history":
+        this.exportHistory();
+        break;
+      case "clear-history":
+        this.clearHistory();
         break;
       case "add-list-item":
         this.addListItem();
@@ -1081,6 +1680,7 @@ class CommandManager {
 
     this.selectedCommand = command;
     this.activeVariation = 0;
+    this.paramValues = {};
     this.renderCommandBuilder();
 
     // Update URL hash so the command is permalinkable / shareable.
@@ -1209,14 +1809,15 @@ class CommandManager {
                           .map(
                             (placeholder) => `
                             <div class="parameter-group">
-                                <label class="parameter-label">${placeholder}</label>
+                                <label class="parameter-label">${this.escapeHtml(placeholder)}</label>
                                 <div class="dropdown-container">
                                     <input type="text"
                                            class="parameter-input"
-                                           id="param-${placeholder}"
-                                           placeholder="Enter ${placeholder}..."
-                                           data-placeholder="${placeholder}">
-                                    <div class="dropdown-list" id="dropdown-${placeholder}"></div>
+                                           id="param-${this.escapeHtml(placeholder)}"
+                                           placeholder="Enter ${this.escapeHtml(placeholder)}..."
+                                           value="${this.escapeHtml(this.paramValues[placeholder] || "")}"
+                                           data-placeholder="${this.escapeHtml(placeholder)}">
+                                    <div class="dropdown-list" id="dropdown-${this.escapeHtml(placeholder)}"></div>
                                 </div>
                             </div>
                         `
@@ -1230,10 +1831,22 @@ class CommandManager {
 
             <div class="output-section">
                 <div class="output-header">
-                    <span class="output-title">Generated Command</span>
-                    <button class="copy-btn" id="copy-command-btn">Copy</button>
+                    <div class="output-header-left">
+                        <span class="output-title">Generated Command</span>
+                        <span class="output-hint">click the command to copy</span>
+                    </div>
+                    <button class="copy-btn" id="copy-command-btn" aria-label="Copy generated command">
+                        <svg class="copy-icon copy-icon-clipboard" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        <svg class="copy-icon copy-icon-check" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span class="copy-btn-label">Copy</span>
+                    </button>
                 </div>
-                <div class="command-output" id="command-output">${
+                <div class="command-output" id="command-output" role="button" tabindex="0" title="Click to copy">${
                   activeCmd
                 }</div>
             </div>
@@ -1342,6 +1955,7 @@ class CommandManager {
     // Parameter input events
     document.querySelectorAll(".parameter-input").forEach((input) => {
       input.addEventListener("input", (e) => {
+        this.setParamValue(e.target.dataset.placeholder, e.target.value);
         this.handleParameterInput(e.target);
         this.generateCommand();
         this.showDropdown(e.target.dataset.placeholder, e.target.value);
@@ -1391,6 +2005,23 @@ class CommandManager {
     if (copyBtn) {
       copyBtn.addEventListener("click", () => this.copyCommand());
     }
+
+    // The output block itself is click-to-copy. Skip when the user is
+    // selecting text inside it — they want a fragment, not the whole command.
+    const outputEl = document.getElementById("command-output");
+    if (outputEl) {
+      outputEl.addEventListener("click", () => {
+        const sel = window.getSelection();
+        if (sel && !sel.isCollapsed && outputEl.contains(sel.anchorNode)) return;
+        this.copyCommand();
+      });
+      outputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.copyCommand();
+        }
+      });
+    }
   }
 
   // Extract placeholders from command
@@ -1398,6 +2029,17 @@ class CommandManager {
     const matches = command.match(/<([^>]+)>/g);
     if (!matches) return [];
     return [...new Set(matches.map((match) => match.slice(1, -1)))];
+  }
+
+  // Record a parameter value. Single source of truth for what the user has
+  // filled in — the inputs are rendered from this, not the other way round.
+  setParamValue(placeholder, value) {
+    if (!placeholder) return;
+    if (value && value.trim()) {
+      this.paramValues[placeholder] = value;
+    } else {
+      delete this.paramValues[placeholder];
+    }
   }
 
   // Handle parameter input (supports annotated list items)
@@ -1498,6 +2140,7 @@ class CommandManager {
 
   // Select dropdown item
   selectDropdownItem(placeholder, value) {
+    this.setParamValue(placeholder, value);
     const input = document.getElementById(`param-${placeholder}`);
     if (input) {
       input.value = value;
@@ -1524,16 +2167,42 @@ class CommandManager {
     const placeholders = this.extractPlaceholders(command);
 
     placeholders.forEach((placeholder) => {
-      const input = document.getElementById(`param-${placeholder}`);
-      if (input && input.value.trim()) {
-        const value = input.value.trim();
-        command = command.replace(new RegExp(`<${placeholder}>`, "g"), value);
+      const value = (this.paramValues[placeholder] || "").trim();
+      if (value) {
+        command = command.split(`<${placeholder}>`).join(value);
       }
     });
 
     const outputEl = document.getElementById("command-output");
     if (outputEl) {
       outputEl.innerHTML = this.highlightPlaceholders(command);
+    }
+
+    // Whatever is still in <angle brackets> has not been filled in.
+    this.pendingPlaceholders = this.extractPlaceholders(command);
+    this.updateReadiness(placeholders.length);
+  }
+
+  // Readiness is shown on the command box itself: amber while placeholders
+  // are outstanding, green once none are. Never blocks copying.
+  updateReadiness(totalPlaceholders) {
+    const out = document.getElementById("command-output");
+    if (!out) return;
+
+    const left = this.pendingPlaceholders.length;
+    out.classList.remove("incomplete", "ready");
+
+    if (totalPlaceholders === 0) {
+      out.removeAttribute("title");
+      return;
+    }
+
+    if (left > 0) {
+      out.classList.add("incomplete");
+      out.title = `Click to copy — still unfilled: ${this.pendingPlaceholders.join(", ")}`;
+    } else {
+      out.classList.add("ready");
+      out.title = "Click to copy — all placeholders filled";
     }
   }
 
@@ -1580,17 +2249,33 @@ class CommandManager {
       await navigator.clipboard.writeText(command);
       const btn = document.getElementById("copy-command-btn");
       if (btn) {
-        const originalText = btn.textContent;
-        btn.textContent = "Copied!";
+        const label = btn.querySelector(".copy-btn-label");
+        if (label) label.textContent = "Copied!";
         btn.classList.add("copied");
 
-        setTimeout(() => {
-          btn.textContent = originalText;
+        // Restore the literal label, and drop any pending restore first —
+        // otherwise a second copy captures "Copied!" as the text to restore.
+        clearTimeout(this._copyResetTimer);
+        this._copyResetTimer = setTimeout(() => {
+          if (label) label.textContent = "Copy";
           btn.classList.remove("copied");
         }, 2000);
       }
 
-      this.showToast("Command copied to clipboard!");
+      commandEl.classList.add("copied");
+      setTimeout(() => commandEl.classList.remove("copied"), 600);
+
+      this.recordHistory(command);
+
+      const left = (this.pendingPlaceholders || []).length;
+      if (left > 0) {
+        this.showToast(
+          `Copied — ${left} placeholder${left === 1 ? "" : "s"} still unfilled: ${this.pendingPlaceholders.join(", ")}`,
+          "warning"
+        );
+      } else {
+        this.showToast("Command copied to clipboard!");
+      }
     } catch (err) {
       console.error("Failed to copy command:", err);
       this.showToast("Failed to copy command", "error");
@@ -1762,6 +2447,16 @@ class CommandManager {
       });
     }
 
+    // Clear-all for the target context bar. Static markup, so bound once here
+    // rather than in setupContextBarEvents, which re-runs on every render.
+    const contextClearAll = document.getElementById("context-bar-clear");
+    if (contextClearAll) {
+      contextClearAll.addEventListener("click", (e) => {
+        e.stopPropagation(); // the header itself collapses the bar on click
+        this.clearTargetContext();
+      });
+    }
+
     // Favorites button
     const favoritesBtn = document.getElementById("favorites-btn");
     if (favoritesBtn) {
@@ -1890,6 +2585,12 @@ class CommandManager {
         if (searchBox) searchBox.focus();
       }
 
+      // Ctrl+B hides / shows the sidebar
+      if (e.ctrlKey && e.key === "b") {
+        e.preventDefault();
+        this.toggleSidebarHidden();
+      }
+
       // `/` focuses search (Slack/HTB-style)
       if (!inField && e.key === "/") {
         e.preventDefault();
@@ -1943,6 +2644,12 @@ class CommandManager {
         const listModal = document.getElementById("list-management-modal");
         if (listModal && listModal.style.display !== "none") {
           this.toggleListManagement();
+        }
+
+        // Close command history modal
+        const historyModal = document.getElementById("history-modal");
+        if (historyModal && historyModal.style.display !== "none") {
+          this.toggleHistory();
         }
       }
     });
@@ -2584,6 +3291,8 @@ class CommandManager {
     const standardCommand = this.convertToStandardFormat(command, pattern);
 
     // Create a temporary command object
+    this.activeVariation = 0;
+    this.paramValues = {};
     this.selectedCommand = {
       id: "custom-temp",
       name: "Custom Command",
