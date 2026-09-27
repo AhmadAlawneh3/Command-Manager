@@ -358,7 +358,10 @@ class CommandManager {
   loadHistory() {
     let entries = [];
     try {
-      const saved = localStorage.getItem(this._storageKey("history"));
+      // History can contain credentials/targets entered as command parameters,
+      // so it is kept in sessionStorage rather than localStorage: it is never
+      // written to disk and is cleared automatically when the tab/browser closes.
+      const saved = sessionStorage.getItem(this._storageKey("history"));
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) entries = parsed;
@@ -371,13 +374,13 @@ class CommandManager {
 
   saveHistory() {
     try {
-      localStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
+      sessionStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
     } catch (e) {
       // Most likely the quota — drop the oldest half and try once more.
       console.error("Error saving history:", e);
       this.history = this.history.slice(0, Math.floor(this.history.length / 2));
       try {
-        localStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
+        sessionStorage.setItem(this._storageKey("history"), JSON.stringify(this.history));
       } catch (e2) {
         console.error("History still too large, giving up:", e2);
       }
