@@ -2,6 +2,8 @@
 
 A searchable, copy-pasteable library of pentesting commands focused on Active Directory. Runs entirely in your browser. No install, no backend, no telemetry.
 
+**Live: [commandmgr.com](https://commandmgr.com/)** — or [browse the commands by category](https://commandmgr.com/category/).
+
 
 https://github.com/user-attachments/assets/772a5e56-88d9-4223-a87c-04a48c6e1a5b
 
@@ -37,11 +39,25 @@ The library is actively growing. See [CONTRIBUTING.md](CONTRIBUTING.md) if you w
 ```bash
 git clone https://github.com/<your-fork>/Command-Manager.git
 cd Command-Manager
-# open index.html directly in your browser, or:
-python3 -m http.server 8000
+# open site/index.html directly in your browser, or:
+npm run serve          # http.server on site/ at :8000
 ```
 
-That is the entire setup. There is nothing to build before running it — `js/commands.js` is committed.
+That is the entire setup. There is nothing to build before running it — `site/js/commands.js` is
+committed.
+
+## Repo layout
+
+Everything the site serves lives in `site/`, which is the published root: `site/index.html` is `/`,
+`site/c/<id>/index.html` is `/c/<id>/`. Source data is in `commands/` and `schema/`; the build and
+validation scripts are in `tools/`.
+
+`npm run build` regenerates `site/js/commands.js` plus the static, crawlable pages under
+`site/c/<id>/index.html` and `site/category/`, `site/sitemap.xml`, and `site/llms.txt` /
+`site/llms-full.txt` for retrieval clients. Apart from the bundle, that output is gitignored — the
+GitHub Actions workflow rebuilds it and deploys `site/` as the Pages artifact on every push to
+`main`. Never edit generated files by hand. (`site/<32-hex>.txt` is the IndexNow key CI uses to ping
+Bing; it is public by design.)
 
 ## Features
 
@@ -57,7 +73,7 @@ That is the entire setup. There is nothing to build before running it — `js/co
 
 ## Adding a command
 
-Open `command-editor.html` in your browser, fill in the form, save the generated JSON to `commands/<category>/<subcategory>/<id>.json`, run `node validate-commands.js` locally, and open a PR. CI revalidates and rebuilds the bundle on merge.
+Open `site/command-editor.html` in your browser, fill in the form, save the generated JSON to `commands/<category>/<subcategory>/<id>.json`, run `npm run validate` locally, and open a PR. CI revalidates on the PR and redeploys the site on merge.
 
 Full instructions, schema reference, and examples are in [CONTRIBUTING.md](CONTRIBUTING.md).
 

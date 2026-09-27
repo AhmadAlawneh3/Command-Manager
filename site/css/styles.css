@@ -1640,6 +1640,31 @@ body.resizing-panels {
     font-size: 14px;
 }
 
+.empty-state p + p {
+    margin-top: 10px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 16px;
+    margin-top: 22px;
+    font-size: 13px;
+}
+
+.empty-state-links a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.empty-state-links a:hover {
+    text-decoration: underline;
+}
+
 /* Toast Notification Styles */
 .toast {
     position: fixed;

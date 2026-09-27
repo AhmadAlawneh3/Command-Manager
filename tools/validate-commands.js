@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Validate every command JSON file under commands/ against schema/command.schema.json.
-// Usage: node validate-commands.js
+// Usage: node tools/validate-commands.js
 //
 // Checks performed:
 //   1. JSON parses
@@ -14,7 +14,7 @@ const path = require('path');
 const Ajv = require('ajv/dist/2020');
 const addFormats = require('ajv-formats');
 
-const ROOT = __dirname;
+const ROOT = path.join(__dirname, '..');
 const COMMANDS_DIR = path.join(ROOT, 'commands');
 const SCHEMA_PATH = path.join(ROOT, 'schema', 'command.schema.json');
 const CATEGORIES_PATH = path.join(COMMANDS_DIR, '_categories.json');

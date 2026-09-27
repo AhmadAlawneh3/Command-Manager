@@ -1,0 +1,171 @@
+/* Styles for the static, crawlable command pages (c/, category/, 404).
+   Deliberately small and self-contained — these pages load no JS and must stay
+   fast. The app itself uses css/styles.css. */
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --link: #58a6ff;
+  --accent: #ff6666;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --muted: #656d76;
+    --link: #0969da;
+    --accent: #cf222e;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: var(--link); }
+a:hover { text-decoration: none; }
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  text-decoration: none;
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+}
+
+.site-nav { display: flex; gap: 18px; font-size: 0.9rem; }
+
+.page { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+
+.breadcrumbs { font-size: 0.85rem; color: var(--muted); margin-bottom: 20px; }
+.breadcrumbs .sep { margin: 0 8px; opacity: 0.5; }
+
+h1 { font-size: 1.85rem; line-height: 1.25; margin: 0 0 12px; }
+h2 { font-size: 1.25rem; margin: 36px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1rem; margin: 22px 0 8px; }
+
+.lede { font-size: 1.05rem; color: var(--text); margin: 0 0 20px; }
+.byline { font-size: 0.85rem; color: var(--muted); margin: -8px 0 20px; }
+.muted { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+.req { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 18px;
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.92rem;
+}
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 0 0 16px;
+}
+
+code {
+  font: 0.88rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+p > code, li > code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.cta { margin: 22px 0 8px; }
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 6px;
+}
+
+.cmd-list, .sub-list { list-style: none; padding: 0; margin: 0 0 8px; }
+
+.cmd-list li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cmd-list li a { font-weight: 600; }
+.cmd-list .muted { display: block; }
+
+.sub-list { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 16px 40px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.site-footer p { max-width: 860px; margin: 0 auto 8px; }
+
+/* Sitewide category tree, in the footer of every generated page. It is
+   navigation, not content: compact, multi-column and visually secondary. */
+.site-tree {
+  max-width: 860px;
+  margin: 0 auto 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.site-tree .tree-head { margin: 0 0 12px; font-weight: 600; }
+.site-tree .tree-head a { color: var(--text); text-decoration: none; }
+.tree-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 14px 20px;
+}
+.tree-cat { display: block; font-weight: 600; margin-bottom: 4px; }
+.site-tree ul { list-style: none; margin: 0; padding: 0; }
+.site-tree li { margin-bottom: 2px; }
+.site-tree li a { color: var(--muted); text-decoration: none; }
+.site-tree li a:hover { color: var(--link); text-decoration: underline; }

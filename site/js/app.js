@@ -714,7 +714,18 @@ class CommandManager {
   }
 
   // If the URL has #<command-id>, open that command on load / on hashchange.
+  // ?q=<term> pre-fills the search box (this is the SearchAction target
+  // advertised in the homepage structured data).
   handleInitialHash() {
+    const query = new URLSearchParams(location.search).get("q");
+    if (query) {
+      const box = document.getElementById("global-search");
+      if (box && box.value !== query) {
+        box.value = query;
+        this.handleSearch(query);
+      }
+    }
+
     const id = (location.hash || "").replace(/^#/, "");
     if (!id) return;
     const command = this.data.commands.find((c) => c.id === id);
@@ -1714,10 +1725,22 @@ class CommandManager {
     if (!container) return;
 
     if (!this.selectedCommand) {
+      // Keep this in sync with the static empty state in index.html — that copy
+      // is what crawlers read, this one is what replaces it once JS renders.
       container.innerHTML = `
                 <div class="empty-state">
                     <h3>🚀 Welcome to Command Manager</h3>
                     <p>Select a command from the list to start building your penetration testing toolkit</p>
+                    <p>${this.data.commands.length} Active Directory pentesting commands covering NetExec, Impacket, Certipy, bloodyAD, BloodHound, Rubeus, mimikatz and hashcat — each with its password, NTLM hash and Kerberos ticket variants laid out side by side.</p>
+                    <nav class="empty-state-links" aria-label="Browse command categories">
+                        ${Object.keys(this.data.categories)
+                          .map(
+                            (cat) =>
+                              `<a href="category/${cat}/">${this.data.categories[cat].name.replace(/^[^\p{L}\p{N}]+/u, "")}</a>`
+                          )
+                          .join("")}
+                        <a href="category/">All categories &rarr;</a>
+                    </nav>
                 </div>
             `;
       return;

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Command Manager</title>
+    <title>Command Manager — Active Directory Pentesting Command Reference</title>
     <meta name="description" content="Searchable AD pentest cheatsheet — fill placeholders, filter, copy & paste commands. 285 commands: NetExec, Impacket, Certipy, BloodHound, Rubeus, mimikatz, and more.">
-    <meta name="keywords" content="pentest, red team, commands, hacking, cybersecurity, active directory, netexec, impacket, certipy, bloodhound, rubeus, mimikatz, cheatsheet">
 
     <link rel="canonical" href="https://commandmgr.com/">
 
@@ -36,6 +35,47 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="js/commands.js" as="script">
     <link rel="preload" href="js/app.js" as="script">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://commandmgr.com/#website",
+          "name": "Command Manager",
+          "alternateName": "commandmgr",
+          "url": "https://commandmgr.com/",
+          "description": "Searchable, copy-pasteable library of Active Directory penetration testing commands.",
+          "inLanguage": "en",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://commandmgr.com/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://commandmgr.com/#app",
+          "name": "Command Manager",
+          "url": "https://commandmgr.com/",
+          "applicationCategory": "SecurityApplication",
+          "applicationSubCategory": "Penetration Testing",
+          "operatingSystem": "Any (browser-based)",
+          "description": "A searchable library of Active Directory penetration testing commands with placeholder substitution, credential variants and workflow chaining. Runs entirely client-side.",
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "author": { "@type": "Person", "name": "Ahmad Alawneh" },
+          "license": "https://github.com/AhmadAlawneh3/Command-Manager/blob/main/LICENSE",
+          "isPartOf": { "@id": "https://commandmgr.com/#website" }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
@@ -172,6 +212,17 @@
                         <div class="empty-state">
                             <h3>🚀 Welcome to Command Manager</h3>
                             <p>Select a command from the list to start building your penetration testing toolkit</p>
+                            <p>285 Active Directory pentesting commands covering NetExec, Impacket, Certipy, bloodyAD, BloodHound, Rubeus, mimikatz and hashcat — each with its password, NTLM hash and Kerberos ticket variants laid out side by side.</p>
+                            <nav class="empty-state-links" aria-label="Browse command categories">
+                                <a href="category/enumeration/">Enumeration</a>
+                                <a href="category/authentication/">Authentication</a>
+                                <a href="category/credential-attacks/">Credential Attacks</a>
+                                <a href="category/privilege-escalation/">Privilege Escalation</a>
+                                <a href="category/lateral-movement/">Lateral Movement</a>
+                                <a href="category/post-exploitation/">Post-Exploitation</a>
+                                <a href="category/utilities/">Utilities</a>
+                                <a href="category/">All categories &rarr;</a>
+                            </nav>
                         </div>
                     </div>
                 </section>

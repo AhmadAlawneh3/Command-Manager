@@ -4,8 +4,11 @@
   "private": true,
   "description": "A searchable, copy-pasteable library of pentesting commands focused on Active Directory.",
   "scripts": {
-    "build": "node build-commands.js",
-    "validate": "node validate-commands.js"
+    "build": "node tools/build-commands.js && node tools/build-pages.js",
+    "build:bundle": "node tools/build-commands.js",
+    "build:pages": "node tools/build-pages.js",
+    "validate": "node tools/validate-commands.js",
+    "serve": "python3 -m http.server 8000 --directory site"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

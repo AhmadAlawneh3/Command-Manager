@@ -4,14 +4,14 @@ Thanks for considering a contribution. The library grows by people adding the co
 
 ## The 3-step flow
 
-1. **Draft the command in the editor.** Open `command-editor.html` in any browser. Fill in the form: id, name, category, subcategory, platform, the command template, a short description, examples, and any auth-method variations. Click *Generate JavaScript* to preview, then copy the JSON.
+1. **Draft the command in the editor.** Open `site/command-editor.html` in any browser. Fill in the form: id, name, category, subcategory, platform, the command template, a short description, examples, and any auth-method variations. Click *Generate JavaScript* to preview, then copy the JSON.
 2. **Save it as a file.** Place it at `commands/<category>/<subcategory>/<id>.json`. The filename (without `.json`) must match the `id` field.
 3. **Validate, then open a PR.**
    ```bash
    npm install
    npm run validate
    ```
-   If validation passes, push and open a PR. CI will revalidate; on merge to `main` the bundle (`js/commands.js`) is rebuilt automatically.
+   If validation passes, push and open a PR. CI will revalidate; on merge to `main` the workflow rebuilds the bundle (`site/js/commands.js`), the static pages (`site/c/<id>/index.html` and `site/category/`), `site/sitemap.xml` and the `site/llms.txt` / `site/llms-full.txt` retrieval files, deploys `site/` to GitHub Pages, and pings the new or changed command URLs to IndexNow. Your command gets a crawlable page at `https://commandmgr.com/c/<id>/`.
 
 ## Schema
 

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // Build script: assembles individual command JSON files into js/commands.js
-// Usage: node build-commands.js
+// Usage: node tools/build-commands.js
 
 const fs = require('fs');
 const path = require('path');
 
-const COMMANDS_DIR = path.join(__dirname, 'commands');
-const OUTPUT_FILE = path.join(__dirname, 'js', 'commands.js');
+const ROOT = path.join(__dirname, '..');
+const COMMANDS_DIR = path.join(ROOT, 'commands');
+const OUTPUT_FILE = path.join(ROOT, 'site', 'js', 'commands.js');
 
 // Read categories
 const categories = JSON.parse(
@@ -94,7 +95,7 @@ commands.sort((a, b) => {
 const output = `// Command Manager - Command Database
 // AUTO-GENERATED — do not edit manually.
 // To add or modify commands, edit the JSON files in the commands/ directory.
-// Then run: node build-commands.js
+// Then run: node tools/build-commands.js
 
 const COMMAND_DATA = ${JSON.stringify({ categories, commands }, null, 2)};
 

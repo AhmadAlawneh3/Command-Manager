@@ -1,7 +1,7 @@
 // Command Manager - Command Database
 // AUTO-GENERATED — do not edit manually.
 // To add or modify commands, edit the JSON files in the commands/ directory.
-// Then run: node build-commands.js
+// Then run: node tools/build-commands.js
 
 const COMMAND_DATA = {
   "categories": {

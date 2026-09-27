@@ -4,3 +4,12 @@ node_modules/
 *.log
 npm-debug.log*
 .idea/
+
+# Generated into site/ by tools/build-pages.js and rebuilt by the Pages
+# workflow at deploy time. site/js/commands.js is the one generated file that
+# stays tracked, so a fresh clone can open site/index.html over file://.
+site/c/
+site/category/
+site/sitemap.xml
+site/llms.txt
+site/llms-full.txt

@@ -1,0 +1,117 @@
+name: Validate, Build & Deploy
+
+# The published site is the site/ directory, uploaded as a Pages artifact — so
+# every push to main must run this workflow, not just the ones touching
+# commands/. Repo setting: Settings → Pages → Source: GitHub Actions.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never let two deploys race; queue them instead of cancelling, so the last
+# push always wins.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Validate command JSON files
+        run: node tools/validate-commands.js
+
+  deploy:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # refreshing the tracked bundle
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # tools/build-pages.js reads commit dates for sitemap <lastmod>.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build bundle and static pages
+        run: |
+          node tools/build-commands.js
+          node tools/build-pages.js
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # site/js/commands.js is the only generated file that stays tracked, so a
+      # fresh clone can open site/index.html straight from disk. Everything else
+      # under site/ that the build writes is gitignored and lives only in the
+      # artifact. This runs after the deploy so a push race can never block it.
+      - name: Commit refreshed bundle
+        continue-on-error: true
+        run: |
+          git add site/js/commands.js
+          if git diff --cached --quiet; then
+            echo "Bundle unchanged."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: rebuild site/js/commands.js [skip ci]"
+          git push
+
+      # Pings Bing (which feeds Copilot) with the command pages this push
+      # touched. Google does not participate in IndexNow. The key is public by
+      # design — it only authorises submitting URLs on our own host — so it lives
+      # here in the clear and is served from site/<key>.txt.
+      - name: Submit changed command URLs to IndexNow
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: 807b4dba2c3dbb102f099e1bf7b8cf23
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$BEFORE_SHA" ] || [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            echo "No usable before-SHA for this push; nothing to submit."
+            exit 0
+          fi
+          ids=$(git diff --name-only "$BEFORE_SHA" "$AFTER_SHA" -- commands \
+                | grep -E '^commands/[^/]+/[^/]+/[^/_][^/]*\.json$' \
+                | sed 's#.*/##; s#\.json$##' | sort -u || true)
+          if [ -z "$ids" ]; then
+            echo "No command files changed; nothing to submit."
+            exit 0
+          fi
+          urls=$(printf 'https://commandmgr.com/c/%s/\n' $ids | jq -R . | jq -s .)
+          payload=$(jq -n \
+            --arg host commandmgr.com \
+            --arg key "$INDEXNOW_KEY" \
+            --arg keyLocation "https://commandmgr.com/$INDEXNOW_KEY.txt" \
+            --argjson urlList "$urls" \
+            '{host: $host, key: $key, keyLocation: $keyLocation, urlList: $urlList}')
+          echo "$payload"
+          curl -sS -m 30 -o /dev/null -w 'IndexNow HTTP %{http_code}\n' \
+            -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            --data "$payload" || true
